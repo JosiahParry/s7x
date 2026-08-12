@@ -3,7 +3,7 @@
 \name{property_union}
 \alias{property_union}
 \alias{|.S7_property}
-\title{Define a property backed by a class union}
+\title{Create Property from a Union of Properties}
 \usage{
 property_union(..., default = NULL)
 
@@ -20,8 +20,6 @@ property_union(..., default = NULL)
 An S7 property typed as the union of \code{...}.
 }
 \description{
-The property-level accompaniment to \code{\link[S7:new_union]{S7::new_union()}}. \code{...} may be
-plain S7 classes or properties (like \code{\link[=property_scalar]{property_scalar()}} or
-\code{\link[=property_range]{property_range()}}); a property member's own validator still applies to
-values matching its class.
+An analogue to \code{\link[S7:new_union]{S7::new_union()}}. Defines a new property
+from multiple
 }

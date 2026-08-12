@@ -1,16 +1,14 @@
-#' Define a property backed by a class union
+#' Create Property from a Union of Properties
 #'
-#' The property-level accompaniment to [S7::new_union()]. `...` may be
-#' plain S7 classes or properties (like [property_scalar()] or
-#' [property_range()]); a property member's own validator still applies to
-#' values matching its class.
+#' An analogue to [S7::new_union()]. Defines a new property
+#' from multiple
 #'
 #' @param ... S7 classes or properties to union.
 #' @param default Any. Passed to [S7::new_property()].
 #' @return An S7 property typed as the union of `...`.
 #' @export
 property_union <- function(..., default = NULL) {
-  members <- list(...)
+  members <- rlang::list2(...)
   classes <- lapply(
     members,
     function(m) if (inherits(m, "S7_property")) m$class else m
@@ -25,11 +23,15 @@ property_union <- function(..., default = NULL) {
       matches <- vapply(
         seq_along(members),
         function(i) {
-          if (!S7::S7_inherits(value, classes[[i]])) {
+          if (!class_matches(value, classes[[i]])) {
             return(NA)
           }
           validator <- member_validator(members[[i]])
-          if (is.null(validator)) TRUE else is.null(validator(value))
+          if (is_null(validator)) {
+            TRUE
+          } else {
+            is_null(validator(value))
+          }
         },
         logical(1)
       )
@@ -40,6 +42,27 @@ property_union <- function(..., default = NULL) {
     },
     default = default
   )
+}
+
+# Whether `value` is an instance of `class`, a class spec accepted by
+# S7::new_union() (S7 class, union, or base type). S7_inherits() only
+# accepts S7 classes, not unions or base type specs, so this dispatches on
+# structural shape instead: a function is an S7 class, a list with
+# `$classes` is a union, a list with `$class` is a base type.
+class_matches <- function(value, class) {
+  if (is_function(class)) {
+    return(S7::S7_inherits(value, class))
+  }
+
+  if (is_list(class) && !is_null(class$classes)) {
+    return(any(vapply(class$classes, class_matches, logical(1), value = value)))
+  }
+
+  if (is.list(class) && !is.null(class$class)) {
+    return(identical(typeof(value), class$class))
+  }
+
+  FALSE
 }
 
 #' @rdname property_union

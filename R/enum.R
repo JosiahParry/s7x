@@ -19,6 +19,10 @@ Enum <- S7::new_class(
   abstract = TRUE
 )
 
+method(convert, list(Enum, class_character)) <- function(from, to, ...) {
+  from@Value
+}
+
 #' Create a new enum class
 #'
 #' @param name String. Name of the new class.
@@ -42,7 +46,7 @@ new_enum_class <- function(
     cli::cli_abort("{.arg variants} must be unique.")
   }
 
-  S7::new_class(
+  enum_class <- S7::new_class(
     name,
     parent = Enum,
     package = package,
@@ -54,6 +58,16 @@ new_enum_class <- function(
       S7::new_object(S7::S7_object(), Value = Value, Variants = variants)
     }
   )
+
+  method(convert, list(class_character, enum_class)) <- function(
+    from,
+    to,
+    ...
+  ) {
+    enum_class(from)
+  }
+
+  enum_class
 }
 
 #' Define a property backed by one or more enum classes

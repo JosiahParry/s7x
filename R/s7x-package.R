@@ -1,3 +1,4 @@
+#' @import S7
 #' @import rlang
 #' @keywords internal
 "_PACKAGE"

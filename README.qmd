@@ -2,7 +2,7 @@
 output: gfm
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.qmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -13,14 +13,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# s7x - S7 exentions
+# s7x - S7 extensions
 
-[`{S7}`]() utility extensions.
+[`{S7}`](https://rconsortium.github.io/S7/) utility extensions for scalar and enum-like properties.
 
 <!-- badges: start -->
 <!-- badges: end -->
-
-
 
 ## Installation
 
@@ -30,27 +28,29 @@ You can install the development version of s7x like so:
 pak::pak("josiahparry/s7x")
 ```
 
-## Example
+## Enums
 
-This is a basic example which shows you how to solve a common problem:
+S7 has no built-in enum type: a property can require a `class_character`, but nothing stops it holding any string at all. `new_enum_class()` fixes that by minting an S7 class scoped to a fixed set of variants, as described in [Enums in R](https://josiah.rs/posts/enums-in-r/).
 
-```{r example}
+```{r}
 library(s7x)
-## basic example code
+
+GridShape <- new_enum_class("GridShape", c("Square", "Hexagon"))
+
+GridShape("Square")
+try(GridShape("Triangle"))
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+Use `property_enum()` to let another class hold an instance of one or more enum classes:
 
-```{r cars}
-summary(cars)
+```{r}
+Direction <- new_enum_class("Direction", c("North", "South", "East", "West"))
+
+Board <- S7::new_class(
+  "Board",
+  properties = list(orientation = property_enum(GridShape, Direction))
+)
+
+Board(GridShape("Hexagon"))@orientation
+Board(Direction("North"))@orientation
 ```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
