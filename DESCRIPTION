@@ -10,7 +10,7 @@ Description: Provides utilities that extend the 'S7' object system:
     and intersections. These building blocks make it possible to express
     precise, type-safe class properties in 'S7' with less boilerplate.
 License: MIT + file LICENSE
-URL: https://josiahparry.github.io/s7x/, https://github.com/JosiahParry/s7x
+URL: https://s7x.josiah.rs/, https://github.com/JosiahParry/s7x
 BugReports: https://github.com/JosiahParry/s7x/issues
 Imports:
     cli,
