@@ -11,12 +11,12 @@ Source:
 [`DESCRIPTION`](https://github.com/JosiahParry/s7x/blob/main/DESCRIPTION)
 
 Parry J (2026). *s7x: Extensions to the 'S7' Object System*. R package
-version 1.0.0, <https://josiahparry.github.io/s7x/>.
+version 1.0.0, <https://s7x.josiah.rs/>.
 
     @Manual{,
       title = {s7x: Extensions to the 'S7' Object System},
       author = {Josiah Parry},
       year = {2026},
       note = {R package version 1.0.0},
-      url = {https://josiahparry.github.io/s7x/},
+      url = {https://s7x.josiah.rs/},
     }

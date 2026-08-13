@@ -1,8 +1,8 @@
 # Abstract base class for enumerations
 
 A scalar character value drawn from a fixed set of variants. Use
-[`new_enum()`](https://josiahparry.github.io/s7x/reference/new_enum.md)
-to create concrete subclasses.
+[`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) to create
+concrete subclasses.
 
 ## Usage
 

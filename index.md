@@ -1,7 +1,7 @@
 # s7x - S7 extensions
 
-[s7x](https://josiahparry.github.io/s7x/) provides utility extensions to
-the [`{S7}`](https://rconsortium.github.io/S7/) type system.
+[s7x](https://s7x.josiah.rs/) provides utility extensions to the
+[`{S7}`](https://rconsortium.github.io/S7/) type system.
 
 It fills the void of features I’ve long wanted in S7 (and R) to help
 make R packages more type safe(ish) with less boilerplate.
@@ -40,10 +40,8 @@ In R, we use enumerations all the time, though in formally. For example,
 typically strings and validated via `arg.match()` or the equivalent
 [`rlang::arg_match()`](https://rlang.r-lib.org/reference/arg_match.html).
 
-In [s7x](https://josiahparry.github.io/s7x/), enums are formalized
-through the
-[`s7x::Enum`](https://josiahparry.github.io/s7x/reference/Enum.md)
-class.
+In [s7x](https://s7x.josiah.rs/), enums are formalized through the
+[`s7x::Enum`](https://s7x.josiah.rs/reference/Enum.md) class.
 
 ``` r
 
@@ -60,9 +58,8 @@ x
 #>  @ variants: chr [1:3] "pearson" "kendall" "spearman"
 ```
 
-Note that all
-[`s7x::Enum`](https://josiahparry.github.io/s7x/reference/Enum.md)s can
-be cast as character vectors.
+Note that all [`s7x::Enum`](https://s7x.josiah.rs/reference/Enum.md)s
+can be cast as character vectors.
 
 ``` r
 
@@ -87,7 +84,7 @@ S7 has built-in classes for the vector types in R (double, integer,
 character, list) but not for their scalar variants.
 
 `s7x` introduces the
-[`property_scalar()`](https://josiahparry.github.io/s7x/reference/property_scalar.md)
+[`property_scalar()`](https://s7x.josiah.rs/reference/property_scalar.md)
 function which lets you create **scalar** variants.
 
 For example:

@@ -26,7 +26,7 @@ new_enum(name, variants, package = topenv_package_name(parent.frame()))
 ## Value
 
 An S7 class generator that inherits from
-[Enum](https://josiahparry.github.io/s7x/reference/Enum.md).
+[Enum](https://s7x.josiah.rs/reference/Enum.md).
 
 ## Examples
 

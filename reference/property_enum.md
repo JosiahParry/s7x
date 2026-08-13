@@ -13,7 +13,7 @@ property_enum(..., default = NULL)
 - ...:
 
   Enum classes. One or more classes from
-  [`new_enum()`](https://josiahparry.github.io/s7x/reference/new_enum.md).
+  [`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md).
 
 - default:
 

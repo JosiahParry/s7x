@@ -1,7 +1,7 @@
 # Create a property from an intersection of properties
 
 Requires a value to satisfy every member of `...`, unlike
-[`property_union()`](https://josiahparry.github.io/s7x/reference/property_union.md)
+[`property_union()`](https://s7x.josiah.rs/reference/property_union.md)
 which requires at least one. Every member must share the same underlying
 class since a single value can't be an instance of two different classes
 at once.

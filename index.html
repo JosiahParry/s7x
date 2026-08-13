@@ -58,7 +58,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="s7x---s7-extensions">s7x - S7 extensions<a class="anchor" aria-label="anchor" href="#s7x---s7-extensions"></a>
 </h1></div>
-<p><a href="https://josiahparry.github.io/s7x/">s7x</a> provides utility extensions to the <a href="https://rconsortium.github.io/S7/" class="external-link"><code>{S7}</code></a> type system.</p>
+<p><a href="https://s7x.josiah.rs/">s7x</a> provides utility extensions to the <a href="https://rconsortium.github.io/S7/" class="external-link"><code>{S7}</code></a> type system.</p>
 <p>It fills the void of features I’ve long wanted in S7 (and R) to help make R packages more type safe(ish) with less boilerplate.</p>
 <!-- badges: start -->
 <!-- badges: end -->
@@ -85,9 +85,9 @@
 <h2 id="enumerations">Enum(eration)s<a class="anchor" aria-label="anchor" href="#enumerations"></a>
 </h2>
 <p>In R, we use enumerations all the time, though in formally. For example, <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">stats::cor()</a></code>’s argument <code>method = c("pearson", "kendall", "spearman")</code> is an enumeration in that <code>method</code> can be only one of three possible values. In R, enums are typically strings and validated via <code>arg.match()</code> or the equivalent <code><a href="https://rlang.r-lib.org/reference/arg_match.html" class="external-link">rlang::arg_match()</a></code>.</p>
-<p>In <a href="https://josiahparry.github.io/s7x/">s7x</a>, enums are formalized through the <code><a href="reference/Enum.html">s7x::Enum</a></code> class.</p>
+<p>In <a href="https://s7x.josiah.rs/">s7x</a>, enums are formalized through the <code><a href="reference/Enum.html">s7x::Enum</a></code> class.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://josiahparry.github.io/s7x/">s7x</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://s7x.josiah.rs/">s7x</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create a new enum</span></span>
 <span><span class="va">CorMethod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_enum.html">new_enum</a></span><span class="op">(</span><span class="st">"CorMethod"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pearson"</span>, <span class="st">"kendall"</span>, <span class="st">"spearman"</span><span class="op">)</span><span class="op">)</span></span>
