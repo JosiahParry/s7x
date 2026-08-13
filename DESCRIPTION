@@ -10,13 +10,16 @@ Description: Provides utilities that extend the 'S7' object system:
     and intersections. These building blocks make it possible to express
     precise, type-safe class properties in 'S7' with less boilerplate.
 License: MIT + file LICENSE
-URL: https://josiahparry.github.io/s7x/
+URL: https://josiahparry.github.io/s7x/, https://github.com/JosiahParry/s7x
+BugReports: https://github.com/JosiahParry/s7x/issues
 Imports:
     cli,
     rlang,
     S7 (>= 0.2.2.9000)
 Suggests:
     testthat (>= 3.0.0)
+Remotes:
+    RConsortium/S7
 Config/roxygen2/version: 8.1.0
 Config/testthat/edition: 3
 Encoding: UTF-8

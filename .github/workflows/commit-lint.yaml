@@ -1,0 +1,13 @@
+on:
+  pull_request:
+
+name: commit-lint.yaml
+
+permissions: read-all
+
+jobs:
+  commit-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Conventional Commit Lint
+        uses: ahmadnassri/action-commit-lint@v2.1.17

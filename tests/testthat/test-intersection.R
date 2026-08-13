@@ -30,7 +30,10 @@ test_that("property_intersection reproduces an enum via composition", {
       }
     )
   )
-  Board <- S7::new_class("Board", properties = list(orientation = GridShapeProp))
+  Board <- S7::new_class(
+    "Board",
+    properties = list(orientation = GridShapeProp)
+  )
 
   expect_equal(Board("Square")@orientation, "Square")
   expect_error(Board("Triangle"), "variants")

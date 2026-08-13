@@ -1,4 +1,10 @@
 url: https://josiahparry.github.io/s7x/
+repo:
+  url:
+    home: https://github.com/JosiahParry/s7x
+    source: https://github.com/JosiahParry/s7x/blob/main/
+    issue: https://github.com/JosiahParry/s7x/issues/
+    user: https://github.com/
 template:
   bootstrap: 5
   light-switch: true
