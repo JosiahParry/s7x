@@ -1,0 +1,157 @@
+# s7x - S7 extensions
+
+[s7x](https://josiahparry.github.io/s7x/) provides utility extensions to
+the [`{S7}`](https://rconsortium.github.io/S7/) type system.
+
+It fills the void of features I’ve long wanted in S7 (and R) to help
+make R packages more type safe(ish) with less boilerplate.
+
+Notably s7x provides:
+
+- an extensible `Enum` class for speficying enumerations
+- scalar properties
+- range propeties (discrete and continuous)
+- property unions and intersections
+
+See [Enums in R: towards type safe
+R](https://josiah.rs/posts/enums-in-r/) for the motivation behind this
+package.
+
+## Installation
+
+You can install the development version of s7x like so:
+
+``` r
+
+pak::pak("josiahparry/s7x")
+```
+
+> \[!NOTE\]
+>
+> `s7x` is built on the development version of `S7`. Install it with
+> `pak::pak("RConsortium/S7")`.
+
+## Enum(eration)s
+
+In R, we use enumerations all the time, though in formally. For example,
+[`stats::cor()`](https://rdrr.io/r/stats/cor.html)’s argument
+`method = c("pearson", "kendall", "spearman")` is an enumeration in that
+`method` can be only one of three possible values. In R, enums are
+typically strings and validated via `arg.match()` or the equivalent
+[`rlang::arg_match()`](https://rlang.r-lib.org/reference/arg_match.html).
+
+In [s7x](https://josiahparry.github.io/s7x/), enums are formalized
+through the
+[`s7x::Enum`](https://josiahparry.github.io/s7x/reference/Enum.md)
+class.
+
+``` r
+
+library(s7x)
+
+# create a new enum
+CorMethod <- new_enum("CorMethod", c("pearson", "kendall", "spearman"))
+
+# instantiate the enum
+x <- CorMethod("pearson")
+x
+#> <CorMethod>
+#>  @ value   : chr "pearson"
+#>  @ variants: chr [1:3] "pearson" "kendall" "spearman"
+```
+
+Note that all
+[`s7x::Enum`](https://josiahparry.github.io/s7x/reference/Enum.md)s can
+be cast as character vectors.
+
+``` r
+
+as.character(x)
+#> [1] "pearson"
+```
+
+Thus, we can use the `Enum` to enforce variants, but when we need the
+underlying value we can
+[`as.character()`](https://rdrr.io/r/base/character.html) or extract
+it’s value via `x@value`.
+
+## Scalar properties
+
+A longtime [wish list
+item](https://github.com/RConsortium/S7/issues/554) of mine is
+**scalar** properties. A scalar in R is a **length one** vector. These
+are useful for arguments such as `n_components = 5`—where it wouldn’t
+make sense for the value to be `c(5, 1)`, for example.
+
+S7 has built-in classes for the vector types in R (double, integer,
+character, list) but not for their scalar variants.
+
+`s7x` introduces the
+[`property_scalar()`](https://josiahparry.github.io/s7x/reference/property_scalar.md)
+function which lets you create **scalar** variants.
+
+For example:
+
+``` r
+
+library(S7)
+NComponents := new_class(properties = list(n = property_scalar(class_integer)))
+
+n_comps <- NComponents(5L)
+n_comps
+#> <NComponents>
+#>  @ n: int 5
+```
+
+Providing a non-length 1 value creates an error:
+
+``` r
+
+NComponents(c(5L, 1L))
+#> Error in `NComponents()`:
+#> ! <NComponents> object properties are invalid:
+#> - @n must be a scalar atomic
+```
+
+# Package index
+
+## Enumerations
+
+A scalar value drawn from a fixed set of variants.
+
+- [`Enum()`](https://josiahparry.github.io/s7x/reference/Enum.md) :
+  Abstract base class for enumerations
+- [`new_enum()`](https://josiahparry.github.io/s7x/reference/new_enum.md)
+  : Create a new enum class
+- [`property_enum()`](https://josiahparry.github.io/s7x/reference/property_enum.md)
+  : Define a property backed by one or more enum classes
+
+## Scalar properties
+
+Properties constrained to a single atomic value.
+
+- [`property_scalar()`](https://josiahparry.github.io/s7x/reference/property_scalar.md)
+  [`class_string`](https://josiahparry.github.io/s7x/reference/property_scalar.md)
+  [`class_integer`](https://josiahparry.github.io/s7x/reference/property_scalar.md)
+  [`class_double`](https://josiahparry.github.io/s7x/reference/property_scalar.md)
+  : Define a scalar property
+
+## Range properties
+
+Scalar properties bound to an inclusive numeric range.
+
+- [`property_range()`](https://josiahparry.github.io/s7x/reference/property_range.md)
+  [`property_range_discrete()`](https://josiahparry.github.io/s7x/reference/property_range.md)
+  : Define a range-bound scalar property
+
+## Combinators
+
+Combine classes and properties with OR/AND semantics.
+
+- [`property_union()`](https://josiahparry.github.io/s7x/reference/property_union.md)
+  [`` `|`( ``*`<S7_property>`*`)`](https://josiahparry.github.io/s7x/reference/property_union.md)
+  : Create Property from a Union of Properties
+- [`property_intersection()`](https://josiahparry.github.io/s7x/reference/property_intersection.md)
+  [`` `&`( ``*`<S7_property>`*`)`](https://josiahparry.github.io/s7x/reference/property_intersection.md)
+  : Create a property from an intersection of properties
+
