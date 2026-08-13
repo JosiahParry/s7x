@@ -4,9 +4,9 @@
 \alias{Enum}
 \title{Abstract base class for enumerations}
 \usage{
-Enum(Value = character(0), Variants = character(0))
+Enum(value = character(0), variants = character(0))
 }
 \description{
 A scalar character value drawn from a fixed set of variants. Use
-\code{\link[=new_enum_class]{new_enum_class()}} to create concrete subclasses.
+\code{\link[=new_enum]{new_enum()}} to create concrete subclasses.
 }

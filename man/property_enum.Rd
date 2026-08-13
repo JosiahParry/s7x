@@ -7,7 +7,7 @@
 property_enum(..., default = NULL)
 }
 \arguments{
-\item{...}{Enum classes. One or more classes from \code{\link[=new_enum_class]{new_enum_class()}}.}
+\item{...}{Enum classes. One or more classes from \code{\link[=new_enum]{new_enum()}}.}
 
 \item{default}{Any. Passed to \code{\link[S7:new_property]{S7::new_property()}}.}
 }

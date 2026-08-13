@@ -1,26 +1,31 @@
 #' Abstract base class for enumerations
 #'
 #' A scalar character value drawn from a fixed set of variants. Use
-#' [new_enum_class()] to create concrete subclasses.
+#' [new_enum()] to create concrete subclasses.
 #'
 #' @include scalar.R utils.R union.R
 #' @export
 Enum <- S7::new_class(
   "Enum",
   properties = list(
-    Value = class_string,
-    Variants = S7::class_character
+    value = class_string,
+    variants = S7::class_character
   ),
   validator = function(self) {
-    if (!(self@Value %in% self@Variants)) {
-      "@Value must be one of @Variants"
+    if (!(self@value %in% self@variants)) {
+      "@value must be one of @variants"
     }
   },
   abstract = TRUE
 )
 
 method(convert, list(Enum, class_character)) <- function(from, to, ...) {
-  from@Value
+  from@value
+}
+
+#' @rawNamespace S3method(as.character, "s7x::Enum", enum_as_character)
+enum_as_character <- function(x, ...) {
+  x@value
 }
 
 #' Create a new enum class
@@ -31,7 +36,7 @@ method(convert, list(Enum, class_character)) <- function(from, to, ...) {
 #'   Defaults to the caller's package, if any.
 #' @return An S7 class generator that inherits from [Enum].
 #' @export
-new_enum_class <- function(
+new_enum <- function(
   name,
   variants,
   package = topenv_package_name(parent.frame())
@@ -51,11 +56,14 @@ new_enum_class <- function(
     parent = Enum,
     package = package,
     properties = list(
-      Value = class_string,
-      Variants = S7::new_property(S7::class_character, default = variants)
+      value = class_string,
+      variants = S7::new_property(
+        S7::class_character,
+        default = quote(variants)
+      )
     ),
-    constructor = function(Value) {
-      S7::new_object(S7::S7_object(), Value = Value, Variants = variants)
+    constructor = function(value) {
+      S7::new_object(S7::S7_object(), value = value, variants = variants)
     }
   )
 
@@ -72,7 +80,7 @@ new_enum_class <- function(
 
 #' Define a property backed by one or more enum classes
 #'
-#' @param ... Enum classes. One or more classes from [new_enum_class()].
+#' @param ... Enum classes. One or more classes from [new_enum()].
 #' @param default Any. Passed to [S7::new_property()].
 #' @return An S7 property typed as the union of `...`.
 #' @export
@@ -89,7 +97,7 @@ property_enum <- function(..., default = NULL) {
   )
   if (!all(is_enum)) {
     cli::cli_abort(
-      "Every class in {.arg ...} must be created by {.fn new_enum_class}."
+      "Every class in {.arg ...} must be created by {.fn new_enum}."
     )
   }
 

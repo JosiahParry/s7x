@@ -15,10 +15,21 @@ knitr::opts_chunk$set(
 
 # s7x - S7 extensions
 
-[`{S7}`](https://rconsortium.github.io/S7/) utility extensions for scalar and enum-like properties.
+`{s7x}` provides utility extensions to the [`{S7}`](https://rconsortium.github.io/S7/) type system.
+
+It fills the void of features I've long wanted in S7 (and R) to help make R packages more type safe(ish) with less boilerplate.
 
 <!-- badges: start -->
 <!-- badges: end -->
+
+Notably s7x provides:
+
+- an extensible `Enum` class for speficying enumerations
+- scalar properties
+- range propeties (discrete and continuous)
+- property unions and intersections
+
+See [Enums in R: towards type safe R](https://josiah.rs/posts/enums-in-r/) for the motivation behind this package.
 
 ## Installation
 
@@ -28,29 +39,57 @@ You can install the development version of s7x like so:
 pak::pak("josiahparry/s7x")
 ```
 
-## Enums
+:::{.callout-note}
+`s7x` is built on the development version of `S7`. Install it with `pak::pak("RConsortium/S7")`.
+:::
 
-S7 has no built-in enum type: a property can require a `class_character`, but nothing stops it holding any string at all. `new_enum_class()` fixes that by minting an S7 class scoped to a fixed set of variants, as described in [Enums in R](https://josiah.rs/posts/enums-in-r/).
+## Enum(eration)s
+
+In R, we use enumerations all the time, though in formally. For example, `stats::cor()`'s argument `method = c("pearson", "kendall", "spearman")` is an enumeration in that `method` can be only one of three possible values. In R, enums are typically strings and validated via `arg.match()` or the equivalent `rlang::arg_match()`.
+
+In `{s7x}`, enums are formalized through the `s7x::Enum` class.
+
 
 ```{r}
 library(s7x)
 
-GridShape <- new_enum_class("GridShape", c("Square", "Hexagon"))
+# create a new enum
+CorMethod <- new_enum("CorMethod", c("pearson", "kendall", "spearman"))
 
-GridShape("Square")
-try(GridShape("Triangle"))
+# instantiate the enum
+x <- CorMethod("pearson")
+x
 ```
 
-Use `property_enum()` to let another class hold an instance of one or more enum classes:
+Note that all `s7x::Enum`s can be cast as character vectors.
 
 ```{r}
-Direction <- new_enum_class("Direction", c("North", "South", "East", "West"))
+as.character(x)
+```
 
-Board <- S7::new_class(
-  "Board",
-  properties = list(orientation = property_enum(GridShape, Direction))
-)
+Thus, we can use the `Enum` to enforce variants, but when we need the underlying value we can `as.character()` or extract it's value via `x@value`.
 
-Board(GridShape("Hexagon"))@orientation
-Board(Direction("North"))@orientation
+## Scalar properties
+
+A longtime [wish list item](https://github.com/RConsortium/S7/issues/554) of mine is **scalar** properties.
+A scalar in R is a **length one** vector. These are useful for arguments such as `n_components = 5`—where it wouldn't make sense for the value to be `c(5, 1)`, for example.
+
+S7 has built-in classes for the vector types in R (double, integer, character, list) but not for their scalar variants.
+
+`s7x` introduces the `property_scalar()` function which lets you create **scalar** variants.
+
+For example:
+
+```{r, message=FALSE}
+library(S7)
+NComponents := new_class(properties = list(n = property_scalar(class_integer)))
+
+n_comps <- NComponents(5L)
+n_comps
+```
+
+Providing a non-length 1 value creates an error:
+
+```{r, error = TRUE}
+NComponents(c(5L, 1L))
 ```

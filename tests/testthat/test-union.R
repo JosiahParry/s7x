@@ -1,7 +1,9 @@
 test_that("property_union unions plain S7 classes", {
   Foo <- S7::new_class(
     "Foo",
-    properties = list(x = property_union(S7::class_character, S7::class_integer))
+    properties = list(
+      x = property_union(S7::class_character, S7::class_integer)
+    )
   )
 
   expect_equal(Foo("a")@x, "a")
@@ -12,7 +14,9 @@ test_that("property_union unions plain S7 classes", {
 test_that("property_union applies a member property's own validator", {
   Foo <- S7::new_class(
     "Foo",
-    properties = list(x = property_union(property_range_discrete(1L, 6L), class_string))
+    properties = list(
+      x = property_union(property_range_discrete(1L, 6L), class_string)
+    )
   )
 
   expect_equal(Foo(3L)@x, 3L)
@@ -34,7 +38,9 @@ test_that("|.S7_property matches property_union", {
 test_that("property_union passes default through", {
   Foo <- S7::new_class(
     "Foo",
-    properties = list(x = property_union(S7::class_character, S7::class_integer, default = "a"))
+    properties = list(
+      x = property_union(S7::class_character, S7::class_integer, default = "a")
+    )
   )
 
   expect_equal(Foo()@x, "a")

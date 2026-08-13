@@ -27,10 +27,10 @@ property_union <- function(..., default = NULL) {
             return(NA)
           }
           validator <- member_validator(members[[i]])
-          if (is_null(validator)) {
+          if (rlang::is_null(validator)) {
             TRUE
           } else {
-            is_null(validator(value))
+            rlang::is_null(validator(value))
           }
         },
         logical(1)
@@ -50,15 +50,15 @@ property_union <- function(..., default = NULL) {
 # structural shape instead: a function is an S7 class, a list with
 # `$classes` is a union, a list with `$class` is a base type.
 class_matches <- function(value, class) {
-  if (is_function(class)) {
+  if (rlang::is_function(class)) {
     return(S7::S7_inherits(value, class))
   }
 
-  if (is_list(class) && !is_null(class$classes)) {
+  if (rlang::is_list(class) && !rlang::is_null(class$classes)) {
     return(any(vapply(class$classes, class_matches, logical(1), value = value)))
   }
 
-  if (is.list(class) && !is.null(class$class)) {
+  if (rlang::is_list(class) && !rlang::is_null(class$class)) {
     return(identical(typeof(value), class$class))
   }
 
@@ -70,4 +70,62 @@ class_matches <- function(value, class) {
 #' @export
 `|.S7_property` <- function(e1, e2) {
   property_union(e1, e2)
+}
+
+#' Create a property from an intersection of properties
+#'
+#' Requires a value to satisfy every member of `...`, unlike
+#' [property_union()] which requires at least one. Every member must share
+#' the same underlying class since a single value can't be an instance of
+#' two different classes at once.
+#'
+#' @param ... S7 classes or properties to intersect.
+#' @param default Any. Passed to [S7::new_property()].
+#' @return An S7 property whose value must satisfy every member of `...`.
+#' @export
+property_intersection <- function(..., default = NULL) {
+  members <- rlang::list2(...)
+  if (length(members) == 0L) {
+    cli::cli_abort("{.arg ...} must contain at least one class or property.")
+  }
+
+  classes <- lapply(
+    members,
+    function(m) if (inherits(m, "S7_property")) m$class else m
+  )
+  same_class <- vapply(classes, identical, logical(1), classes[[1]])
+  if (!all(same_class)) {
+    cli::cli_abort(
+      "Every member of {.arg ...} must share the same underlying class."
+    )
+  }
+
+  validators <- Filter(
+    Negate(rlang::is_null),
+    lapply(
+      members,
+      function(m) if (inherits(m, "S7_property")) m$validator else NULL
+    )
+  )
+
+  S7::new_property(
+    classes[[1]],
+    validator = function(value) {
+      for (validator_fn in validators) {
+        message <- validator_fn(value)
+        if (!rlang::is_null(message)) {
+          return(message)
+        }
+      }
+      NULL
+    },
+    default = default
+  )
+}
+
+#' @rdname property_intersection
+#' @param e1,e2 S7 classes or properties to intersect.
+#' @export
+`&.S7_property` <- function(e1, e2) {
+  property_intersection(e1, e2)
 }
