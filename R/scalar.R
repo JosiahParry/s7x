@@ -3,6 +3,10 @@
 #' @param class S7 class spec. Base type the value must be an instance of.
 #' @param default Any. Passed to [S7::new_property()].
 #' @return An S7 property whose value must be a scalar atomic.
+#' @examples
+#' library(S7)
+#' Point := new_class(properties = list(x = property_scalar(S7::class_double)))
+#' Point(1.5)
 #' @export
 property_scalar <- function(class, default = NULL) {
   S7::new_property(
@@ -22,15 +26,25 @@ property_scalar <- function(class, default = NULL) {
 #' types.
 #'
 #' @format NULL
-#' @rdname scalar-classes
+#' @rdname property_scalar
+#' @examples
+#' library(S7)
+#' Board := new_class(
+#'   properties = list(
+#'     label = class_string,
+#'     rank = class_integer,
+#'     score = class_double
+#'   )
+#' )
+#' Board("check", 1L, 0.5)
 #' @export
 class_string <- property_scalar(S7::class_character)
 
-#' @rdname scalar-classes
+#' @rdname property_scalar
 #' @export
 class_integer <- property_scalar(S7::class_integer)
 
-#' @rdname scalar-classes
+#' @rdname property_scalar
 #' @export
 class_double <- property_scalar(S7::class_double)
 
@@ -64,6 +78,11 @@ new_range_property <- function(class, min, max, allow_na) {
 #' @param max Number. Inclusive upper bound.
 #' @param allow_na Bool. Whether `NA` is a valid value.
 #' @return An S7 property whose value must be a scalar within `[min, max]`.
+#' @examples
+#' library(S7)
+#' HeadingLevel <- property_range_discrete(1L, 6L)
+#' Heading := new_class(properties = list(level = HeadingLevel))
+#' Heading(1L)
 #' @export
 property_range <- function(min, max, allow_na = TRUE) {
   check_number_decimal(min)

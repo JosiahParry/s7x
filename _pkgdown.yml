@@ -1,0 +1,39 @@
+url: https://josiahparry.github.io/s7x/
+template:
+  bootstrap: 5
+  light-switch: true
+  bslib:
+    primary: "#974ba8"
+    bg: "#ffffff"
+    fg: "#1f131a"
+    navbar-light-bg: "#f8f4f6"
+    navbar-dark-bg: "#0e080d"
+    enable-rounded: false
+
+reference:
+  - title: Enumerations
+    desc: A scalar value drawn from a fixed set of variants.
+    contents:
+      - Enum
+      - new_enum
+      - property_enum
+
+  - title: Scalar properties
+    desc: Properties constrained to a single atomic value.
+    contents:
+      - property_scalar
+      - class_string
+      - class_integer
+      - class_double
+
+  - title: Range properties
+    desc: Scalar properties bound to an inclusive numeric range.
+    contents:
+      - property_range
+      - property_range_discrete
+
+  - title: Combinators
+    desc: Combine classes and properties with OR/AND semantics.
+    contents:
+      - property_union
+      - property_intersection

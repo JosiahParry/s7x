@@ -25,3 +25,24 @@ Requires a value to satisfy every member of \code{...}, unlike
 the same underlying class since a single value can't be an instance of
 two different classes at once.
 }
+\examples{
+library(S7)
+PieceColor <- property_intersection(
+  property_scalar(S7::class_character),
+  S7::new_property(
+    S7::class_character,
+    validator = function(value) {
+      if (!(value \%in\% c("White", "Black"))) "must be White or Black"
+    }
+  )
+)
+Piece := new_class(properties = list(color = PieceColor))
+Piece("White")
+library(S7)
+Piece := new_class(
+  properties = list(
+    id = property_scalar(S7::class_character) & S7::new_property(S7::class_character)
+  )
+)
+Piece("a")
+}

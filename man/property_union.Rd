@@ -23,3 +23,16 @@ An S7 property typed as the union of \code{...}.
 An analogue to \code{\link[S7:new_union]{S7::new_union()}}. Defines a new property
 from multiple
 }
+\examples{
+library(S7)
+Piece := new_class(
+  properties = list(id = property_union(S7::class_character, S7::class_integer))
+)
+Piece("a")
+Piece(1L)
+library(S7)
+Piece := new_class(
+  properties = list(id = class_string | property_range_discrete(1L, 6L))
+)
+Piece(3L)
+}

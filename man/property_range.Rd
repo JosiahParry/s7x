@@ -24,3 +24,9 @@ A scalar property constrained to \verb{[min, max]} inclusive.
 \code{property_range()} is for doubles, \code{property_range_discrete()} for
 integers.
 }
+\examples{
+library(S7)
+HeadingLevel <- property_range_discrete(1L, 6L)
+Heading := new_class(properties = list(level = HeadingLevel))
+Heading(1L)
+}

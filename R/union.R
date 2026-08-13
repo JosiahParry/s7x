@@ -6,6 +6,13 @@
 #' @param ... S7 classes or properties to union.
 #' @param default Any. Passed to [S7::new_property()].
 #' @return An S7 property typed as the union of `...`.
+#' @examples
+#' library(S7)
+#' Piece := new_class(
+#'   properties = list(id = property_union(S7::class_character, S7::class_integer))
+#' )
+#' Piece("a")
+#' Piece(1L)
 #' @export
 property_union <- function(..., default = NULL) {
   members <- rlang::list2(...)
@@ -67,6 +74,12 @@ class_matches <- function(value, class) {
 
 #' @rdname property_union
 #' @param e1,e2 S7 classes or properties to union.
+#' @examples
+#' library(S7)
+#' Piece := new_class(
+#'   properties = list(id = class_string | property_range_discrete(1L, 6L))
+#' )
+#' Piece(3L)
 #' @export
 `|.S7_property` <- function(e1, e2) {
   property_union(e1, e2)
@@ -82,6 +95,19 @@ class_matches <- function(value, class) {
 #' @param ... S7 classes or properties to intersect.
 #' @param default Any. Passed to [S7::new_property()].
 #' @return An S7 property whose value must satisfy every member of `...`.
+#' @examples
+#' library(S7)
+#' PieceColor <- property_intersection(
+#'   property_scalar(S7::class_character),
+#'   S7::new_property(
+#'     S7::class_character,
+#'     validator = function(value) {
+#'       if (!(value %in% c("White", "Black"))) "must be White or Black"
+#'     }
+#'   )
+#' )
+#' Piece := new_class(properties = list(color = PieceColor))
+#' Piece("White")
 #' @export
 property_intersection <- function(..., default = NULL) {
   members <- rlang::list2(...)
@@ -125,6 +151,14 @@ property_intersection <- function(..., default = NULL) {
 
 #' @rdname property_intersection
 #' @param e1,e2 S7 classes or properties to intersect.
+#' @examples
+#' library(S7)
+#' Piece := new_class(
+#'   properties = list(
+#'     id = property_scalar(S7::class_character) & S7::new_property(S7::class_character)
+#'   )
+#' )
+#' Piece("a")
 #' @export
 `&.S7_property` <- function(e1, e2) {
   property_intersection(e1, e2)

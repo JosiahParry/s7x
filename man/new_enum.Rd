@@ -20,3 +20,7 @@ An S7 class generator that inherits from \link{Enum}.
 \description{
 Create a new enum class
 }
+\examples{
+GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
+GridShape("Square")
+}

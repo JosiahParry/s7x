@@ -17,3 +17,12 @@ An S7 property typed as the union of \code{...}.
 \description{
 Define a property backed by one or more enum classes
 }
+\examples{
+library(S7)
+GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
+Direction <- new_enum("Direction", c("North", "South"))
+Board := new_class(
+  properties = list(orientation = property_enum(GridShape, Direction))
+)
+Board(GridShape("Square"))
+}

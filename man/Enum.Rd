@@ -10,3 +10,7 @@ Enum(value = character(0), variants = character(0))
 A scalar character value drawn from a fixed set of variants. Use
 \code{\link[=new_enum]{new_enum()}} to create concrete subclasses.
 }
+\examples{
+GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
+S7::S7_inherits(GridShape("Square"), Enum)
+}

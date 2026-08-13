@@ -2,9 +2,18 @@
 % Please edit documentation in R/scalar.R
 \name{property_scalar}
 \alias{property_scalar}
+\alias{class_string}
+\alias{class_integer}
+\alias{class_double}
 \title{Define a scalar property}
 \usage{
 property_scalar(class, default = NULL)
+
+class_string
+
+class_integer
+
+class_double
 }
 \arguments{
 \item{class}{S7 class spec. Base type the value must be an instance of.}
@@ -15,5 +24,20 @@ property_scalar(class, default = NULL)
 An S7 property whose value must be a scalar atomic.
 }
 \description{
-Define a scalar property
+Ready-to-use \code{\link[=property_scalar]{property_scalar()}} variants for the common atomic base
+types.
+}
+\examples{
+library(S7)
+Point := new_class(properties = list(x = property_scalar(S7::class_double)))
+Point(1.5)
+library(S7)
+Board := new_class(
+  properties = list(
+    label = class_string,
+    rank = class_integer,
+    score = class_double
+  )
+)
+Board("check", 1L, 0.5)
 }

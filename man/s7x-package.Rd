@@ -4,16 +4,23 @@
 \name{s7x-package}
 \alias{s7x}
 \alias{s7x-package}
-\title{s7x: What the Package Does (One Line, Title Case)}
+\title{s7x: Extensions to the 'S7' Object System}
 \description{
-What the package does (one paragraph).
+Provides utilities that extend the 'S7' object system: enumerated types with a fixed set of variants, scalar-constrained properties, range-bound numeric properties, and property-level unions and intersections. These building blocks make it possible to express precise, type-safe class properties in 'S7' with less boilerplate.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://josiahparry.github.io/s7x/}
+}
+
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com}
+\strong{Maintainer}: Josiah Parry \email{josiah.parry@gmail.com} (\href{https://orcid.org/0000-0001-9910-865X}{ORCID})
 
 Authors:
 \itemize{
-  \item First Last \email{first.last@example.com}
+  \item Josiah Parry \email{josiah.parry@gmail.com} (\href{https://orcid.org/0000-0001-9910-865X}{ORCID})
 }
 
 }

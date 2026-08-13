@@ -4,6 +4,9 @@
 #' [new_enum()] to create concrete subclasses.
 #'
 #' @include scalar.R utils.R union.R
+#' @examples
+#' GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
+#' S7::S7_inherits(GridShape("Square"), Enum)
 #' @export
 Enum <- S7::new_class(
   "Enum",
@@ -35,6 +38,9 @@ enum_as_character <- function(x, ...) {
 #' @param package String or NULL. Package to attribute the class to.
 #'   Defaults to the caller's package, if any.
 #' @return An S7 class generator that inherits from [Enum].
+#' @examples
+#' GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
+#' GridShape("Square")
 #' @export
 new_enum <- function(
   name,
@@ -83,6 +89,14 @@ new_enum <- function(
 #' @param ... Enum classes. One or more classes from [new_enum()].
 #' @param default Any. Passed to [S7::new_property()].
 #' @return An S7 property typed as the union of `...`.
+#' @examples
+#' library(S7)
+#' GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
+#' Direction <- new_enum("Direction", c("North", "South"))
+#' Board := new_class(
+#'   properties = list(orientation = property_enum(GridShape, Direction))
+#' )
+#' Board(GridShape("Square"))
 #' @export
 property_enum <- function(..., default = NULL) {
   classes <- list(...)
