@@ -4,7 +4,7 @@
 \alias{Enum}
 \title{Abstract base class for enumerations}
 \usage{
-Enum(value = character(0), variants = character(0))
+Enum(value = character(0), variants = character(0), allow_na = logical(0))
 }
 \description{
 A scalar character value drawn from a fixed set of variants. Use

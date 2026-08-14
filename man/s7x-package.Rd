@@ -11,7 +11,9 @@ Provides utilities that extend the 'S7' object system: enumerated types with a f
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://josiahparry.github.io/s7x/}
+  \item \url{https://s7x.josiah.rs/}
+  \item \url{https://github.com/JosiahParry/s7x}
+  \item Report bugs at \url{https://github.com/JosiahParry/s7x/issues}
 }
 
 }

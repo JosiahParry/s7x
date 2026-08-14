@@ -4,7 +4,12 @@
 \alias{new_enum}
 \title{Create a new enum class}
 \usage{
-new_enum(name, variants, package = topenv_package_name(parent.frame()))
+new_enum(
+  name,
+  variants,
+  package = topenv_package_name(parent.frame()),
+  allow_na = TRUE
+)
 }
 \arguments{
 \item{name}{String. Name of the new class.}
@@ -13,6 +18,8 @@ new_enum(name, variants, package = topenv_package_name(parent.frame()))
 
 \item{package}{String or NULL. Package to attribute the class to.
 Defaults to the caller's package, if any.}
+
+\item{allow_na}{Bool. Whether \code{NA_character_} is a valid value.}
 }
 \value{
 An S7 class generator that inherits from \link{Enum}.
@@ -23,4 +30,5 @@ Create a new enum class
 \examples{
 GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
 GridShape("Square")
+GridShape(NA_character_)
 }

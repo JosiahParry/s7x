@@ -5,6 +5,7 @@
 \alias{class_string}
 \alias{class_integer}
 \alias{class_double}
+\alias{class_boolean}
 \title{Define a scalar property}
 \usage{
 property_scalar(class, default = NULL)
@@ -14,6 +15,8 @@ class_string
 class_integer
 
 class_double
+
+class_boolean
 }
 \arguments{
 \item{class}{S7 class spec. Base type the value must be an instance of.}

@@ -48,6 +48,10 @@ class_integer <- property_scalar(S7::class_integer)
 #' @export
 class_double <- property_scalar(S7::class_double)
 
+#' @rdname property_scalar
+#' @export
+class_boolean <- property_scalar(S7::class_logical)
+
 new_range_property <- function(class, min, max, allow_na) {
   if (min > max) {
     cli::cli_abort("{.arg min} must be less than or equal to {.arg max}.")

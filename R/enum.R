@@ -12,10 +12,13 @@ Enum <- S7::new_class(
   "Enum",
   properties = list(
     value = class_string,
-    variants = S7::class_character
+    variants = S7::class_character,
+    allow_na = class_boolean
   ),
   validator = function(self) {
-    if (!(self@value %in% self@variants)) {
+    if (is.na(self@value)) {
+      if (!self@allow_na) "@value must not be NA"
+    } else if (!(self@value %in% self@variants)) {
       "@value must be one of @variants"
     }
   },
@@ -37,18 +40,22 @@ enum_as_character <- function(x, ...) {
 #' @param variants Character vector. Allowed values.
 #' @param package String or NULL. Package to attribute the class to.
 #'   Defaults to the caller's package, if any.
+#' @param allow_na Bool. Whether `NA_character_` is a valid value.
 #' @return An S7 class generator that inherits from [Enum].
 #' @examples
 #' GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
 #' GridShape("Square")
+#' GridShape(NA_character_)
 #' @export
 new_enum <- function(
   name,
   variants,
-  package = topenv_package_name(parent.frame())
+  package = topenv_package_name(parent.frame()),
+  allow_na = TRUE
 ) {
   check_string(name, allow_empty = FALSE)
   check_character(variants)
+  check_bool(allow_na)
 
   if (length(variants) == 0L) {
     cli::cli_abort("{.arg variants} must contain at least one value.")
@@ -66,10 +73,19 @@ new_enum <- function(
       variants = S7::new_property(
         S7::class_character,
         default = quote(variants)
+      ),
+      allow_na = property_scalar(
+        S7::class_logical,
+        default = quote(allow_na)
       )
     ),
     constructor = function(value) {
-      S7::new_object(S7::S7_object(), value = value, variants = variants)
+      S7::new_object(
+        S7::S7_object(),
+        value = value,
+        variants = variants,
+        allow_na = allow_na
+      )
     }
   )
 
