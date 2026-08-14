@@ -10,6 +10,20 @@ concrete subclasses.
 Enum(value = character(0), variants = character(0), allow_na = logical(0))
 ```
 
+## Arguments
+
+- value:
+
+  String. The enum's current value.
+
+- variants:
+
+  Character vector. Allowed values.
+
+- allow_na:
+
+  Bool. Whether `NA_character_` is a valid value.
+
 ## Examples
 
 ``` r

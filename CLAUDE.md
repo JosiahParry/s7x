@@ -52,6 +52,29 @@ with `call = error_call` (or `call = rlang::caller_env()`). Use cli
 inline markup: `{.arg x}`, `{.cls ClassName}`, `{.fn function_name}`,
 `{.val value}`, `{.code expr}`.
 
+**S7 validator messages** (the string returned from a class
+`validator = function(self) {...}`) don’t go through `cli_abort()` since
+S7 pastes them as bullets verbatim. Build them with
+[`cli::format_inline()`](https://cli.r-lib.org/reference/format_inline.html)
+instead of
+[`sprintf()`](https://rdrr.io/r/base/sprintf.html)/[`paste()`](https://rdrr.io/r/base/paste.html),
+using the same inline markup, e.g.:
+
+``` r
+
+cli::format_inline("@value must be one of {.val {self@variants}}")
+```
+
+### Base R vs rlang
+
+Prefer the rlang equivalent of a base R function when one exists. In
+particular, use
+[`rlang::expr()`](https://rlang.r-lib.org/reference/expr.html) instead
+of [`quote()`](https://rdrr.io/r/base/substitute.html) for capturing
+unevaluated expressions
+(e.g. [`S7::new_property()`](https://rconsortium.github.io/S7/reference/new_property.html)
+promise defaults).
+
 ### Changelog
 
 **Always update `NEWS.md`** with a bullet describing what changed.

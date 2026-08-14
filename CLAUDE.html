@@ -75,6 +75,13 @@
 <div class="section level3">
 <h3 id="error-messages">Error messages<a class="anchor" aria-label="anchor" href="#error-messages"></a></h3>
 <p>Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code> with <code>call = error_call</code> (or <code>call = rlang::caller_env()</code>). Use cli inline markup: <code>{.arg x}</code>, <code>{.cls ClassName}</code>, <code>{.fn function_name}</code>, <code>{.val value}</code>, <code>{.code expr}</code>.</p>
+<p><strong>S7 validator messages</strong> (the string returned from a class <code>validator = function(self) {...}</code>) don’t go through <code>cli_abort()</code> since S7 pastes them as bullets verbatim. Build them with <code><a href="https://cli.r-lib.org/reference/format_inline.html" class="external-link">cli::format_inline()</a></code> instead of <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>/<code><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste()</a></code>, using the same inline markup, e.g.:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/format_inline.html" class="external-link">format_inline</a></span><span class="op">(</span><span class="st">"@value must be one of {.val {self@variants}}"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="base-r-vs-rlang">Base R vs rlang<a class="anchor" aria-label="anchor" href="#base-r-vs-rlang"></a></h3>
+<p>Prefer the rlang equivalent of a base R function when one exists. In particular, use <code><a href="https://rlang.r-lib.org/reference/expr.html" class="external-link">rlang::expr()</a></code> instead of <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote()</a></code> for capturing unevaluated expressions (e.g. <code><a href="https://rconsortium.github.io/S7/reference/new_property.html" class="external-link">S7::new_property()</a></code> promise defaults).</p>
 </div>
 <div class="section level3">
 <h3 id="changelog">Changelog<a class="anchor" aria-label="anchor" href="#changelog"></a></h3>
