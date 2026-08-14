@@ -63,10 +63,13 @@ from multiple</p>
 
 
 <dt id="arg-default">default<a class="anchor" aria-label="anchor" href="#arg-default"></a></dt>
-<dd><p>Any. Passed to <code><a href="https://rconsortium.github.io/S7/reference/new_property.html" class="external-link">S7::new_property()</a></code>. If <code>NULL</code> (the
-default), falls back to the first member's own default (only members
-that are an <code>S7_property</code>, e.g. a <code><a href="property_scalar.html">property_scalar()</a></code> preset, carry
-one) that satisfies the union's combined validator.</p></dd>
+<dd><p>Any. Passed to <code><a href="https://rconsortium.github.io/S7/reference/new_property.html" class="external-link">S7::new_property()</a></code>. If left unsupplied,
+falls back to the first member's own default (only members that are an
+<code>S7_property</code>, e.g. a <code><a href="property_scalar.html">property_scalar()</a></code> preset, carry one) that
+satisfies the union's combined validator. Pass <code>default = NULL</code>
+explicitly to pin the default to <code>NULL</code> and opt out of this fallback;
+this resolves to an actual <code>NULL</code> regardless of where a literal <code>NULL</code>
+member sits among <code>...</code>.</p></dd>
 
 
 <dt id="arg-e-e-">e1, e2<a class="anchor" aria-label="anchor" href="#arg-e-e-"></a></dt>

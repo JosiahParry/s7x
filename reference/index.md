@@ -43,7 +43,9 @@ Combine classes and properties with OR/AND semantics.
 
 ## Coercion
 
-Coerce S7 objects to plain R vectors.
+Coerce S7 objects to plain R vectors or JSON.
 
 - [`as_vector()`](https://s7x.josiah.rs/reference/as_vector.md) : Coerce
   an S7 object to a vector
+- [`to_json()`](https://s7x.josiah.rs/reference/to_json.md) : Coerce an
+  S7 object to a JSON string

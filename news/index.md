@@ -2,6 +2,27 @@
 
 ## s7x (development version)
 
+- Added [`to_json()`](https://s7x.josiah.rs/reference/to_json.md), a
+  generic that serializes an S7 object to a JSON string via
+  [`as_vector()`](https://s7x.josiah.rs/reference/as_vector.md) and
+  [`yyjsonr::write_json_str()`](https://coolbutuseless.github.io/package/yyjsonr/reference/write_json_str.html).
+- [`as_vector()`](https://s7x.josiah.rs/reference/as_vector.md) now
+  recurses into S7 objects nested inside list properties
+  (e.g. `list(SomeS7Object, ...)`), not just properties that are
+  directly an S7 object.
+- [`property_range()`](https://s7x.josiah.rs/reference/property_range.md)
+  and
+  [`property_range_discrete()`](https://s7x.josiah.rs/reference/property_range.md)
+  now default to a typed `NA` when `allow_na = TRUE` (the default) and
+  the property is omitted from a constructor call.
+- `property_union(..., default = NULL)` now resolves to an actual `NULL`
+  default regardless of where a literal `NULL` member sits among `...`,
+  instead of only when `NULL` is listed first.
+- [`property_union()`](https://s7x.josiah.rs/reference/property_union.md)
+  now distinguishes an omitted `default` from an explicit
+  `default = NULL`: omitting `default` still derives one from a member’s
+  own default, while `default = NULL` pins the default to `NULL` and
+  opts out of derivation.
 - [`property_union()`](https://s7x.josiah.rs/reference/property_union.md)
   now derives its default from the first member’s own default (when a
   member is an `S7_property` and that default satisfies the union),
