@@ -2,6 +2,10 @@
 
 ## s7x (development version)
 
+- [`property_union()`](https://s7x.josiah.rs/reference/property_union.md)
+  now derives its default from the first member’s own default (when a
+  member is an `S7_property` and that default satisfies the union),
+  instead of always defaulting to `NULL`.
 - `class_string`, `class_integer`, `class_double`, and `class_boolean`
   now default to a typed `NA` when omitted from a constructor call.
 - [`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) gains a

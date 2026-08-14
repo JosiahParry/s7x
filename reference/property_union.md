@@ -23,6 +23,10 @@ e1 | e2
 
   Any. Passed to
   [`S7::new_property()`](https://rconsortium.github.io/S7/reference/new_property.html).
+  If `NULL` (the default), falls back to the first member's own default
+  (only members that are an `S7_property`, e.g. a
+  [`property_scalar()`](https://s7x.josiah.rs/reference/property_scalar.md)
+  preset, carry one) that satisfies the union's combined validator.
 
 - e1, e2:
 
