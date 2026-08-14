@@ -6,6 +6,13 @@
 \usage{
 Enum(value = character(0), variants = character(0), allow_na = logical(0))
 }
+\arguments{
+\item{value}{String. The enum's current value.}
+
+\item{variants}{Character vector. Allowed values.}
+
+\item{allow_na}{Bool. Whether \code{NA_character_} is a valid value.}
+}
 \description{
 A scalar character value drawn from a fixed set of variants. Use
 \code{\link[=new_enum]{new_enum()}} to create concrete subclasses.

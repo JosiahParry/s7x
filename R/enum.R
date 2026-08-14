@@ -3,6 +3,8 @@
 #' A scalar character value drawn from a fixed set of variants. Use
 #' [new_enum()] to create concrete subclasses.
 #'
+#' @param value String. The enum's current value.
+#' @inheritParams new_enum
 #' @include scalar.R utils.R union.R
 #' @examples
 #' GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
@@ -19,7 +21,7 @@ Enum <- S7::new_class(
     if (is.na(self@value)) {
       if (!self@allow_na) "@value must not be NA"
     } else if (!(self@value %in% self@variants)) {
-      "@value must be one of @variants"
+      cli::format_inline("@value must be one of {.val {self@variants}}")
     }
   },
   abstract = TRUE
@@ -72,11 +74,11 @@ new_enum <- function(
       value = class_string,
       variants = S7::new_property(
         S7::class_character,
-        default = quote(variants)
+        default = rlang::expr(variants)
       ),
       allow_na = property_scalar(
         S7::class_logical,
-        default = quote(allow_na)
+        default = rlang::expr(allow_na)
       )
     ),
     constructor = function(value) {

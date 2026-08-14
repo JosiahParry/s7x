@@ -16,3 +16,12 @@ export(property_range_discrete)
 export(property_scalar)
 export(property_union)
 import(S7)
+importFrom(rlang,
+  abort,
+  caller_env,
+  is_list,
+  is_missing,
+  is_na,
+  is_vector,
+  stop_input_type
+)

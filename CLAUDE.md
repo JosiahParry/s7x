@@ -43,6 +43,15 @@ check_function(x)
 ### Error messages
 Use `cli::cli_abort()` with `call = error_call` (or `call = rlang::caller_env()`). Use cli inline markup: `{.arg x}`, `{.cls ClassName}`, `{.fn function_name}`, `{.val value}`, `{.code expr}`.
 
+**S7 validator messages** (the string returned from a class `validator = function(self) {...}`) don't go through `cli_abort()` since S7 pastes them as bullets verbatim. Build them with `cli::format_inline()` instead of `sprintf()`/`paste()`, using the same inline markup, e.g.:
+
+```r
+cli::format_inline("@value must be one of {.val {self@variants}}")
+```
+
+### Base R vs rlang
+Prefer the rlang equivalent of a base R function when one exists. In particular, use `rlang::expr()` instead of `quote()` for capturing unevaluated expressions (e.g. `S7::new_property()` promise defaults).
+
 ### Changelog
 **Always update `NEWS.md`** with a bullet describing what changed. Follow the existing format (version headers, plain bullet points).
 
