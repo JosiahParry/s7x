@@ -9,7 +9,8 @@ new_enum(
   name,
   variants,
   package = topenv_package_name(parent.frame()),
-  allow_na = TRUE
+  allow_na = TRUE,
+  default = NULL
 )
 ```
 
@@ -31,6 +32,13 @@ new_enum(
 - allow_na:
 
   Bool. Whether `NA_character_` is a valid value.
+
+- default:
+
+  String or NULL. Default value used when the property is omitted. Must
+  be one of `variants`, or `NA` if `allow_na = TRUE`. If `NULL` (the
+  default), falls back to `NA_character_` when `allow_na = TRUE`,
+  otherwise the value stays required with no default.
 
 ## Value
 

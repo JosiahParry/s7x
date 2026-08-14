@@ -49,7 +49,8 @@
 <span>  <span class="va">name</span>,</span>
 <span>  <span class="va">variants</span>,</span>
 <span>  package <span class="op">=</span> <span class="fu">topenv_package_name</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  allow_na <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  allow_na <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  default <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -72,6 +73,13 @@ Defaults to the caller's package, if any.</p></dd>
 
 <dt id="arg-allow-na">allow_na<a class="anchor" aria-label="anchor" href="#arg-allow-na"></a></dt>
 <dd><p>Bool. Whether <code>NA_character_</code> is a valid value.</p></dd>
+
+
+<dt id="arg-default">default<a class="anchor" aria-label="anchor" href="#arg-default"></a></dt>
+<dd><p>String or NULL. Default value used when the property is
+omitted. Must be one of <code>variants</code>, or <code>NA</code> if <code>allow_na = TRUE</code>. If
+<code>NULL</code> (the default), falls back to <code>NA_character_</code> when
+<code>allow_na = TRUE</code>, otherwise the value stays required with no default.</p></dd>
 
 </dl></div>
     <div class="section level2">
