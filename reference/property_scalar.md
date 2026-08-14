@@ -13,6 +13,8 @@ class_string
 class_integer
 
 class_double
+
+class_boolean
 ```
 
 ## Arguments

@@ -5,7 +5,12 @@ Create a new enum class
 ## Usage
 
 ``` r
-new_enum(name, variants, package = topenv_package_name(parent.frame()))
+new_enum(
+  name,
+  variants,
+  package = topenv_package_name(parent.frame()),
+  allow_na = TRUE
+)
 ```
 
 ## Arguments
@@ -23,6 +28,10 @@ new_enum(name, variants, package = topenv_package_name(parent.frame()))
   String or NULL. Package to attribute the class to. Defaults to the
   caller's package, if any.
 
+- allow_na:
+
+  Bool. Whether `NA_character_` is a valid value.
+
 ## Value
 
 An S7 class generator that inherits from
@@ -37,4 +46,10 @@ GridShape("Square")
 #> <GridShape>
 #>  @ value   : chr "Square"
 #>  @ variants: chr [1:2] "Square" "Hexagon"
+#>  @ allow_na: logi TRUE
+GridShape(NA_character_)
+#> <GridShape>
+#>  @ value   : chr NA
+#>  @ variants: chr [1:2] "Square" "Hexagon"
+#>  @ allow_na: logi TRUE
 ```

@@ -10,7 +10,11 @@ properties in 'S7' with less boilerplate.
 
 Useful links:
 
-- <https://josiahparry.github.io/s7x/>
+- <https://s7x.josiah.rs/>
+
+- <https://github.com/JosiahParry/s7x>
+
+- Report bugs at <https://github.com/JosiahParry/s7x/issues>
 
 ## Author
 

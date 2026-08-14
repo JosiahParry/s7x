@@ -18,8 +18,9 @@ Properties constrained to a single atomic value.
 - [`property_scalar()`](https://s7x.josiah.rs/reference/property_scalar.md)
   [`class_string`](https://s7x.josiah.rs/reference/property_scalar.md)
   [`class_integer`](https://s7x.josiah.rs/reference/property_scalar.md)
-  [`class_double`](https://s7x.josiah.rs/reference/property_scalar.md) :
-  Define a scalar property
+  [`class_double`](https://s7x.josiah.rs/reference/property_scalar.md)
+  [`class_boolean`](https://s7x.josiah.rs/reference/property_scalar.md)
+  : Define a scalar property
 
 ## Range properties
 

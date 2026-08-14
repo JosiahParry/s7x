@@ -44,4 +44,5 @@ Board(GridShape("Square"))
 #>  @ orientation: <GridShape>
 #>  .. @ value   : chr "Square"
 #>  .. @ variants: chr [1:2] "Square" "Hexagon"
+#>  .. @ allow_na: logi TRUE
 ```

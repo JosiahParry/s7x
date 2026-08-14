@@ -7,7 +7,7 @@ concrete subclasses.
 ## Usage
 
 ``` r
-Enum(value = character(0), variants = character(0))
+Enum(value = character(0), variants = character(0), allow_na = logical(0))
 ```
 
 ## Examples
