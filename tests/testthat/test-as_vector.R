@@ -21,6 +21,23 @@ test_that("as_vector recurses into nested S7 properties", {
   expect_equal(result, list(from = list(x = 0, y = 0), to = list(x = 1, y = 1)))
 })
 
+test_that("as_vector recurses into S7 objects nested inside a list property", {
+  Point <- S7::new_class(
+    "Point",
+    properties = list(x = S7::class_double, y = S7::class_double)
+  )
+  Path <- S7::new_class(
+    "Path",
+    properties = list(points = S7::class_list)
+  )
+
+  result <- as_vector(Path(points = list(Point(0, 0), Point(1, 1))))
+  expect_equal(
+    result,
+    list(points = list(list(x = 0, y = 0), list(x = 1, y = 1)))
+  )
+})
+
 test_that("as_vector.Enum returns the underlying atomic value", {
   GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
 

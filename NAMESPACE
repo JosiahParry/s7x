@@ -16,6 +16,7 @@ export(property_range)
 export(property_range_discrete)
 export(property_scalar)
 export(property_union)
+export(to_json)
 import(S7)
 importFrom(rlang,
   abort,

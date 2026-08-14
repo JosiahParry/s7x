@@ -4,10 +4,13 @@
 #' from multiple
 #'
 #' @param ... S7 classes or properties to union.
-#' @param default Any. Passed to [S7::new_property()]. If `NULL` (the
-#'   default), falls back to the first member's own default (only members
-#'   that are an `S7_property`, e.g. a [property_scalar()] preset, carry
-#'   one) that satisfies the union's combined validator.
+#' @param default Any. Passed to [S7::new_property()]. If left unsupplied,
+#'   falls back to the first member's own default (only members that are an
+#'   `S7_property`, e.g. a [property_scalar()] preset, carry one) that
+#'   satisfies the union's combined validator. Pass `default = NULL`
+#'   explicitly to pin the default to `NULL` and opt out of this fallback;
+#'   this resolves to an actual `NULL` regardless of where a literal `NULL`
+#'   member sits among `...`.
 #' @return An S7 property typed as the union of `...`.
 #' @examples
 #' library(S7)
@@ -18,6 +21,7 @@
 #' Piece(1L)
 #' @export
 property_union <- function(..., default = NULL) {
+  default_supplied <- !missing(default)
   members <- rlang::list2(...)
   classes <- lapply(
     members,
@@ -47,7 +51,7 @@ property_union <- function(..., default = NULL) {
     length(matches) == 0 || any(matches)
   }
 
-  resolved_default <- if (!rlang::is_null(default)) {
+  resolved_default <- if (default_supplied) {
     default
   } else {
     member_defaults <- lapply(
@@ -59,8 +63,21 @@ property_union <- function(..., default = NULL) {
     if (length(valid_defaults) > 0) valid_defaults[[1]] else NULL
   }
 
+  # S7 resolves an explicit `default = NULL` by invoking the zero-arg
+  # constructor of the union's *first* member class, not by storing a
+  # literal NULL, unless that first member is itself NULL. So when the
+  # resolved default is NULL and a literal NULL is among the members
+  # (in any position), move it to the front here to get an actual NULL
+  # default instead of a deep-realized instance of another member.
+  is_null_member <- vapply(classes, rlang::is_null, logical(1))
+  type_classes <- if (rlang::is_null(resolved_default) && any(is_null_member)) {
+    c(classes[is_null_member], classes[!is_null_member])
+  } else {
+    classes
+  }
+
   S7::new_property(
-    Reduce(`|`, classes),
+    Reduce(`|`, type_classes),
     validator = function(value) {
       if (!is_valid(value)) "does not satisfy any member of the union"
     },

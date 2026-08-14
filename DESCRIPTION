@@ -15,7 +15,8 @@ BugReports: https://github.com/JosiahParry/s7x/issues
 Imports:
     cli,
     rlang,
-    S7 (>= 0.2.2.9000)
+    S7 (>= 0.2.2.9000),
+    yyjsonr
 Suggests:
     testthat (>= 3.0.0)
 Remotes:
@@ -33,4 +34,5 @@ Collate:
     'import-standalone-obj-type.R'
     'import-standalone-types-check.R'
     's7x-package.R'
+    'to_json.R'
     'zzz.R'

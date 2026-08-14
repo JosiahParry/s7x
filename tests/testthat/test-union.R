@@ -65,3 +65,30 @@ test_that("an explicit default overrides a derivable member default", {
 
   expect_equal(Foo()@x, "hi")
 })
+
+test_that("an explicit default = NULL pins the default and opts out of derivation", {
+  Point <- S7::new_class(
+    "Point",
+    properties = list(x = S7::class_double, y = S7::class_double)
+  )
+  Foo <- S7::new_class(
+    "Foo",
+    properties = list(p = property_union(NULL, Point, default = NULL))
+  )
+
+  expect_null(Foo()@p)
+})
+
+test_that("default = NULL resolves to NULL regardless of where NULL sits among members", {
+  Point <- S7::new_class(
+    "Point",
+    properties = list(x = S7::class_double, y = S7::class_double)
+  )
+  Foo <- S7::new_class(
+    "Foo",
+    properties = list(p = property_union(Point, NULL, default = NULL))
+  )
+
+  expect_null(Foo()@p)
+  expect_equal(Foo(Point(1, 2))@p@x, 1)
+})

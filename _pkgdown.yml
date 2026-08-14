@@ -46,6 +46,7 @@ reference:
       - property_intersection
 
   - title: Coercion
-    desc: Coerce S7 objects to plain R vectors.
+    desc: Coerce S7 objects to plain R vectors or JSON.
     contents:
       - as_vector
+      - to_json

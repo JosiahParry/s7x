@@ -20,8 +20,17 @@ as_vector <- S7::new_generic("as_vector", "x")
 method(as_vector, S7::S7_object) <- function(x, ...) {
   nms <- S7::prop_names(x)
   values <- lapply(nms, function(nm) {
-    value <- S7::prop(x, nm)
-    if (S7::S7_inherits(value)) as_vector(value, ...) else value
+    as_vector_value(S7::prop(x, nm), ...)
   })
   rlang::set_names(values, nms)
+}
+
+as_vector_value <- function(value, ...) {
+  if (S7::S7_inherits(value)) {
+    as_vector(value, ...)
+  } else if (rlang::is_list(value)) {
+    lapply(value, as_vector_value, ...)
+  } else {
+    value
+  }
 }

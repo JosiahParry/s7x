@@ -52,7 +52,7 @@ class_double <- property_scalar(S7::class_double, default = NA_real_)
 #' @export
 class_boolean <- property_scalar(S7::class_logical, default = NA)
 
-new_range_property <- function(class, min, max, allow_na) {
+new_range_property <- function(class, min, max, allow_na, na_default) {
   if (min > max) {
     cli::cli_abort("{.arg min} must be less than or equal to {.arg max}.")
   }
@@ -68,7 +68,8 @@ new_range_property <- function(class, min, max, allow_na) {
       } else if (value < min || value > max) {
         sprintf("must be between %s and %s", min, max)
       }
-    }
+    },
+    default = if (allow_na) na_default else NULL
   )
 }
 
@@ -92,7 +93,7 @@ property_range <- function(min, max, allow_na = TRUE) {
   check_number_decimal(min)
   check_number_decimal(max)
   check_bool(allow_na)
-  new_range_property(S7::class_double, min, max, allow_na)
+  new_range_property(S7::class_double, min, max, allow_na, NA_real_)
 }
 
 #' @rdname property_range
@@ -105,6 +106,7 @@ property_range_discrete <- function(min, max, allow_na = TRUE) {
     S7::class_integer,
     as.integer(min),
     as.integer(max),
-    allow_na
+    allow_na,
+    NA_integer_
   )
 }

@@ -82,3 +82,27 @@ test_that("scalar presets default to a typed NA when omitted", {
   expect_true(is.na(foo@c))
   expect_true(is.na(foo@d))
 })
+
+test_that("property_range defaults to NA when allow_na is TRUE and omitted", {
+  Foo <- S7::new_class("Foo", properties = list(x = property_range(1, 6)))
+
+  expect_true(is.na(Foo()@x))
+})
+
+test_that("property_range_discrete defaults to NA when allow_na is TRUE and omitted", {
+  Foo <- S7::new_class(
+    "Foo",
+    properties = list(x = property_range_discrete(1L, 3L))
+  )
+
+  expect_true(is.na(Foo()@x))
+})
+
+test_that("property_range stays required when allow_na is FALSE and omitted", {
+  Foo <- S7::new_class(
+    "Foo",
+    properties = list(x = property_range(1, 6, allow_na = FALSE))
+  )
+
+  expect_error(Foo(), "scalar atomic")
+})

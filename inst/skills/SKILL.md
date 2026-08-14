@@ -138,6 +138,18 @@ Board := new_class(properties = list(id = property_union(class_string, class_dou
 Board()@id # NA_character_
 ```
 
+Pass `default = NULL` explicitly to pin the default to `NULL` and opt out of
+derivation, e.g. for an optional nested object. `NULL` can be listed in any
+position among `...`:
+
+```r
+Point := new_class(properties = list(x = class_double, y = class_double))
+Board2 := new_class(
+  properties = list(origin = property_union(Point, NULL, default = NULL))
+)
+is.null(Board2()@origin) # TRUE
+```
+
 `property_intersection(..., default = NULL)` requires a value to satisfy
 **every** member of `...`, combined with the infix `` `&.S7_property` ``.
 Every member must share the same underlying base class — a single value
@@ -173,6 +185,18 @@ so it works out of the box for classes you define with `new_class()`:
 Point := new_class(properties = list(x = class_double, y = class_double))
 as_vector(Point(1, 2)) # list(x = 1, y = 2)
 as_vector(GridShape("Square")) # "Square"
+```
+
+## Serializing to JSON
+
+`to_json(x, ..., pretty = FALSE)` serializes any S7 object to a JSON string,
+by running it through `as_vector()` first and passing the result to
+`yyjsonr::write_json_str()`. `...` is forwarded to `write_json_str()`, so any
+`yyjsonr::opts_write_json()` option can be overridden:
+
+```r
+to_json(Point(1, 2)) # {"x":1.0,"y":2.0}
+to_json(Point(1, 2), pretty = TRUE)
 ```
 
 ## Picking the right helper
