@@ -5,7 +5,7 @@
 #'
 #' @param value String. The enum's current value.
 #' @inheritParams new_enum
-#' @include scalar.R utils.R union.R
+#' @include scalar.R utils.R union.R as_vector.R
 #' @examples
 #' GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
 #' S7::S7_inherits(GridShape("Square"), Enum)
@@ -29,6 +29,10 @@ Enum <- S7::new_class(
 
 method(convert, list(Enum, class_character)) <- function(from, to, ...) {
   from@value
+}
+
+method(as_vector, Enum) <- function(x, ...) {
+  x@value
 }
 
 #' @rawNamespace S3method(as.character, "s7x::Enum", enum_as_character)

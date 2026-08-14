@@ -25,6 +25,7 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Collate:
+    'as_vector.R'
     'union.R'
     'utils.R'
     'scalar.R'
