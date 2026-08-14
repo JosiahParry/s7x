@@ -88,6 +88,14 @@
 <p><strong>Always update <code>NEWS.md</code></strong> with a bullet describing what changed. Follow the existing format (version headers, plain bullet points).</p>
 </div>
 <div class="section level3">
+<h3 id="skill">Skill<a class="anchor" aria-label="anchor" href="#skill"></a></h3>
+<p><strong>Always update <code>inst/skills/SKILL.md</code></strong> whenever a change adds, removes, or alters the behavior of anything it documents (exported functions, arguments, defaults, error messages, examples). Verify updated code examples actually run before committing.</p>
+</div>
+<div class="section level3">
+<h3 id="pkgdown-reference-index">pkgdown reference index<a class="anchor" aria-label="anchor" href="#pkgdown-reference-index"></a></h3>
+<p><strong>Every new exported function must be added to <code>_pkgdown.yml</code>’s <code>reference</code> index.</strong> <code><a href="https://pkgdown.r-lib.org/reference/build_reference.html" class="external-link">pkgdown::build_reference_index()</a></code> errors on any exported topic missing from it. Run that check (or <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code>) after adding an export, before committing.</p>
+</div>
+<div class="section level3">
 <h3 id="version-bumping">Version bumping<a class="anchor" aria-label="anchor" href="#version-bumping"></a></h3>
 <p>Use <code>usethis::use_version()</code> to increment the version. Do not edit <code>DESCRIPTION</code> manually.</p>
 </div>

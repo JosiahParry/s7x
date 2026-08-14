@@ -80,6 +80,22 @@ promise defaults).
 **Always update `NEWS.md`** with a bullet describing what changed.
 Follow the existing format (version headers, plain bullet points).
 
+### Skill
+
+**Always update `inst/skills/SKILL.md`** whenever a change adds,
+removes, or alters the behavior of anything it documents (exported
+functions, arguments, defaults, error messages, examples). Verify
+updated code examples actually run before committing.
+
+### pkgdown reference index
+
+**Every new exported function must be added to `_pkgdown.yml`’s
+`reference` index.**
+[`pkgdown::build_reference_index()`](https://pkgdown.r-lib.org/reference/build_reference.html)
+errors on any exported topic missing from it. Run that check (or
+[`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html))
+after adding an export, before committing.
+
 ### Version bumping
 
 Use `usethis::use_version()` to increment the version. Do not edit

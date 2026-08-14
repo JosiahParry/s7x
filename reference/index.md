@@ -40,3 +40,10 @@ Combine classes and properties with OR/AND semantics.
 - [`property_intersection()`](https://s7x.josiah.rs/reference/property_intersection.md)
   [`` `&`( ``*`<S7_property>`*`)`](https://s7x.josiah.rs/reference/property_intersection.md)
   : Create a property from an intersection of properties
+
+## Coercion
+
+Coerce S7 objects to plain R vectors.
+
+- [`as_vector()`](https://s7x.josiah.rs/reference/as_vector.md) : Coerce
+  an S7 object to a vector

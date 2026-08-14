@@ -28,11 +28,6 @@ An S7 property typed as the union of `...`.
 
 ``` r
 library(S7)
-#> 
-#> Attaching package: ‘S7’
-#> The following objects are masked from ‘package:s7x’:
-#> 
-#>     class_double, class_integer
 GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
 #> Overwriting method convert(<character>, <GridShape>)
 Direction <- new_enum("Direction", c("North", "South"))
