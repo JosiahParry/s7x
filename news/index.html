@@ -40,7 +40,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="s7x-development-version">s7x (development version)<a class="anchor" aria-label="anchor" href="#s7x-development-version"></a></h2>
-<ul><li>Added a Claude Code skill (<code>inst/skills/SKILL.md</code>) documenting how to use s7x’s property helpers when writing S7 classes.</li>
+<ul><li>
+<code>class_string</code>, <code>class_integer</code>, <code>class_double</code>, and <code>class_boolean</code> now default to a typed <code>NA</code> when omitted from a constructor call.</li>
+<li>
+<code><a href="../reference/new_enum.html">new_enum()</a></code> gains a <code>default</code> argument to pin a specific variant as the default, and <code>allow_na = TRUE</code> now gives omitted enum properties a default of <code>NA</code>.</li>
+<li>Added a Claude Code skill (<code>inst/skills/SKILL.md</code>) documenting how to use s7x’s property helpers when writing S7 classes.</li>
 <li>
 <code><a href="../reference/new_enum.html">new_enum()</a></code> gains an <code>allow_na</code> argument (default <code>TRUE</code>) so enum values can be <code>NA_character_</code>.</li>
 <li>Added <code>class_boolean</code>, a scalar logical property preset alongside <code>class_string</code>, <code>class_integer</code>, and <code>class_double</code>.</li>

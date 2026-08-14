@@ -2,6 +2,11 @@
 
 ## s7x (development version)
 
+- `class_string`, `class_integer`, `class_double`, and `class_boolean`
+  now default to a typed `NA` when omitted from a constructor call.
+- [`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) gains a
+  `default` argument to pin a specific variant as the default, and
+  `allow_na = TRUE` now gives omitted enum properties a default of `NA`.
 - Added a Claude Code skill (`inst/skills/SKILL.md`) documenting how to
   use s7x’s property helpers when writing S7 classes.
 - [`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) gains an
