@@ -49,3 +49,42 @@ test_that("new_enum rejects NA_character_ when allow_na is FALSE", {
 test_that("new_enum validates allow_na", {
   expect_error(new_enum("GridShape", c("Square", "Hexagon"), allow_na = "yes"))
 })
+
+test_that("new_enum defaults to NA when allow_na is TRUE and no default is given", {
+  GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
+  expect_true(is.na(GridShape()@value))
+})
+
+test_that("new_enum accepts an explicit default", {
+  GridShape <- new_enum(
+    "GridShape",
+    c("Square", "Hexagon"),
+    default = "Square"
+  )
+  expect_equal(GridShape()@value, "Square")
+})
+
+test_that("new_enum rejects an explicit default outside variants", {
+  expect_error(
+    new_enum("GridShape", c("A", "B"), default = "C"),
+    "must be one of"
+  )
+})
+
+test_that("new_enum requires value when allow_na is FALSE and no default is given", {
+  Strict <- new_enum("Strict", c("A", "B"), allow_na = FALSE)
+  expect_error(Strict(), "argument \"value\" is missing")
+})
+
+test_that("new_enum rejects NA default when allow_na is FALSE", {
+  expect_error(
+    new_enum("Bad", c("A", "B"), allow_na = FALSE, default = NA_character_),
+    "must be one of"
+  )
+})
+
+test_that("a bare enum property on a host class works when omitted", {
+  GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
+  IFont <- S7::new_class("IFont", properties = list(style = GridShape))
+  expect_true(is.na(IFont()@style@value))
+})

@@ -47,6 +47,10 @@ enum_as_character <- function(x, ...) {
 #' @param package String or NULL. Package to attribute the class to.
 #'   Defaults to the caller's package, if any.
 #' @param allow_na Bool. Whether `NA_character_` is a valid value.
+#' @param default String or NULL. Default value used when the property is
+#'   omitted. Must be one of `variants`, or `NA` if `allow_na = TRUE`. If
+#'   `NULL` (the default), falls back to `NA_character_` when
+#'   `allow_na = TRUE`, otherwise the value stays required with no default.
 #' @return An S7 class generator that inherits from [Enum].
 #' @examples
 #' GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
@@ -57,17 +61,33 @@ new_enum <- function(
   name,
   variants,
   package = topenv_package_name(parent.frame()),
-  allow_na = TRUE
+  allow_na = TRUE,
+  default = NULL
 ) {
   check_string(name, allow_empty = FALSE)
   check_character(variants)
   check_bool(allow_na)
+  check_string(default, allow_na = TRUE, allow_null = TRUE)
 
   if (length(variants) == 0L) {
     cli::cli_abort("{.arg variants} must contain at least one value.")
   }
   if (anyDuplicated(variants)) {
     cli::cli_abort("{.arg variants} must be unique.")
+  }
+
+  resolved_default <- if (!rlang::is_null(default)) {
+    valid <- (allow_na && is.na(default)) || default %in% variants
+    if (!valid) {
+      cli::cli_abort(
+        "{.arg default} must be one of {.val {variants}}{if (allow_na) ' or NA' else ''}."
+      )
+    }
+    default
+  } else if (allow_na) {
+    NA_character_
+  } else {
+    NULL
   }
 
   enum_class <- S7::new_class(
@@ -85,13 +105,24 @@ new_enum <- function(
         default = rlang::expr(allow_na)
       )
     ),
-    constructor = function(value) {
-      S7::new_object(
-        S7::S7_object(),
-        value = value,
-        variants = variants,
-        allow_na = allow_na
-      )
+    constructor = if (!rlang::is_null(resolved_default)) {
+      function(value = resolved_default) {
+        S7::new_object(
+          S7::S7_object(),
+          value = value,
+          variants = variants,
+          allow_na = allow_na
+        )
+      }
+    } else {
+      function(value) {
+        S7::new_object(
+          S7::S7_object(),
+          value = value,
+          variants = variants,
+          allow_na = allow_na
+        )
+      }
     }
   )
 
