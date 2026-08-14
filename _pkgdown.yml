@@ -31,6 +31,7 @@ reference:
       - class_string
       - class_integer
       - class_double
+      - class_boolean
 
   - title: Range properties
     desc: Scalar properties bound to an inclusive numeric range.
@@ -43,3 +44,8 @@ reference:
     contents:
       - property_union
       - property_intersection
+
+  - title: Coercion
+    desc: Coerce S7 objects to plain R vectors.
+    contents:
+      - as_vector

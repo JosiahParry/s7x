@@ -58,6 +58,9 @@ Prefer the rlang equivalent of a base R function when one exists. In particular,
 ### Skill
 **Always update `inst/skills/SKILL.md`** whenever a change adds, removes, or alters the behavior of anything it documents (exported functions, arguments, defaults, error messages, examples). Verify updated code examples actually run before committing.
 
+### pkgdown reference index
+**Every new exported function must be added to `_pkgdown.yml`'s `reference` index.** `pkgdown::build_reference_index()` errors on any exported topic missing from it. Run that check (or `pkgdown::build_site()`) after adding an export, before committing.
+
 ### Version bumping
 Use `usethis::use_version()` to increment the version. Do not edit `DESCRIPTION` manually.
 
