@@ -55,6 +55,9 @@ Prefer the rlang equivalent of a base R function when one exists. In particular,
 ### Changelog
 **Always update `NEWS.md`** with a bullet describing what changed. Follow the existing format (version headers, plain bullet points).
 
+### Skill
+**Always update `inst/skills/SKILL.md`** whenever a change adds, removes, or alters the behavior of anything it documents (exported functions, arguments, defaults, error messages, examples). Verify updated code examples actually run before committing.
+
 ### Version bumping
 Use `usethis::use_version()` to increment the version. Do not edit `DESCRIPTION` manually.
 

@@ -20,7 +20,7 @@ style guide.
 
 `property_scalar(class, default = NULL)` requires the value to be a length-1
 atomic of `class`. Presets exist for the common base types:
-`class_string`, `class_integer`, `class_double`.
+`class_string`, `class_integer`, `class_double`, `class_boolean`.
 
 ```r
 library(S7)
@@ -58,22 +58,33 @@ Heading(7L) # errors: must be between 1 and 6
 
 ## Enums
 
-`new_enum(name, variants, package = NULL)` creates a new S7 class (inheriting
-from the abstract `Enum` class) whose instances hold a single string drawn
-from `variants`. The generator takes the value directly — no property list.
+`new_enum(name, variants, package = NULL, allow_na = TRUE)` creates a new S7
+class (inheriting from the abstract `Enum` class) whose instances hold a
+single string drawn from `variants`. The generator takes the value directly
+— no property list.
 
 ```r
 GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
 GridShape("Square")
-GridShape("Triangle") # errors: @value must be one of @variants
+GridShape("Triangle") # errors: @value must be one of "Square" and "Hexagon"
 ```
 
-Enum instances convert to and from plain strings via `S7::convert()` and
-`as.character()`:
+By default `NA_character_` is also a valid value (representing "no value",
+e.g. for JSON `null`). Set `allow_na = FALSE` to require one of `variants`:
+
+```r
+GridShape(NA_character_) # ok
+Strict <- new_enum("Strict", c("A", "B"), allow_na = FALSE)
+Strict(NA_character_) # errors: @value must not be NA
+```
+
+Enum instances convert to and from plain strings via `S7::convert()`,
+`as.character()`, and `as_vector()`:
 
 ```r
 convert(GridShape("Square"), class_character)
 as.character(GridShape("Square"))
+as_vector(GridShape("Square"))
 convert("Hexagon", GridShape)
 ```
 
@@ -126,6 +137,20 @@ constraint AND a fixed-variant constraint, both on `character`. Reach for
 `property_intersection()` directly whenever a fixed-variant style constraint
 needs additional per-value logic that `new_enum()` doesn't expose.
 
+## Coercing to a plain vector
+
+`as_vector(x, ...)` is an S7 generic that strips any object down to a plain R
+vector (something `is.vector()` is `TRUE` for): an atomic vector for
+scalar-backed classes like `Enum`, or a named list of (recursively coerced)
+properties for compound classes. A default method handles any `S7_object`,
+so it works out of the box for classes you define with `new_class()`:
+
+```r
+Point := new_class(properties = list(x = class_double, y = class_double))
+as_vector(Point(1, 2)) # list(x = 1, y = 2)
+as_vector(GridShape("Square")) # "Square"
+```
+
 ## Picking the right helper
 
 - One atomic value, any type → `property_scalar()` (or a `class_*` preset).
@@ -133,3 +158,4 @@ needs additional per-value logic that `new_enum()` doesn't expose.
 - One string from a fixed, closed set → `new_enum()` / `property_enum()`.
 - "Satisfies at least one of these" → `property_union()` / `|`.
 - "Satisfies all of these at once" → `property_intersection()` / `&`.
+- Coerce an S7 object down to a plain vector/list → `as_vector()`.
