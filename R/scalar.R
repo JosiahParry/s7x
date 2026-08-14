@@ -38,19 +38,19 @@ property_scalar <- function(class, default = NULL) {
 #' )
 #' Board("check", 1L, 0.5)
 #' @export
-class_string <- property_scalar(S7::class_character)
+class_string <- property_scalar(S7::class_character, default = NA_character_)
 
 #' @rdname property_scalar
 #' @export
-class_integer <- property_scalar(S7::class_integer)
+class_integer <- property_scalar(S7::class_integer, default = NA_integer_)
 
 #' @rdname property_scalar
 #' @export
-class_double <- property_scalar(S7::class_double)
+class_double <- property_scalar(S7::class_double, default = NA_real_)
 
 #' @rdname property_scalar
 #' @export
-class_boolean <- property_scalar(S7::class_logical)
+class_boolean <- property_scalar(S7::class_logical, default = NA)
 
 new_range_property <- function(class, min, max, allow_na) {
   if (min > max) {

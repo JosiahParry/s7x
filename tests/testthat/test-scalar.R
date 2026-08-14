@@ -64,3 +64,21 @@ test_that("property_range_discrete supports the HeadingLevel example", {
   expect_error(Foo(0L), "between")
   expect_error(Foo(7L), "between")
 })
+
+test_that("scalar presets default to a typed NA when omitted", {
+  Foo <- S7::new_class(
+    "Foo",
+    properties = list(
+      a = class_string,
+      b = class_integer,
+      c = class_double,
+      d = class_boolean
+    )
+  )
+
+  foo <- Foo()
+  expect_true(is.na(foo@a))
+  expect_true(is.na(foo@b))
+  expect_true(is.na(foo@c))
+  expect_true(is.na(foo@d))
+})
