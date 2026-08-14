@@ -20,7 +20,9 @@ style guide.
 
 `property_scalar(class, default = NULL)` requires the value to be a length-1
 atomic of `class`. Presets exist for the common base types:
-`class_string`, `class_integer`, `class_double`, `class_boolean`.
+`class_string`, `class_integer`, `class_double`, `class_boolean`. Each preset
+defaults to a typed `NA` (`NA_character_`, `NA_integer_`, `NA_real_`, `NA`),
+so a bare preset property can be omitted from a constructor call.
 
 ```r
 library(S7)
@@ -58,10 +60,10 @@ Heading(7L) # errors: must be between 1 and 6
 
 ## Enums
 
-`new_enum(name, variants, package = NULL, allow_na = TRUE)` creates a new S7
-class (inheriting from the abstract `Enum` class) whose instances hold a
-single string drawn from `variants`. The generator takes the value directly
-— no property list.
+`new_enum(name, variants, package = NULL, allow_na = TRUE, default = NULL)`
+creates a new S7 class (inheriting from the abstract `Enum` class) whose
+instances hold a single string drawn from `variants`. The generator takes
+the value directly — no property list.
 
 ```r
 GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
@@ -70,12 +72,24 @@ GridShape("Triangle") # errors: @value must be one of "Square" and "Hexagon"
 ```
 
 By default `NA_character_` is also a valid value (representing "no value",
-e.g. for JSON `null`). Set `allow_na = FALSE` to require one of `variants`:
+e.g. for JSON `null`), and it doubles as the generator's default, so
+`GridShape()` and a bare `GridShape` property omitted from a host class's
+constructor call both give `NA`. Set `allow_na = FALSE` to require one of
+`variants`:
 
 ```r
 GridShape(NA_character_) # ok
 Strict <- new_enum("Strict", c("A", "B"), allow_na = FALSE)
 Strict(NA_character_) # errors: @value must not be NA
+Strict() # errors: argument "value" is missing, with no default
+```
+
+Pass `default` to pin a specific variant as the generator's default instead
+of `NA`:
+
+```r
+GridShape2 <- new_enum("GridShape2", c("Square", "Hexagon"), default = "Square")
+GridShape2()@value # "Square"
 ```
 
 Enum instances convert to and from plain strings via `S7::convert()`,
@@ -112,6 +126,16 @@ Piece := new_class(
 )
 Piece(3L)
 Piece("a")
+```
+
+When `default` is omitted, it's derived from the first member that's an
+`S7_property` with its own usable default (a scalar preset like
+`class_string`, for instance), so a bare union property can be left off a
+constructor call:
+
+```r
+Board := new_class(properties = list(id = property_union(class_string, class_double)))
+Board()@id # NA_character_
 ```
 
 `property_intersection(..., default = NULL)` requires a value to satisfy

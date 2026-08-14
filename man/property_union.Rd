@@ -12,7 +12,10 @@ property_union(..., default = NULL)
 \arguments{
 \item{...}{S7 classes or properties to union.}
 
-\item{default}{Any. Passed to \code{\link[S7:new_property]{S7::new_property()}}.}
+\item{default}{Any. Passed to \code{\link[S7:new_property]{S7::new_property()}}. If \code{NULL} (the
+default), falls back to the first member's own default (only members
+that are an \code{S7_property}, e.g. a \code{\link[=property_scalar]{property_scalar()}} preset, carry
+one) that satisfies the union's combined validator.}
 
 \item{e1, e2}{S7 classes or properties to union.}
 }

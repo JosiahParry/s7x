@@ -4,7 +4,10 @@
 #' from multiple
 #'
 #' @param ... S7 classes or properties to union.
-#' @param default Any. Passed to [S7::new_property()].
+#' @param default Any. Passed to [S7::new_property()]. If `NULL` (the
+#'   default), falls back to the first member's own default (only members
+#'   that are an `S7_property`, e.g. a [property_scalar()] preset, carry
+#'   one) that satisfies the union's combined validator.
 #' @return An S7 property typed as the union of `...`.
 #' @examples
 #' library(S7)
@@ -24,30 +27,44 @@ property_union <- function(..., default = NULL) {
     if (inherits(m, "S7_property")) m$validator else NULL
   }
 
+  is_valid <- function(value) {
+    matches <- vapply(
+      seq_along(members),
+      function(i) {
+        if (!class_matches(value, classes[[i]])) {
+          return(NA)
+        }
+        validator <- member_validator(members[[i]])
+        if (rlang::is_null(validator)) {
+          TRUE
+        } else {
+          rlang::is_null(validator(value))
+        }
+      },
+      logical(1)
+    )
+    matches <- matches[!is.na(matches)]
+    length(matches) == 0 || any(matches)
+  }
+
+  resolved_default <- if (!rlang::is_null(default)) {
+    default
+  } else {
+    member_defaults <- lapply(
+      members,
+      function(m) if (inherits(m, "S7_property")) m$default else NULL
+    )
+    member_defaults <- Filter(Negate(rlang::is_null), member_defaults)
+    valid_defaults <- Filter(is_valid, member_defaults)
+    if (length(valid_defaults) > 0) valid_defaults[[1]] else NULL
+  }
+
   S7::new_property(
     Reduce(`|`, classes),
     validator = function(value) {
-      matches <- vapply(
-        seq_along(members),
-        function(i) {
-          if (!class_matches(value, classes[[i]])) {
-            return(NA)
-          }
-          validator <- member_validator(members[[i]])
-          if (rlang::is_null(validator)) {
-            TRUE
-          } else {
-            rlang::is_null(validator(value))
-          }
-        },
-        logical(1)
-      )
-      matches <- matches[!is.na(matches)]
-      if (length(matches) > 0 && !any(matches)) {
-        "does not satisfy any member of the union"
-      }
+      if (!is_valid(value)) "does not satisfy any member of the union"
     },
-    default = default
+    default = resolved_default
   )
 }
 

@@ -4,7 +4,7 @@
 \alias{Enum}
 \title{Abstract base class for enumerations}
 \usage{
-Enum(value = character(0), variants = character(0), allow_na = logical(0))
+Enum(value = NA_character_, variants = character(0), allow_na = NA)
 }
 \arguments{
 \item{value}{String. The enum's current value.}

@@ -45,3 +45,23 @@ test_that("property_union passes default through", {
 
   expect_equal(Foo()@x, "a")
 })
+
+test_that("property_union derives a default from a scalar preset member when omitted", {
+  Foo <- S7::new_class(
+    "Foo",
+    properties = list(x = property_union(class_string, class_double))
+  )
+
+  expect_true(is.na(Foo()@x))
+})
+
+test_that("an explicit default overrides a derivable member default", {
+  Foo <- S7::new_class(
+    "Foo",
+    properties = list(
+      x = property_union(class_string, class_double, default = "hi")
+    )
+  )
+
+  expect_equal(Foo()@x, "hi")
+})
