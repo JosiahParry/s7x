@@ -10,6 +10,8 @@ A scalar value drawn from a fixed set of variants.
   new enum class
 - [`property_enum()`](https://s7x.josiah.rs/reference/property_enum.md)
   : Define a property backed by one or more enum classes
+- [`enum_roclet()`](https://s7x.josiah.rs/reference/enum_roclet.md) :
+  Roclet that documents enum classes
 
 ## Scalar properties
 

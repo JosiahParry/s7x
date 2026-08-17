@@ -2,6 +2,19 @@
 
 ## s7x (development version)
 
+- Added
+  [`enum_roclet()`](https://s7x.josiah.rs/reference/enum_roclet.md), a
+  roxygen2 roclet that documents every exported
+  [`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) class from
+  the class itself, filling in the title, description, `value` argument,
+  and `variants`/`allow_na` properties. Enable it with
+  `Roxygen: list(roclets = c("collate", "namespace", "s7x::enum_roclet"))`.
+  Tags written by hand are left alone.
+- Classes created by
+  [`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) now build
+  their constructor with the default value substituted into the formals,
+  so roxygen2 renders `Color(value = "Red")` instead of leaking an
+  internal variable name into the `\usage` section.
 - Added [`to_json()`](https://s7x.josiah.rs/reference/to_json.md), a
   generic that serializes an S7 object to a JSON string via
   [`as_vector()`](https://s7x.josiah.rs/reference/as_vector.md) and

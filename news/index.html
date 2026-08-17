@@ -40,7 +40,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="s7x-development-version">s7x (development version)<a class="anchor" aria-label="anchor" href="#s7x-development-version"></a></h2>
-<ul><li>Added <code><a href="../reference/to_json.html">to_json()</a></code>, a generic that serializes an S7 object to a JSON string via <code><a href="../reference/as_vector.html">as_vector()</a></code> and <code><a href="https://coolbutuseless.github.io/package/yyjsonr/reference/write_json_str.html" class="external-link">yyjsonr::write_json_str()</a></code>.</li>
+<ul><li>Added <code><a href="../reference/enum_roclet.html">enum_roclet()</a></code>, a roxygen2 roclet that documents every exported <code><a href="../reference/new_enum.html">new_enum()</a></code> class from the class itself, filling in the title, description, <code>value</code> argument, and <code>variants</code>/<code>allow_na</code> properties. Enable it with <code>Roxygen: list(roclets = c("collate", "namespace", "s7x::enum_roclet"))</code>. Tags written by hand are left alone.</li>
+<li>Classes created by <code><a href="../reference/new_enum.html">new_enum()</a></code> now build their constructor with the default value substituted into the formals, so roxygen2 renders <code>Color(value = "Red")</code> instead of leaking an internal variable name into the <code>\usage</code> section.</li>
+<li>Added <code><a href="../reference/to_json.html">to_json()</a></code>, a generic that serializes an S7 object to a JSON string via <code><a href="../reference/as_vector.html">as_vector()</a></code> and <code><a href="https://coolbutuseless.github.io/package/yyjsonr/reference/write_json_str.html" class="external-link">yyjsonr::write_json_str()</a></code>.</li>
 <li>
 <code><a href="../reference/as_vector.html">as_vector()</a></code> now recurses into S7 objects nested inside list properties (e.g. <code>list(SomeS7Object, ...)</code>), not just properties that are directly an S7 object.</li>
 <li>
