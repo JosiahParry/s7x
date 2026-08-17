@@ -76,7 +76,7 @@ new_enum <- function(
     cli::cli_abort("{.arg variants} must be unique.")
   }
 
-  resolved_default <- if (!rlang::is_null(default)) {
+  default <- if (!rlang::is_null(default)) {
     valid <- (allow_na && is.na(default)) || default %in% variants
     if (!valid) {
       cli::cli_abort(
@@ -105,25 +105,22 @@ new_enum <- function(
         default = rlang::expr(allow_na)
       )
     ),
-    constructor = if (!rlang::is_null(resolved_default)) {
-      function(value = resolved_default) {
+    constructor = rlang::new_function(
+      args = if (rlang::is_null(default)) {
+        rlang::pairlist2(value = )
+      } else {
+        rlang::pairlist2(value = default)
+      },
+      body = rlang::expr({
         S7::new_object(
           S7::S7_object(),
           value = value,
           variants = variants,
           allow_na = allow_na
         )
-      }
-    } else {
-      function(value) {
-        S7::new_object(
-          S7::S7_object(),
-          value = value,
-          variants = variants,
-          allow_na = allow_na
-        )
-      }
-    }
+      }),
+      env = rlang::current_env()
+    )
   )
 
   method(convert, list(class_character, enum_class)) <- function(
@@ -169,4 +166,9 @@ property_enum <- function(..., default = NULL) {
   }
 
   property_union(..., default = default)
+}
+
+# Whether `x` is a class generator produced by new_enum().
+is_enum_class <- function(x) {
+  inherits(x, "S7_class") && identical(x@parent, Enum)
 }

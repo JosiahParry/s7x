@@ -23,6 +23,7 @@ reference:
       - Enum
       - new_enum
       - property_enum
+      - enum_roclet
 
   - title: Scalar properties
     desc: Properties constrained to a single atomic value.

@@ -14,7 +14,9 @@ several constraints at once.
 All of the functions below return an `S7_property` (or, for `Enum`, an S7
 class), so they drop directly into a `new_class()`'s `properties` list. Write
 class definitions in the `Foo := new_class(...)` style, matching S7's own
-style guide.
+style guide. One exception: roxygen2 does not recognise `:=`, so a class a
+package documents and exports needs `Foo <- new_class("Foo", ...)` to get a
+`\usage` section.
 
 ## Scalar properties
 
@@ -91,6 +93,34 @@ of `NA`:
 GridShape2 <- new_enum("GridShape2", c("Square", "Hexagon"), default = "Square")
 GridShape2()@value # "Square"
 ```
+
+When a package exports enums, enable `s7x::enum_roclet()` in its `DESCRIPTION`:
+
+```
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
+```
+
+Every enum then documents itself from the class, needing no tags beyond
+`@export`. The title, description, `@param value`, and the `variants` and
+`allow_na` properties are all generated:
+
+```r
+#' @export
+GridShape <- s7x::new_enum("GridShape", c("Square", "Hexagon"))
+```
+
+Anything written by hand wins, so a block with its own title keeps it and only
+the missing pieces are filled in:
+
+```r
+#' Grid shapes
+#' @export
+GridShape <- s7x::new_enum("GridShape", c("Square", "Hexagon"))
+```
+
+Note that roxygen2 does not recognise S7's `:=` operator, so a class defined
+with `Foo := new_class(...)` gets no `\usage` section. Use `<-` with an
+explicit name for classes a package exports.
 
 Enum instances convert to and from plain strings via `S7::convert()`,
 `as.character()`, and `as_vector()`:

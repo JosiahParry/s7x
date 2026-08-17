@@ -1,5 +1,7 @@
 # s7x (development version)
 
+* Added `enum_roclet()`, a roxygen2 roclet that documents every exported `new_enum()` class from the class itself, filling in the title, description, `value` argument, and `variants`/`allow_na` properties. Enable it with `Roxygen: list(roclets = c("collate", "namespace", "s7x::enum_roclet"))`. Tags written by hand are left alone.
+* Classes created by `new_enum()` now build their constructor with the default value substituted into the formals, so roxygen2 renders `Color(value = "Red")` instead of leaking an internal variable name into the `\usage` section.
 * Added `to_json()`, a generic that serializes an S7 object to a JSON string via `as_vector()` and `yyjsonr::write_json_str()`.
 * `as_vector()` now recurses into S7 objects nested inside list properties (e.g. `list(SomeS7Object, ...)`), not just properties that are directly an S7 object.
 * `property_range()` and `property_range_discrete()` now default to a typed `NA` when `allow_na = TRUE` (the default) and the property is omitted from a constructor call.

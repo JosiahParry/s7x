@@ -51,7 +51,7 @@ property_union <- function(..., default = NULL) {
     length(matches) == 0 || any(matches)
   }
 
-  resolved_default <- if (default_supplied) {
+  default <- if (default_supplied) {
     default
   } else {
     member_defaults <- lapply(
@@ -66,11 +66,11 @@ property_union <- function(..., default = NULL) {
   # S7 resolves an explicit `default = NULL` by invoking the zero-arg
   # constructor of the union's *first* member class, not by storing a
   # literal NULL, unless that first member is itself NULL. So when the
-  # resolved default is NULL and a literal NULL is among the members
-  # (in any position), move it to the front here to get an actual NULL
-  # default instead of a deep-realized instance of another member.
+  # default is NULL and a literal NULL is among the members (in any
+  # position), move it to the front here to get an actual NULL default
+  # instead of a deep-realized instance of another member.
   is_null_member <- vapply(classes, rlang::is_null, logical(1))
-  type_classes <- if (rlang::is_null(resolved_default) && any(is_null_member)) {
+  type_classes <- if (rlang::is_null(default) && any(is_null_member)) {
     c(classes[is_null_member], classes[!is_null_member])
   } else {
     classes
@@ -81,7 +81,7 @@ property_union <- function(..., default = NULL) {
     validator = function(value) {
       if (!is_valid(value)) "does not satisfy any member of the union"
     },
-    default = resolved_default
+    default = default
   )
 }
 
