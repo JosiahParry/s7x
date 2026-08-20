@@ -40,28 +40,22 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="s7x-development-version">s7x (development version)<a class="anchor" aria-label="anchor" href="#s7x-development-version"></a></h2>
-<ul><li>Added <code><a href="../reference/enum_roclet.html">enum_roclet()</a></code>, a roxygen2 roclet that documents every exported <code><a href="../reference/new_enum.html">new_enum()</a></code> class from the class itself, filling in the title, description, <code>value</code> argument, and <code>variants</code>/<code>allow_na</code> properties. Enable it with <code>Roxygen: list(roclets = c("collate", "namespace", "s7x::enum_roclet"))</code>. Tags written by hand are left alone.</li>
-<li>Classes created by <code><a href="../reference/new_enum.html">new_enum()</a></code> now build their constructor with the default value substituted into the formals, so roxygen2 renders <code>Color(value = "Red")</code> instead of leaking an internal variable name into the <code>\usage</code> section.</li>
-<li>Added <code><a href="../reference/to_json.html">to_json()</a></code>, a generic that serializes an S7 object to a JSON string via <code><a href="../reference/as_vector.html">as_vector()</a></code> and <code><a href="https://coolbutuseless.github.io/package/yyjsonr/reference/write_json_str.html" class="external-link">yyjsonr::write_json_str()</a></code>.</li>
-<li>
-<code><a href="../reference/as_vector.html">as_vector()</a></code> now recurses into S7 objects nested inside list properties (e.g. <code>list(SomeS7Object, ...)</code>), not just properties that are directly an S7 object.</li>
-<li>
-<code><a href="../reference/property_range.html">property_range()</a></code> and <code><a href="../reference/property_range.html">property_range_discrete()</a></code> now default to a typed <code>NA</code> when <code>allow_na = TRUE</code> (the default) and the property is omitted from a constructor call.</li>
-<li>
-<code>property_union(..., default = NULL)</code> now resolves to an actual <code>NULL</code> default regardless of where a literal <code>NULL</code> member sits among <code>...</code>, instead of only when <code>NULL</code> is listed first.</li>
-<li>
-<code><a href="../reference/property_union.html">property_union()</a></code> now distinguishes an omitted <code>default</code> from an explicit <code>default = NULL</code>: omitting <code>default</code> still derives one from a member’s own default, while <code>default = NULL</code> pins the default to <code>NULL</code> and opts out of derivation.</li>
-<li>
-<code><a href="../reference/property_union.html">property_union()</a></code> now derives its default from the first member’s own default (when a member is an <code>S7_property</code> and that default satisfies the union), instead of always defaulting to <code>NULL</code>.</li>
-<li>
-<code>class_string</code>, <code>class_integer</code>, <code>class_double</code>, and <code>class_boolean</code> now default to a typed <code>NA</code> when omitted from a constructor call.</li>
-<li>
-<code><a href="../reference/new_enum.html">new_enum()</a></code> gains a <code>default</code> argument to pin a specific variant as the default, and <code>allow_na = TRUE</code> now gives omitted enum properties a default of <code>NA</code>.</li>
-<li>Added a Claude Code skill (<code>inst/skills/SKILL.md</code>) documenting how to use s7x’s property helpers when writing S7 classes.</li>
-<li>
-<code><a href="../reference/new_enum.html">new_enum()</a></code> gains an <code>allow_na</code> argument (default <code>TRUE</code>) so enum values can be <code>NA_character_</code>.</li>
-<li>Added <code>class_boolean</code>, a scalar logical property preset alongside <code>class_string</code>, <code>class_integer</code>, and <code>class_double</code>.</li>
-<li>Added <code><a href="../reference/as_vector.html">as_vector()</a></code>, a generic that coerces an S7 object to a plain R vector: an atomic vector for scalar-backed classes like <code>Enum</code>, or a named list of (recursively coerced) properties for compound classes.</li>
+<ul><li><p><code><a href="../reference/as_vector.html">as_vector()</a></code> gains methods for bare lists and for everything else. A list is coerced elementwise, so a structure mixing S7 objects with plain values converts in one call, and the generic is now total rather than erroring on an ordinary value.</p></li>
+<li><p><code><a href="../reference/as_vector.html">as_vector()</a></code> no longer descends into a <code>data.frame</code>, which stripped its class and flipped it columnar. Recursion is now limited to bare lists.</p></li>
+<li><p>Added <code><a href="../reference/enum_roclet.html">enum_roclet()</a></code>, a roxygen2 roclet that documents every exported <code><a href="../reference/new_enum.html">new_enum()</a></code> class from the class itself, filling in the title, description, <code>value</code> argument, and <code>variants</code>/<code>allow_na</code> properties. Enable it with <code>Roxygen: list(roclets = c("collate", "namespace", "s7x::enum_roclet"))</code>. Tags written by hand are left alone.</p></li>
+<li><p>Classes created by <code><a href="../reference/new_enum.html">new_enum()</a></code> now build their constructor with the default value substituted into the formals, so roxygen2 renders <code>Color(value = "Red")</code> instead of leaking an internal variable name into the <code>\usage</code> section.</p></li>
+<li><p>Added <code><a href="../reference/to_json.html">to_json()</a></code>, a generic that serializes an S7 object to a JSON string via <code><a href="../reference/as_vector.html">as_vector()</a></code> and <code><a href="https://coolbutuseless.github.io/package/yyjsonr/reference/write_json_str.html" class="external-link">yyjsonr::write_json_str()</a></code>.</p></li>
+<li><p><code><a href="../reference/as_vector.html">as_vector()</a></code> now recurses into S7 objects nested inside list properties (e.g. <code>list(SomeS7Object, ...)</code>), not just properties that are directly an S7 object.</p></li>
+<li><p><code><a href="../reference/property_range.html">property_range()</a></code> and <code><a href="../reference/property_range.html">property_range_discrete()</a></code> now default to a typed <code>NA</code> when <code>allow_na = TRUE</code> (the default) and the property is omitted from a constructor call.</p></li>
+<li><p><code>property_union(..., default = NULL)</code> now resolves to an actual <code>NULL</code> default regardless of where a literal <code>NULL</code> member sits among <code>...</code>, instead of only when <code>NULL</code> is listed first.</p></li>
+<li><p><code><a href="../reference/property_union.html">property_union()</a></code> now distinguishes an omitted <code>default</code> from an explicit <code>default = NULL</code>: omitting <code>default</code> still derives one from a member’s own default, while <code>default = NULL</code> pins the default to <code>NULL</code> and opts out of derivation.</p></li>
+<li><p><code><a href="../reference/property_union.html">property_union()</a></code> now derives its default from the first member’s own default (when a member is an <code>S7_property</code> and that default satisfies the union), instead of always defaulting to <code>NULL</code>.</p></li>
+<li><p><code>class_string</code>, <code>class_integer</code>, <code>class_double</code>, and <code>class_boolean</code> now default to a typed <code>NA</code> when omitted from a constructor call.</p></li>
+<li><p><code><a href="../reference/new_enum.html">new_enum()</a></code> gains a <code>default</code> argument to pin a specific variant as the default, and <code>allow_na = TRUE</code> now gives omitted enum properties a default of <code>NA</code>.</p></li>
+<li><p>Added a Claude Code skill (<code>inst/skills/SKILL.md</code>) documenting how to use s7x’s property helpers when writing S7 classes.</p></li>
+<li><p><code><a href="../reference/new_enum.html">new_enum()</a></code> gains an <code>allow_na</code> argument (default <code>TRUE</code>) so enum values can be <code>NA_character_</code>.</p></li>
+<li><p>Added <code>class_boolean</code>, a scalar logical property preset alongside <code>class_string</code>, <code>class_integer</code>, and <code>class_double</code>.</p></li>
+<li><p>Added <code><a href="../reference/as_vector.html">as_vector()</a></code>, a generic that coerces an S7 object to a plain R vector: an atomic vector for scalar-backed classes like <code>Enum</code>, or a named list of (recursively coerced) properties for compound classes.</p></li>
 </ul></div>
   </main></div>
 
