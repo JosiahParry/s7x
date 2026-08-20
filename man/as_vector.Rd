@@ -17,7 +17,8 @@ An atomic vector or a named list.
 \description{
 Returns a plain R vector representation of \code{x}, for which \code{\link[=is.vector]{is.vector()}}
 is \code{TRUE}: an atomic vector for scalar-backed classes, or a named list
-of coerced properties for compound classes.
+of coerced properties for compound classes. A list is coerced elementwise,
+so a mixed structure of S7 objects and plain values converts in one call.
 }
 \examples{
 library(S7)

@@ -217,6 +217,17 @@ as_vector(Point(1, 2)) # list(x = 1, y = 2)
 as_vector(GridShape("Square")) # "Square"
 ```
 
+A bare list is coerced elementwise, so a structure mixing S7 objects with
+plain values converts in a single call, and anything else is returned as-is:
+
+```r
+as_vector(list(name = "a", at = Point(1, 2)))
+# list(name = "a", at = list(x = 1, y = 2))
+```
+
+Recursion stops at anything that is not a bare list, so a `data.frame` nested
+in a structure keeps its class instead of being flipped columnar.
+
 ## Serializing to JSON
 
 `to_json(x, ..., pretty = FALSE)` serializes any S7 object to a JSON string,

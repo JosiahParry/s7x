@@ -38,6 +38,35 @@ test_that("as_vector recurses into S7 objects nested inside a list property", {
   )
 })
 
+test_that("as_vector coerces a bare list elementwise without adding a level", {
+  Point <- S7::new_class(
+    "Point",
+    properties = list(x = S7::class_double, y = S7::class_double)
+  )
+
+  result <- as_vector(list(name = "a", at = Point(1, 2), n = 3))
+  expect_equal(result, list(name = "a", at = list(x = 1, y = 2), n = 3))
+  expect_length(result, 3)
+})
+
+test_that("as_vector dispatches an S7 object to its own method, not the list one", {
+  Point <- S7::new_class(
+    "Point",
+    properties = list(x = S7::class_double, y = S7::class_double)
+  )
+
+  expect_equal(as_vector(Point(1, 2)), list(x = 1, y = 2))
+  expect_named(as_vector(Point(1, 2)), c("x", "y"))
+})
+
+test_that("as_vector leaves a data frame alone rather than flipping it columnar", {
+  fields <- data.frame(name = c("a", "b"), type = c("x", "y"))
+
+  result <- as_vector(list(fields = fields, n = 2))
+  expect_s3_class(result$fields, "data.frame")
+  expect_equal(result$fields, fields)
+})
+
 test_that("as_vector.Enum returns the underlying atomic value", {
   GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
 

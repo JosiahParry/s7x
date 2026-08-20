@@ -1,5 +1,8 @@
 # s7x (development version)
 
+* `as_vector()` gains methods for bare lists and for everything else. A list is coerced elementwise, so a structure mixing S7 objects with plain values converts in one call, and the generic is now total rather than erroring on an ordinary value.
+* `as_vector()` no longer descends into a `data.frame`, which stripped its class and flipped it columnar. Recursion is now limited to bare lists.
+
 * Added `enum_roclet()`, a roxygen2 roclet that documents every exported `new_enum()` class from the class itself, filling in the title, description, `value` argument, and `variants`/`allow_na` properties. Enable it with `Roxygen: list(roclets = c("collate", "namespace", "s7x::enum_roclet"))`. Tags written by hand are left alone.
 * Classes created by `new_enum()` now build their constructor with the default value substituted into the formals, so roxygen2 renders `Color(value = "Red")` instead of leaking an internal variable name into the `\usage` section.
 * Added `to_json()`, a generic that serializes an S7 object to a JSON string via `as_vector()` and `yyjsonr::write_json_str()`.
