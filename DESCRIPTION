@@ -1,6 +1,6 @@
 Package: s7x
 Title: Extensions to the 'S7' Object System
-Version: 1.0.0
+Version: 1.0.1
 Authors@R:
     person("Josiah", "Parry", , "josiah.parry@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9910-865X"))
