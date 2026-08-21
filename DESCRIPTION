@@ -36,4 +36,5 @@ Collate:
     'roclet-enum.R'
     's7x-package.R'
     'to_json.R'
+    'vector.R'
     'zzz.R'
