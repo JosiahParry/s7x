@@ -2,7 +2,7 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2026-08-20T16:23Z
+last_built: 2026-08-21T12:20Z
 urls:
   reference: https://s7x.josiah.rs/reference
   article: https://s7x.josiah.rs/articles

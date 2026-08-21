@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">s7x</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="s7x-development-version">s7x (development version)<a class="anchor" aria-label="anchor" href="#s7x-development-version"></a></h2>
-<ul><li><p><code><a href="../reference/as_vector.html">as_vector()</a></code> gains methods for bare lists and for everything else. A list is coerced elementwise, so a structure mixing S7 objects with plain values converts in one call, and the generic is now total rather than erroring on an ordinary value.</p></li>
+<ul><li><p>The scalar property presets <code>class_integer</code> and <code>class_double</code> are renamed to <code>class_int</code> and <code>class_float</code> so they no longer mask <code><a href="https://rconsortium.github.io/S7/reference/base_classes.html" class="external-link">S7::class_integer</a></code> and <code><a href="https://rconsortium.github.io/S7/reference/base_classes.html" class="external-link">S7::class_double</a></code>.</p></li>
+<li><p><code><a href="../reference/as_vector.html">as_vector()</a></code> gains methods for bare lists and for everything else. A list is coerced elementwise, so a structure mixing S7 objects with plain values converts in one call, and the generic is now total rather than erroring on an ordinary value.</p></li>
 <li><p><code><a href="../reference/as_vector.html">as_vector()</a></code> no longer descends into a <code>data.frame</code>, which stripped its class and flipped it columnar. Recursion is now limited to bare lists.</p></li>
 <li><p>Added <code><a href="../reference/enum_roclet.html">enum_roclet()</a></code>, a roxygen2 roclet that documents every exported <code><a href="../reference/new_enum.html">new_enum()</a></code> class from the class itself, filling in the title, description, <code>value</code> argument, and <code>variants</code>/<code>allow_na</code> properties. Enable it with <code>Roxygen: list(roclets = c("collate", "namespace", "s7x::enum_roclet"))</code>. Tags written by hand are left alone.</p></li>
 <li><p>Classes created by <code><a href="../reference/new_enum.html">new_enum()</a></code> now build their constructor with the default value substituted into the formals, so roxygen2 renders <code>Color(value = "Red")</code> instead of leaking an internal variable name into the <code>\usage</code> section.</p></li>

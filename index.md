@@ -56,6 +56,7 @@ x
 #> <CorMethod>
 #>  @ value   : chr "pearson"
 #>  @ variants: chr [1:3] "pearson" "kendall" "spearman"
+#>  @ allow_na: logi TRUE
 ```
 
 Note that all [`s7x::Enum`](https://s7x.josiah.rs/reference/Enum.md)s
@@ -92,7 +93,7 @@ For example:
 ``` r
 
 library(S7)
-NComponents := new_class(properties = list(n = property_scalar(class_integer)))
+NComponents := new_class(properties = list(n = property_scalar(S7::class_integer)))
 
 n_comps <- NComponents(5L)
 n_comps

@@ -30,14 +30,9 @@ An atomic vector or a named list.
 
 ``` r
 library(S7)
-#> 
-#> Attaching package: ‘S7’
-#> The following objects are masked from ‘package:s7x’:
-#> 
-#>     class_double, class_integer
 Point <- new_class(
   "Point",
-  properties = list(x = class_double, y = class_double)
+  properties = list(x = class_float, y = class_float)
 )
 as_vector(Point(1, 2))
 #> $x

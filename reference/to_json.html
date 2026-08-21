@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">s7x</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rconsortium.github.io/S7/" class="external-link">S7</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">Point</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html" class="external-link">new_class</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="st">"Point"</span>,</span></span>
-<span class="r-in"><span>  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">class_double</span>, y <span class="op">=</span> <span class="va">class_double</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">class_float</span>, y <span class="op">=</span> <span class="va">class_float</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">to_json</span><span class="op">(</span><span class="fu">Point</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\"x\":1.0,\"y\":2.0}"</span>

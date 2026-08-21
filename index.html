@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">s7x</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +97,8 @@
 <span><span class="va">x</span></span>
 <span><span class="co">#&gt; &lt;CorMethod&gt;</span></span>
 <span><span class="co">#&gt;  @ value   : chr "pearson"</span></span>
-<span><span class="co">#&gt;  @ variants: chr [1:3] "pearson" "kendall" "spearman"</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ variants: chr [1:3] "pearson" "kendall" "spearman"</span></span>
+<span><span class="co">#&gt;  @ allow_na: logi TRUE</span></span></code></pre></div>
 <p>Note that all <code><a href="reference/Enum.html">s7x::Enum</a></code>s can be cast as character vectors.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -113,7 +114,7 @@
 <p>For example:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rconsortium.github.io/S7/" class="external-link">S7</a></span><span class="op">)</span></span>
-<span><span class="va">NComponents</span> <span class="op">:=</span> <span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html" class="external-link">new_class</a></span><span class="op">(</span>properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="reference/property_scalar.html">property_scalar</a></span><span class="op">(</span><span class="va">class_integer</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">NComponents</span> <span class="op">:=</span> <span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html" class="external-link">new_class</a></span><span class="op">(</span>properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="reference/property_scalar.html">property_scalar</a></span><span class="op">(</span><span class="fu">S7</span><span class="fu">::</span><span class="va"><a href="https://rconsortium.github.io/S7/reference/base_classes.html" class="external-link">class_integer</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">n_comps</span> <span class="op">&lt;-</span> <span class="fu">NComponents</span><span class="op">(</span><span class="fl">5L</span><span class="op">)</span></span>
 <span><span class="va">n_comps</span></span>

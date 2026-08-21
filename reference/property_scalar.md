@@ -10,9 +10,9 @@ property_scalar(class, default = NULL)
 
 class_string
 
-class_integer
+class_int
 
-class_double
+class_float
 
 class_boolean
 ```
@@ -44,8 +44,8 @@ library(S7)
 Board := new_class(
   properties = list(
     label = class_string,
-    rank = class_integer,
-    score = class_double
+    rank = class_int,
+    score = class_float
   )
 )
 Board("check", 1L, 0.5)

@@ -2,6 +2,12 @@
 
 ## s7x (development version)
 
+- The scalar property presets `class_integer` and `class_double` are
+  renamed to `class_int` and `class_float` so they no longer mask
+  [`S7::class_integer`](https://rconsortium.github.io/S7/reference/base_classes.html)
+  and
+  [`S7::class_double`](https://rconsortium.github.io/S7/reference/base_classes.html).
+
 - [`as_vector()`](https://s7x.josiah.rs/reference/as_vector.md) gains
   methods for bare lists and for everything else. A list is coerced
   elementwise, so a structure mixing S7 objects with plain values
