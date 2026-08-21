@@ -1,52 +1,27 @@
-#' Define a vector property
+#' Define a homogeneous list property
 #'
-#' The plural counterparts to [property_scalar()]. `property_vector()` takes
-#' an atomic vector of `class`, `property_list_of()` a list whose every
-#' element is an instance of `class`.
+#' The plural counterpart to [property_scalar()], for a list whose every
+#' element is an instance of `class`. A spec type written `Stop[]` is
+#' `property_list_of(Stop)`, where a plain [S7::class_list] would validate
+#' nothing about what the list holds.
 #'
-#' Reach for these where a scalar preset like [class_string] would be wrong
-#' because the value is genuinely plural. A spec typed `number[]` wants
-#' `property_vector(S7::class_double)`, and one typed `Stop[]` wants
-#' `property_list_of(Stop)` - not an untyped list, which validates nothing.
+#' Atomic vectors need no helper here - `S7::class_double` and
+#' `S7::class_character` already accept a vector of any length, and the
+#' scalar presets ([class_string], [class_float]) are what restrict one to
+#' length 1.
 #'
-#' `min_length` and `max_length` are how a fixed-arity spec type is
-#' expressed: a tuple of one to three axes is
-#' `property_list_of(Axis, min_length = 1, max_length = 3)`.
+#' `min_length` and `max_length` express a fixed-arity spec type: a tuple of
+#' one to three axes is `property_list_of(Axis, min_length = 1,
+#' max_length = 3)`.
 #'
 #' @param class S7 class spec. Base type every element must be an instance of.
-#' @param default Any. Passed to [S7::new_property()].
+#' @param default Any. Passed to [S7::new_property()]. Defaults to an empty
+#'   list, so the property is always safe to iterate.
 #' @param min_length,max_length Number. Inclusive bounds on `length(value)`.
-#'   `max_length` may be `Inf` for an unbounded vector.
-#' @return An S7 property whose value must be a vector of `class`.
+#'   `max_length` may be `Inf` for an unbounded list.
+#' @return An S7 property whose value must be a list of `class`.
 #' @examples
 #' library(S7)
-#' Path := new_class(
-#'   properties = list(xs = property_vector(S7::class_double))
-#' )
-#' Path(c(1, 2, 3))
-#' @export
-property_vector <- function(
-  class,
-  default = NULL,
-  min_length = 0,
-  max_length = Inf
-) {
-  check_length_bounds(min_length, max_length)
-
-  S7::new_property(
-    class,
-    validator = function(value) {
-      if (!rlang::is_atomic(value)) {
-        return("must be an atomic vector")
-      }
-      check_length(value, min_length, max_length)
-    },
-    default = default
-  )
-}
-
-#' @rdname property_vector
-#' @examples
 #' Stop := new_class(properties = list(at = class_float))
 #' Ramp := new_class(properties = list(stops = property_list_of(Stop)))
 #' Ramp(list(Stop(0), Stop(1)))

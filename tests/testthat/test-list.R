@@ -1,37 +1,3 @@
-test_that("property_vector accepts an atomic vector of any length", {
-  Foo <- S7::new_class(
-    "Foo",
-    properties = list(x = property_vector(S7::class_double))
-  )
-
-  expect_equal(Foo(c(1, 2, 3))@x, c(1, 2, 3))
-  expect_equal(Foo(1)@x, 1)
-  expect_equal(Foo(numeric())@x, numeric())
-})
-
-test_that("property_vector rejects a list and the wrong base type", {
-  Foo <- S7::new_class(
-    "Foo",
-    properties = list(x = property_vector(S7::class_double))
-  )
-
-  expect_error(Foo(list(1)), "<double>")
-  expect_error(Foo("a"), "<double>")
-})
-
-test_that("property_vector honours length bounds", {
-  Pair <- S7::new_class(
-    "Pair",
-    properties = list(
-      x = property_vector(S7::class_double, min_length = 2, max_length = 2)
-    )
-  )
-
-  expect_equal(Pair(c(1, 2))@x, c(1, 2))
-  expect_error(Pair(1), "at least 2")
-  expect_error(Pair(c(1, 2, 3)), "at most 2")
-})
-
 test_that("property_list_of accepts a list of the declared class", {
   Stop <- S7::new_class("Stop", properties = list(at = class_float))
   Ramp <- S7::new_class(
@@ -75,7 +41,7 @@ test_that("property_list_of expresses a fixed arity spec type", {
 
 test_that("length bounds are validated when the property is defined", {
   expect_error(
-    property_vector(S7::class_double, min_length = 5, max_length = 1),
+    property_list_of(S7::class_double, min_length = 5, max_length = 1),
     "less than or equal to"
   )
   expect_error(
