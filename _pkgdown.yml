@@ -30,8 +30,8 @@ reference:
     contents:
       - property_scalar
       - class_string
-      - class_integer
-      - class_double
+      - class_int
+      - class_float
       - class_boolean
 
   - title: Range properties

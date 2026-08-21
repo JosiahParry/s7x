@@ -70,8 +70,8 @@ test_that("scalar presets default to a typed NA when omitted", {
     "Foo",
     properties = list(
       a = class_string,
-      b = class_integer,
-      c = class_double,
+      b = class_int,
+      c = class_float,
       d = class_boolean
     )
   )

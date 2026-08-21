@@ -24,7 +24,7 @@ so a mixed structure of S7 objects and plain values converts in one call.
 library(S7)
 Point <- new_class(
   "Point",
-  properties = list(x = class_double, y = class_double)
+  properties = list(x = class_float, y = class_float)
 )
 as_vector(Point(1, 2))
 }

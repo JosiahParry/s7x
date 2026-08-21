@@ -22,7 +22,7 @@ package documents and exports needs `Foo <- new_class("Foo", ...)` to get a
 
 `property_scalar(class, default = NULL)` requires the value to be a length-1
 atomic of `class`. Presets exist for the common base types:
-`class_string`, `class_integer`, `class_double`, `class_boolean`. Each preset
+`class_string`, `class_int`, `class_float`, `class_boolean`. Each preset
 defaults to a typed `NA` (`NA_character_`, `NA_integer_`, `NA_real_`, `NA`),
 so a bare preset property can be omitted from a constructor call.
 
@@ -32,8 +32,8 @@ library(s7x)
 
 Point := new_class(
   properties = list(
-    x = class_double,
-    y = class_double,
+    x = class_float,
+    y = class_float,
     label = class_string
   )
 )
@@ -41,10 +41,10 @@ Point(1.5, 2.5, "origin")
 ```
 
 Use `property_scalar()` directly when you need a scalar of some other S7
-class (not just the three presets):
+class (not just the presets):
 
 ```r
-Wrapper := new_class(properties = list(id = property_scalar(class_integer)))
+Wrapper := new_class(properties = list(id = property_scalar(S7::class_integer)))
 ```
 
 ## Range properties
@@ -164,7 +164,7 @@ When `default` is omitted, it's derived from the first member that's an
 constructor call:
 
 ```r
-Board := new_class(properties = list(id = property_union(class_string, class_double)))
+Board := new_class(properties = list(id = property_union(class_string, class_float)))
 Board()@id # NA_character_
 ```
 
@@ -173,7 +173,7 @@ derivation, e.g. for an optional nested object. `NULL` can be listed in any
 position among `...`:
 
 ```r
-Point := new_class(properties = list(x = class_double, y = class_double))
+Point := new_class(properties = list(x = class_float, y = class_float))
 Board2 := new_class(
   properties = list(origin = property_union(Point, NULL, default = NULL))
 )
@@ -212,7 +212,7 @@ properties for compound classes. A default method handles any `S7_object`,
 so it works out of the box for classes you define with `new_class()`:
 
 ```r
-Point := new_class(properties = list(x = class_double, y = class_double))
+Point := new_class(properties = list(x = class_float, y = class_float))
 as_vector(Point(1, 2)) # list(x = 1, y = 2)
 as_vector(GridShape("Square")) # "Square"
 ```

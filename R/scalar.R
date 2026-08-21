@@ -32,8 +32,8 @@ property_scalar <- function(class, default = NULL) {
 #' Board := new_class(
 #'   properties = list(
 #'     label = class_string,
-#'     rank = class_integer,
-#'     score = class_double
+#'     rank = class_int,
+#'     score = class_float
 #'   )
 #' )
 #' Board("check", 1L, 0.5)
@@ -42,11 +42,11 @@ class_string <- property_scalar(S7::class_character, default = NA_character_)
 
 #' @rdname property_scalar
 #' @export
-class_integer <- property_scalar(S7::class_integer, default = NA_integer_)
+class_int <- property_scalar(S7::class_integer, default = NA_integer_)
 
 #' @rdname property_scalar
 #' @export
-class_double <- property_scalar(S7::class_double, default = NA_real_)
+class_float <- property_scalar(S7::class_double, default = NA_real_)
 
 #' @rdname property_scalar
 #' @export

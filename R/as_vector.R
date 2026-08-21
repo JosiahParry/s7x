@@ -12,7 +12,7 @@
 #' library(S7)
 #' Point <- new_class(
 #'   "Point",
-#'   properties = list(x = class_double, y = class_double)
+#'   properties = list(x = class_float, y = class_float)
 #' )
 #' as_vector(Point(1, 2))
 #' @export
