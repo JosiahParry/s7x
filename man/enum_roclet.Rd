@@ -2,7 +2,7 @@
 % Please edit documentation in R/roclet-enum.R
 \name{enum_roclet}
 \alias{enum_roclet}
-\title{Roclet that documents enum classes}
+\title{Roclet that documents enum and S7 classes}
 \usage{
 enum_roclet()
 }
@@ -11,8 +11,9 @@ A roxygen2 roclet.
 }
 \description{
 Fills in the title, description, \code{value} argument, and properties of every
-exported \code{\link[=new_enum]{new_enum()}} class from the class itself. Extends roxygen2's \code{rd}
-roclet, so it replaces \code{"rd"} rather than running alongside it.
+exported \code{\link[=new_enum]{new_enum()}} class from the class itself, and gives every exported
+S7 class one \verb{@param} per property. Extends roxygen2's \code{rd} roclet, so it
+replaces \code{"rd"} rather than running alongside it.
 }
 \details{
 Enable it in the \code{DESCRIPTION} of the package being documented:

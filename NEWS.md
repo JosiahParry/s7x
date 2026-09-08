@@ -1,5 +1,7 @@
 # s7x (development version)
 
+* `enum_roclet()` now also documents plain S7 classes, giving each one `@param` per constructor argument describing its type. This clears the `Undocumented arguments in Rd file` warning every exported S7 class otherwise raises under `R CMD check`. Computed properties and classes defined with a non-standard assignment operator are skipped, since neither appears in `\usage`.
+* `enum_roclet()` now generates an `@examples` section for each enum, constructing it with its first variant, so exported enums satisfy CRAN's requirement that every exported object have an example.
 * The scalar property presets `class_integer` and `class_double` are renamed to `class_int` and `class_float` so they no longer mask `S7::class_integer` and `S7::class_double`.
 * `as_vector()` gains methods for bare lists and for everything else. A list is coerced elementwise, so a structure mixing S7 objects with plain values converts in one call, and the generic is now total rather than erroring on an ordinary value.
 * `as_vector()` no longer descends into a `data.frame`, which stripped its class and flipped it columnar. Recursion is now limited to bare lists.

@@ -89,3 +89,62 @@ test_that("enum constructors carry literal defaults in their formals", {
   Strict <- new_enum("Strict", c("A", "B"), allow_na = FALSE)
   expect_true(rlang::is_missing(formals(Strict)$value))
 })
+
+test_that("enum_roclet generates an example for an enum", {
+  skip_if_not_installed("roxygen2")
+  skip_if_not_installed("usethis")
+  skip_if_not_installed("withr")
+
+  rd <- roxygenise_enum_pkg(
+    c(
+      "#' @export",
+      'GridShape <- s7x::new_enum("GridShape", c("Square", "Hexagon"))'
+    ),
+    "GridShape.Rd"
+  )
+
+  expect_true(any(grepl("\\examples{", rd, fixed = TRUE)))
+  expect_true(any(grepl('GridShape("Square")', rd, fixed = TRUE)))
+})
+
+test_that("enum_roclet documents an S7 class's properties as params", {
+  skip_if_not_installed("roxygen2")
+  skip_if_not_installed("usethis")
+  skip_if_not_installed("withr")
+
+  rd <- roxygenise_enum_pkg(
+    c(
+      "#' A point",
+      "#' @export",
+      'Point <- S7::new_class("Point", properties = list(',
+      "  label = s7x::class_string,",
+      "  x = s7x::class_float",
+      "))"
+    ),
+    "Point.Rd"
+  )
+
+  expect_true(any(grepl("\\item{label}{String.}", rd, fixed = TRUE)))
+  expect_true(any(grepl("\\item{x}{Number.}", rd, fixed = TRUE)))
+})
+
+test_that("enum_roclet skips a computed property, which has no argument", {
+  skip_if_not_installed("roxygen2")
+  skip_if_not_installed("usethis")
+  skip_if_not_installed("withr")
+
+  rd <- roxygenise_enum_pkg(
+    c(
+      "#' A box",
+      "#' @export",
+      'Box <- S7::new_class("Box", properties = list(',
+      "  width = s7x::class_float,",
+      "  area = S7::new_property(S7::class_double, getter = function(self) self@width)",
+      "))"
+    ),
+    "Box.Rd"
+  )
+
+  expect_true(any(grepl("\\item{width}{Number.}", rd, fixed = TRUE)))
+  expect_false(any(grepl("\\item{area}", rd, fixed = TRUE)))
+})
