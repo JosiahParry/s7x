@@ -25,5 +25,7 @@ Any tag written by hand wins. A block with its own title keeps that title,
 and only the missing pieces are generated.
 }
 \examples{
+\dontshow{if (rlang::is_installed("roxygen2")) withAutoprint(\{ # examplesIf}
 enum_roclet()
+\dontshow{\}) # examplesIf}
 }

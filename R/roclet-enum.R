@@ -15,7 +15,7 @@
 #'
 #' Any tag written by hand wins. A block with its own title keeps that title,
 #' and only the missing pieces are generated.
-#' @examples
+#' @examplesIf rlang::is_installed("roxygen2")
 #' enum_roclet()
 #' @export
 enum_roclet <- function() {

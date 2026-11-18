@@ -16,9 +16,13 @@ Imports:
     cli,
     rlang,
     S7 (>= 0.2.2.9000),
+    utils,
     yyjsonr
 Suggests:
-    testthat (>= 3.0.0)
+    roxygen2,
+    testthat (>= 3.0.0),
+    usethis,
+    withr
 Remotes:
     RConsortium/S7
 Config/roxygen2/version: 8.1.0.9000

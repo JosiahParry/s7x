@@ -4,6 +4,8 @@
 #' @keywords internal
 "_PACKAGE"
 
+utils::globalVariables("value")
+
 ## usethis namespace: start
 ## usethis namespace: end
 NULL

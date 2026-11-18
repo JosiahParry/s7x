@@ -55,7 +55,11 @@ property_list_of <- function(
   )
 }
 
-check_length_bounds <- function(min_length, max_length, call = caller_env()) {
+check_length_bounds <- function(
+  min_length,
+  max_length,
+  call = rlang::caller_env()
+) {
   check_number_decimal(min_length, min = 0, call = call)
   check_number_decimal(max_length, min = 0, allow_infinite = TRUE, call = call)
   if (min_length > max_length) {

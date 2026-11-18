@@ -10,14 +10,16 @@ to_json(x, ...)
 \item{x}{Any. Object to serialize.}
 
 \item{...}{Additional arguments passed to \code{yyjsonr::write_json_str()}.}
-
-\item{pretty}{Bool. Whether to pretty-print the JSON output.}
 }
 \value{
 A string containing JSON.
 }
 \description{
 Serializes \code{x} to JSON by coercing it with \code{\link[=as_vector]{as_vector()}} first.
+}
+\details{
+The \code{S7_object} method also takes \code{pretty}, a bool that
+pretty-prints the JSON output.
 }
 \examples{
 library(S7)
