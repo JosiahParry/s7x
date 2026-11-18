@@ -19,7 +19,10 @@
 as_vector <- S7::new_generic("as_vector", "x")
 
 method(as_vector, S7::S7_object) <- function(x, ...) {
-  nms <- s7_prop_names(x)
+  nms <- names(attr(S7::S7_class(x), "properties", exact = TRUE))
+  if (rlang::is_null(nms)) {
+    nms <- character()
+  }
   values <- lapply(nms, function(nm) {
     as_vector_value(S7::prop(x, nm), ...)
   })
@@ -40,25 +43,9 @@ method(as_vector, S7::class_any) <- function(x, ...) {
 # is_bare_list(), not is_list(): a data frame is a list, and descending into
 # one strips its class and flips it columnar.
 as_vector_value <- function(value, ...) {
-  if (is_s7_object(value) || rlang::is_bare_list(value)) {
+  if (inherits(value, "S7_object") || rlang::is_bare_list(value)) {
     as_vector(value, ...)
   } else {
     value
-  }
-}
-
-# Fast stand-ins for S7::S7_inherits() and S7::prop_names(). Both call
-# S7:::as_class(), which deparses its argument and builds an error message on
-# every call, even on success. See inst/dev/recursive-s7.R.
-is_s7_object <- function(x) {
-  inherits(x, "S7_object")
-}
-
-s7_prop_names <- function(x) {
-  nms <- names(attr(S7::S7_class(x), "properties", exact = TRUE))
-  if (rlang::is_null(nms)) {
-    character()
-  } else {
-    nms
   }
 }
