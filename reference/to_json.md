@@ -20,13 +20,14 @@ to_json(x, ...)
   Additional arguments passed to
   [`yyjsonr::write_json_str()`](https://coolbutuseless.github.io/package/yyjsonr/reference/write_json_str.html).
 
-- pretty:
-
-  Bool. Whether to pretty-print the JSON output.
-
 ## Value
 
 A string containing JSON.
+
+## Details
+
+The `S7_object` method also takes `pretty`, a bool that pretty-prints
+the JSON output.
 
 ## Examples
 

@@ -2,6 +2,19 @@
 
 ## s7x (development version)
 
+- [`enum_roclet()`](https://s7x.josiah.rs/reference/enum_roclet.md) now
+  also documents plain S7 classes, giving each one `@param` per
+  constructor argument describing its type. This clears the
+  `Undocumented arguments in Rd file` warning every exported S7 class
+  otherwise raises under `R CMD check`. Computed properties and classes
+  defined with a non-standard assignment operator are skipped, since
+  neither appears in `\usage`.
+
+- [`enum_roclet()`](https://s7x.josiah.rs/reference/enum_roclet.md) now
+  generates an `@examples` section for each enum, constructing it with
+  its first variant, so exported enums satisfy CRAN’s requirement that
+  every exported object have an example.
+
 - The scalar property presets `class_integer` and `class_double` are
   renamed to `class_int` and `class_float` so they no longer mask
   [`S7::class_integer`](https://rconsortium.github.io/S7/reference/base_classes.html)

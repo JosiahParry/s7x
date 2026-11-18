@@ -98,8 +98,9 @@ after adding an export, before committing.
 
 ### Version bumping
 
-Use `usethis::use_version()` to increment the version. Do not edit
-`DESCRIPTION` manually.
+Use
+[`usethis::use_version()`](https://usethis.r-lib.org/reference/use_version.html)
+to increment the version. Do not edit `DESCRIPTION` manually.
 
 ## Context
 
