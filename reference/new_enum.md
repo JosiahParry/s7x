@@ -35,15 +35,17 @@ new_enum(
 
 - default:
 
-  String or NULL. Default value used when the property is omitted. Must
-  be one of `variants`, or `NA` if `allow_na = TRUE`. If `NULL` (the
-  default), falls back to `NA_character_` when `allow_na = TRUE`,
-  otherwise the value stays required with no default.
+  String or NULL. Default variant.
 
 ## Value
 
 An S7 class generator that inherits from
 [Enum](https://s7x.josiah.rs/reference/Enum.md).
+
+## Details
+
+With `default = NULL` and `allow_na = TRUE`, the default is
+`NA_character_`.
 
 ## Examples
 

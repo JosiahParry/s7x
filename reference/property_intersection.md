@@ -1,10 +1,6 @@
 # Create a property from an intersection of properties
 
-Requires a value to satisfy every member of `...`, unlike
-[`property_union()`](https://s7x.josiah.rs/reference/property_union.md)
-which requires at least one. Every member must share the same underlying
-class since a single value can't be an instance of two different classes
-at once.
+A value must satisfy every single property in the intersection.
 
 ## Usage
 
@@ -54,7 +50,8 @@ Piece("White")
 library(S7)
 Piece := new_class(
   properties = list(
-    id = property_scalar(S7::class_character) & S7::new_property(S7::class_character)
+    id = property_scalar(S7::class_character) &
+      S7::new_property(S7::class_character)
   )
 )
 Piece("a")

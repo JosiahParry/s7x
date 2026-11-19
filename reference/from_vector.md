@@ -31,15 +31,8 @@ An instance of `class`, or `x` unchanged.
 
 ## Details
 
-`from_vector()` dispatches on the type of `x`. Before it falls back to
-its default, it calls the
-[`S7::convert()`](https://rconsortium.github.io/S7/reference/convert.html)
-method registered for the type of `x` and `class`, if one exists.
-Register a
-[`convert()`](https://rconsortium.github.io/S7/reference/convert.html)
-method to customize how one class gets built. An atomic `x`, or one with
-a `class` that isn't an S7 class, comes back unchanged. A data frame
-gets unclassed and handled as a list of its columns.
+`from_vector()` builds `class` from the properties in `x`. It returns
+atomic vectors unchanged and unclasses data frames first.
 
 ## Examples
 

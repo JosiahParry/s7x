@@ -76,15 +76,16 @@ Defaults to the caller's package, if any.</p></dd>
 
 
 <dt id="arg-default">default<a class="anchor" aria-label="anchor" href="#arg-default"></a></dt>
-<dd><p>String or NULL. Default value used when the property is
-omitted. Must be one of <code>variants</code>, or <code>NA</code> if <code>allow_na = TRUE</code>. If
-<code>NULL</code> (the default), falls back to <code>NA_character_</code> when
-<code>allow_na = TRUE</code>, otherwise the value stays required with no default.</p></dd>
+<dd><p>String or NULL. Default variant.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>An S7 class generator that inherits from <a href="Enum.html">Enum</a>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>With <code>default = NULL</code> and <code>allow_na = TRUE</code>, the default is <code>NA_character_</code>.</p>
     </div>
 
     <div class="section level2">

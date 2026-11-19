@@ -1,4 +1,4 @@
-# Define a range-bound scalar property
+# Range property
 
 A scalar property constrained to `[min, max]` inclusive.
 `property_range()` is for doubles, `property_range_discrete()` for

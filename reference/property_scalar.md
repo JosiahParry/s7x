@@ -1,7 +1,8 @@
-# Define a scalar property
+# Scalar property
 
-Ready-to-use `property_scalar()` variants for the common atomic base
-types.
+Create a scalar property of the specified base type.
+
+Ready-to-use `property_scalar()` variants for common atomic base types.
 
 ## Usage
 

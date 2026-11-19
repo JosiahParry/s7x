@@ -26,8 +26,7 @@ A string containing JSON.
 
 ## Details
 
-The `S7_object` method also takes `pretty`, a bool that pretty-prints
-the JSON output.
+Set `pretty = TRUE` to pretty-print the JSON.
 
 ## Examples
 

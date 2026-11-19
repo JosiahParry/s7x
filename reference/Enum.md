@@ -1,6 +1,6 @@
-# Abstract base class for enumerations
+# Create an Enum(eration)
 
-A scalar character value drawn from a fixed set of variants. Use
+An enum is a single value among a set list of variants. Use
 [`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) to create
 concrete subclasses.
 

@@ -73,12 +73,8 @@ list of its properties, recursing into properties that are S7 classes.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>from_vector()</code> dispatches on the type of <code>x</code>. Before it falls back to its
-default, it calls the <code><a href="https://rconsortium.github.io/S7/reference/convert.html" class="external-link">S7::convert()</a></code> method registered for the type of <code>x</code>
-and <code>class</code>, if one exists. Register a <code><a href="https://rconsortium.github.io/S7/reference/convert.html" class="external-link">convert()</a></code> method to customize how
-one class gets built. An atomic <code>x</code>, or one with a <code>class</code> that isn't an S7
-class, comes back unchanged. A data frame gets unclassed and handled as a
-list of its columns.</p>
+    <p><code>from_vector()</code> builds <code>class</code> from the properties in <code>x</code>. It returns atomic
+vectors unchanged and unclasses data frames first.</p>
     </div>
 
     <div class="section level2">

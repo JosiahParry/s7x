@@ -4,12 +4,12 @@
 
 A scalar value drawn from a fixed set of variants.
 
-- [`Enum()`](https://s7x.josiah.rs/reference/Enum.md) : Abstract base
-  class for enumerations
+- [`Enum()`](https://s7x.josiah.rs/reference/Enum.md) : Create an
+  Enum(eration)
 - [`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) : Create a
   new enum class
 - [`property_enum()`](https://s7x.josiah.rs/reference/property_enum.md)
-  : Define a property backed by one or more enum classes
+  : Enum(eration) property
 - [`enum_roclet()`](https://s7x.josiah.rs/reference/enum_roclet.md) :
   Roclet that documents enum and S7 classes
 
@@ -22,7 +22,7 @@ Properties constrained to a single atomic value.
   [`class_int`](https://s7x.josiah.rs/reference/property_scalar.md)
   [`class_float`](https://s7x.josiah.rs/reference/property_scalar.md)
   [`class_boolean`](https://s7x.josiah.rs/reference/property_scalar.md)
-  : Define a scalar property
+  : Scalar property
 
 ## Range properties
 
@@ -30,7 +30,7 @@ Scalar properties bound to an inclusive numeric range.
 
 - [`property_range()`](https://s7x.josiah.rs/reference/property_range.md)
   [`property_range_discrete()`](https://s7x.josiah.rs/reference/property_range.md)
-  : Define a range-bound scalar property
+  : Range property
 
 ## Combinators
 

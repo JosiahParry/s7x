@@ -1,6 +1,6 @@
-# Define a property backed by one or more enum classes
+# Enum(eration) property
 
-Define a property backed by one or more enum classes
+Enum(eration) property
 
 ## Usage
 

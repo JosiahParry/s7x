@@ -2,7 +2,7 @@
 
 An analogue to
 [`S7::new_union()`](https://rconsortium.github.io/S7/reference/new_union.html).
-Defines a new property from multiple
+Defines a new property from multiple.
 
 ## Usage
 
@@ -23,13 +23,6 @@ e1 | e2
 
   Any. Passed to
   [`S7::new_property()`](https://rconsortium.github.io/S7/reference/new_property.html).
-  If left unsupplied, falls back to the first member's own default (only
-  members that are an `S7_property`, e.g. a
-  [`property_scalar()`](https://s7x.josiah.rs/reference/property_scalar.md)
-  preset, carry one) that satisfies the union's combined validator. Pass
-  `default = NULL` explicitly to pin the default to `NULL` and opt out
-  of this fallback; this resolves to an actual `NULL` regardless of
-  where a literal `NULL` member sits among `...`.
 
 - e1, e2:
 
@@ -39,12 +32,19 @@ e1 | e2
 
 An S7 property typed as the union of `...`.
 
+## Details
+
+`property_union()` uses the first member default that satisfies the
+union. Pass `default = NULL` for a `NULL` default.
+
 ## Examples
 
 ``` r
 library(S7)
 Piece := new_class(
-  properties = list(id = property_union(S7::class_character, S7::class_integer))
+  properties = list(
+    id = property_union(S7::class_character, S7::class_integer)
+  )
 )
 Piece("a")
 #> <Piece>
