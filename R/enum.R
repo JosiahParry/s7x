@@ -1,7 +1,7 @@
-#' Abstract base class for enumerations
+#' Create an Enum(eration)
 #'
-#' A scalar character value drawn from a fixed set of variants. Use
-#' [new_enum()] to create concrete subclasses.
+#' An enum is a single value among a set list of variants.
+#' Use [new_enum()] to create concrete subclasses.
 #'
 #' @param value String. The enum's current value.
 #' @inheritParams new_enum
@@ -47,11 +47,10 @@ enum_as_character <- function(x, ...) {
 #' @param package String or NULL. Package to attribute the class to.
 #'   Defaults to the caller's package, if any.
 #' @param allow_na Bool. Whether `NA_character_` is a valid value.
-#' @param default String or NULL. Default value used when the property is
-#'   omitted. Must be one of `variants`, or `NA` if `allow_na = TRUE`. If
-#'   `NULL` (the default), falls back to `NA_character_` when
-#'   `allow_na = TRUE`, otherwise the value stays required with no default.
+#' @param default String or NULL. Default variant.
 #' @return An S7 class generator that inherits from [Enum].
+#' @details
+#' With `default = NULL` and `allow_na = TRUE`, the default is `NA_character_`.
 #' @examples
 #' GridShape <- new_enum("GridShape", c("Square", "Hexagon"))
 #' GridShape("Square")
@@ -134,7 +133,7 @@ new_enum <- function(
   enum_class
 }
 
-#' Define a property backed by one or more enum classes
+#' Enum(eration) property
 #'
 #' @param ... Enum classes. One or more classes from [new_enum()].
 #' @param default Any. Passed to [S7::new_property()].

@@ -2,7 +2,7 @@
 % Please edit documentation in R/enum.R
 \name{property_enum}
 \alias{property_enum}
-\title{Define a property backed by one or more enum classes}
+\title{Enum(eration) property}
 \usage{
 property_enum(..., default = NULL)
 }
@@ -15,7 +15,7 @@ property_enum(..., default = NULL)
 An S7 property typed as the union of \code{...}.
 }
 \description{
-Define a property backed by one or more enum classes
+Enum(eration) property
 }
 \examples{
 library(S7)

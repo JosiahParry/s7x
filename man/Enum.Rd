@@ -2,7 +2,7 @@
 % Please edit documentation in R/enum.R
 \name{Enum}
 \alias{Enum}
-\title{Abstract base class for enumerations}
+\title{Create an Enum(eration)}
 \usage{
 Enum(value = NA_character_, variants = character(0), allow_na = NA)
 }
@@ -14,8 +14,8 @@ Enum(value = NA_character_, variants = character(0), allow_na = NA)
 \item{allow_na}{Bool. Whether \code{NA_character_} is a valid value.}
 }
 \description{
-A scalar character value drawn from a fixed set of variants. Use
-\code{\link[=new_enum]{new_enum()}} to create concrete subclasses.
+An enum is a single value among a set list of variants.
+Use \code{\link[=new_enum]{new_enum()}} to create concrete subclasses.
 }
 \examples{
 GridShape <- new_enum("GridShape", c("Square", "Hexagon"))

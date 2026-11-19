@@ -12,13 +12,7 @@ property_union(..., default = NULL)
 \arguments{
 \item{...}{S7 classes or properties to union.}
 
-\item{default}{Any. Passed to \code{\link[S7:new_property]{S7::new_property()}}. If left unsupplied,
-falls back to the first member's own default (only members that are an
-\code{S7_property}, e.g. a \code{\link[=property_scalar]{property_scalar()}} preset, carry one) that
-satisfies the union's combined validator. Pass \code{default = NULL}
-explicitly to pin the default to \code{NULL} and opt out of this fallback;
-this resolves to an actual \code{NULL} regardless of where a literal \code{NULL}
-member sits among \code{...}.}
+\item{default}{Any. Passed to \code{\link[S7:new_property]{S7::new_property()}}.}
 
 \item{e1, e2}{S7 classes or properties to union.}
 }
@@ -26,13 +20,18 @@ member sits among \code{...}.}
 An S7 property typed as the union of \code{...}.
 }
 \description{
-An analogue to \code{\link[S7:new_union]{S7::new_union()}}. Defines a new property
-from multiple
+An analogue to \code{\link[S7:new_union]{S7::new_union()}}. Defines a new property from multiple.
+}
+\details{
+\code{property_union()} uses the first member default that satisfies the union.
+Pass \code{default = NULL} for a \code{NULL} default.
 }
 \examples{
 library(S7)
 Piece := new_class(
-  properties = list(id = property_union(S7::class_character, S7::class_integer))
+  properties = list(
+    id = property_union(S7::class_character, S7::class_integer)
+  )
 )
 Piece("a")
 Piece(1L)

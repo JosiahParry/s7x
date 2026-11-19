@@ -22,16 +22,16 @@ Defaults to the caller's package, if any.}
 
 \item{allow_na}{Bool. Whether \code{NA_character_} is a valid value.}
 
-\item{default}{String or NULL. Default value used when the property is
-omitted. Must be one of \code{variants}, or \code{NA} if \code{allow_na = TRUE}. If
-\code{NULL} (the default), falls back to \code{NA_character_} when
-\code{allow_na = TRUE}, otherwise the value stays required with no default.}
+\item{default}{String or NULL. Default variant.}
 }
 \value{
 An S7 class generator that inherits from \link{Enum}.
 }
 \description{
 Create a new enum class
+}
+\details{
+With \code{default = NULL} and \code{allow_na = TRUE}, the default is \code{NA_character_}.
 }
 \examples{
 GridShape <- new_enum("GridShape", c("Square", "Hexagon"))

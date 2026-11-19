@@ -18,8 +18,7 @@ A string containing JSON.
 Serializes \code{x} to JSON by coercing it with \code{\link[=as_vector]{as_vector()}} first.
 }
 \details{
-The \code{S7_object} method also takes \code{pretty}, a bool that
-pretty-prints the JSON output.
+Set \code{pretty = TRUE} to pretty-print the JSON.
 }
 \examples{
 library(S7)

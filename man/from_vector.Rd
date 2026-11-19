@@ -21,12 +21,8 @@ The inverse of \code{\link[=as_vector]{as_vector()}}. Builds an instance of \cod
 list of its properties, recursing into properties that are S7 classes.
 }
 \details{
-\code{from_vector()} dispatches on the type of \code{x}. Before it falls back to its
-default, it calls the \code{\link[S7:convert]{S7::convert()}} method registered for the type of \code{x}
-and \code{class}, if one exists. Register a \code{convert()} method to customize how
-one class gets built. An atomic \code{x}, or one with a \code{class} that isn't an S7
-class, comes back unchanged. A data frame gets unclassed and handled as a
-list of its columns.
+\code{from_vector()} builds \code{class} from the properties in \code{x}. It returns atomic
+vectors unchanged and unclasses data frames first.
 }
 \examples{
 library(S7)

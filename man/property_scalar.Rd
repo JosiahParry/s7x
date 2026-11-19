@@ -6,7 +6,7 @@
 \alias{class_int}
 \alias{class_float}
 \alias{class_boolean}
-\title{Define a scalar property}
+\title{Scalar property}
 \usage{
 property_scalar(class, default = NULL)
 
@@ -27,8 +27,9 @@ class_boolean
 An S7 property whose value must be a scalar atomic.
 }
 \description{
-Ready-to-use \code{\link[=property_scalar]{property_scalar()}} variants for the common atomic base
-types.
+Create a scalar property of the specified base type.
+
+Ready-to-use \code{\link[=property_scalar]{property_scalar()}} variants for common atomic base types.
 }
 \examples{
 library(S7)

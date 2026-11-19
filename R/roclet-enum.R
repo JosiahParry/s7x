@@ -1,9 +1,6 @@
 #' Roclet that documents enum and S7 classes
 #'
-#' Fills in the title, description, `value` argument, and properties of every
-#' exported [new_enum()] class from the class itself, and gives every exported
-#' S7 class one `@param` per property. Extends roxygen2's `rd` roclet, so it
-#' replaces `"rd"` rather than running alongside it.
+#' Documents exported [new_enum()] classes and S7 class properties.
 #'
 #' @return A roxygen2 roclet.
 #' @details
@@ -13,8 +10,7 @@
 #' Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
 #' ```
 #'
-#' Any tag written by hand wins. A block with its own title keeps that title,
-#' and only the missing pieces are generated.
+#' `enum_roclet()` generates an enum's documentation from its variants.
 #' @examplesIf rlang::is_installed("roxygen2")
 #' enum_roclet()
 #' @export

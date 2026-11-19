@@ -15,10 +15,18 @@ as_vector(x, ...)
 An atomic vector or a named list.
 }
 \description{
-Returns a plain R vector representation of \code{x}, for which \code{\link[=is.vector]{is.vector()}}
-is \code{TRUE}: an atomic vector for scalar-backed classes, or a named list
-of coerced properties for compound classes. A list is coerced elementwise,
-so a mixed structure of S7 objects and plain values converts in one call.
+Takes an S7 object and coerces it to the appropriate vector container type.
+This is an S7 generic which can be implemented for any custom types.
+}
+\details{
+\code{as_vector()} returns:
+\itemize{
+\item \code{S7_object}: a named list of its coerced properties.
+\item \code{Enum}: its value as a string.
+\item \code{list}: a list with each S7 object or bare list element coerced. It leaves
+other elements, such as data frames, unchanged.
+\item Falls back to use \code{\link[=as.list]{as.list()}}.
+}
 }
 \examples{
 library(S7)

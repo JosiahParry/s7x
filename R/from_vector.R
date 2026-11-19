@@ -4,12 +4,8 @@
 #' list of its properties, recursing into properties that are S7 classes.
 #'
 #' @details
-#' `from_vector()` dispatches on the type of `x`. Before it falls back to its
-#' default, it calls the [S7::convert()] method registered for the type of `x`
-#' and `class`, if one exists. Register a `convert()` method to customize how
-#' one class gets built. An atomic `x`, or one with a `class` that isn't an S7
-#' class, comes back unchanged. A data frame gets unclassed and handled as a
-#' list of its columns.
+#' `from_vector()` builds `class` from the properties in `x`. It returns atomic
+#' vectors unchanged and unclasses data frames first.
 #'
 #' @param x Any. Vector to build from.
 #' @param class S7 class spec. Class to build.

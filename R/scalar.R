@@ -1,4 +1,6 @@
-#' Define a scalar property
+#' Scalar property
+#'
+#' Create a scalar property of the specified base type.
 #'
 #' @param class S7 class spec. Base type the value must be an instance of.
 #' @param default Any. Passed to [S7::new_property()].
@@ -22,8 +24,7 @@ property_scalar <- function(class, default = NULL) {
 
 #' Scalar property presets
 #'
-#' Ready-to-use [property_scalar()] variants for the common atomic base
-#' types.
+#' Ready-to-use [property_scalar()] variants for common atomic base types.
 #'
 #' @format NULL
 #' @rdname property_scalar
@@ -73,11 +74,10 @@ new_range_property <- function(class, min, max, allow_na, na_default) {
   )
 }
 
-#' Define a range-bound scalar property
+#' Range property
 #'
-#' A scalar property constrained to `[min, max]` inclusive.
-#' `property_range()` is for doubles, `property_range_discrete()` for
-#' integers.
+#' A scalar property constrained to `[min, max]` inclusive. `property_range()`
+#' is for doubles, `property_range_discrete()` for integers.
 #'
 #' @param min Number. Inclusive lower bound.
 #' @param max Number. Inclusive upper bound.

@@ -5,8 +5,7 @@
 #' @param x Any. Object to serialize.
 #' @param ... Additional arguments passed to `yyjsonr::write_json_str()`.
 #' @return A string containing JSON.
-#' @details The `S7_object` method also takes `pretty`, a bool that
-#' pretty-prints the JSON output.
+#' @details Set `pretty = TRUE` to pretty-print the JSON.
 #' @include as_vector.R
 #' @examples
 #' library(S7)

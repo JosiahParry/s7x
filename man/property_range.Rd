@@ -3,7 +3,7 @@
 \name{property_range}
 \alias{property_range}
 \alias{property_range_discrete}
-\title{Define a range-bound scalar property}
+\title{Range property}
 \usage{
 property_range(min, max, allow_na = TRUE)
 
@@ -20,9 +20,8 @@ property_range_discrete(min, max, allow_na = TRUE)
 An S7 property whose value must be a scalar within \verb{[min, max]}.
 }
 \description{
-A scalar property constrained to \verb{[min, max]} inclusive.
-\code{property_range()} is for doubles, \code{property_range_discrete()} for
-integers.
+A scalar property constrained to \verb{[min, max]} inclusive. \code{property_range()}
+is for doubles, \code{property_range_discrete()} for integers.
 }
 \examples{
 library(S7)

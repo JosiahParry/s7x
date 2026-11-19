@@ -20,10 +20,7 @@ property_intersection(..., default = NULL)
 An S7 property whose value must satisfy every member of \code{...}.
 }
 \description{
-Requires a value to satisfy every member of \code{...}, unlike
-\code{\link[=property_union]{property_union()}} which requires at least one. Every member must share
-the same underlying class since a single value can't be an instance of
-two different classes at once.
+A value must satisfy every single property in the intersection.
 }
 \examples{
 library(S7)
@@ -41,7 +38,8 @@ Piece("White")
 library(S7)
 Piece := new_class(
   properties = list(
-    id = property_scalar(S7::class_character) & S7::new_property(S7::class_character)
+    id = property_scalar(S7::class_character) &
+      S7::new_property(S7::class_character)
   )
 )
 Piece("a")

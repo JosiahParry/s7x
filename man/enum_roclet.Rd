@@ -10,10 +10,7 @@ enum_roclet()
 A roxygen2 roclet.
 }
 \description{
-Fills in the title, description, \code{value} argument, and properties of every
-exported \code{\link[=new_enum]{new_enum()}} class from the class itself, and gives every exported
-S7 class one \verb{@param} per property. Extends roxygen2's \code{rd} roclet, so it
-replaces \code{"rd"} rather than running alongside it.
+Documents exported \code{\link[=new_enum]{new_enum()}} classes and S7 class properties.
 }
 \details{
 Enable it in the \code{DESCRIPTION} of the package being documented:
@@ -21,8 +18,7 @@ Enable it in the \code{DESCRIPTION} of the package being documented:
 \if{html}{\out{<div class="sourceCode">}}\preformatted{Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
 }\if{html}{\out{</div>}}
 
-Any tag written by hand wins. A block with its own title keeps that title,
-and only the missing pieces are generated.
+\code{enum_roclet()} generates an enum's documentation from its variants.
 }
 \examples{
 \dontshow{if (rlang::is_installed("roxygen2")) withAutoprint(\{ # examplesIf}
