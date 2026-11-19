@@ -24,13 +24,6 @@ Properties constrained to a single atomic value.
   [`class_boolean`](https://s7x.josiah.rs/reference/property_scalar.md)
   : Define a scalar property
 
-## List properties
-
-Properties holding a list of one class.
-
-- [`property_list_of()`](https://s7x.josiah.rs/reference/property_list_of.md)
-  : Define a homogeneous list property
-
 ## Range properties
 
 Scalar properties bound to an inclusive numeric range.
@@ -56,5 +49,7 @@ Coerce S7 objects to plain R vectors or JSON.
 
 - [`as_vector()`](https://s7x.josiah.rs/reference/as_vector.md) : Coerce
   an S7 object to a vector
+- [`from_vector()`](https://s7x.josiah.rs/reference/from_vector.md) :
+  Build an S7 object from a vector
 - [`to_json()`](https://s7x.josiah.rs/reference/to_json.md) : Coerce an
   S7 object to a JSON string
