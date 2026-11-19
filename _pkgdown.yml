@@ -34,11 +34,6 @@ reference:
       - class_float
       - class_boolean
 
-  - title: List properties
-    desc: Properties holding a list of one class.
-    contents:
-      - property_list_of
-
   - title: Range properties
     desc: Scalar properties bound to an inclusive numeric range.
     contents:
@@ -55,4 +50,5 @@ reference:
     desc: Coerce S7 objects to plain R vectors or JSON.
     contents:
       - as_vector
+      - from_vector
       - to_json
