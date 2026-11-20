@@ -1,8 +1,8 @@
-# Roclet that documents enum and S7 classes
+# Document enums and S7 classes
 
-Documents exported
-[`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) classes and
-S7 class properties.
+Use `enum_roclet()` to generate the docs of exported
+[`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) and S7
+classes from their definitions.
 
 ## Usage
 
@@ -16,11 +16,20 @@ A roxygen2 roclet.
 
 ## Details
 
-Enable it in the `DESCRIPTION` of the package being documented:
+Enable it in your package's `DESCRIPTION`:
 
     Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
 
-`enum_roclet()` generates an enum's documentation from its variants.
+You get each of these that you don't write yourself:
+
+- An enum on its own page: the title, description, `value` param,
+  `variants` and `allow_na` properties, returns and an example.
+
+- Enums that share a page through `@rdname`: the `value` param and a
+  Variants section that lists each enum's values.
+
+- An S7 class on its own page: a `@param` with the type of each
+  property.
 
 ## Examples
 
