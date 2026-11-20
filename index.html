@@ -126,6 +126,16 @@
 <span><span class="co">#&gt; ! &lt;NComponents&gt; object properties are invalid:</span></span>
 <span><span class="co">#&gt; - @n must be a scalar atomic</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="package-development">Package Development<a class="anchor" aria-label="anchor" href="#package-development"></a>
+</h2>
+<p>If using an <code>Enum</code> from <code>s7x</code>, call <code><a href="reference/enum_roclet.html">s7x::use_roxygen()</a></code> so that you can use the <code>@enum</code> roclet to automatically generate variant level documentation.</p>
+<p>For example:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' @enum</span></span>
+<span><span class="co">#' @export</span></span>
+<span><span class="va">GridShape</span> <span class="op">:=</span> <span class="fu"><a href="reference/new_enum.html">new_enum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Square"</span>, <span class="st">"Hexagon"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
