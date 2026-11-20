@@ -3,7 +3,7 @@
 `to_json()` serializes `x` with
 [`as_vector()`](https://s7x.josiah.rs/reference/as_vector.md).
 `from_json()` parses `json` and builds `class` with
-[`from_vector()`](https://s7x.josiah.rs/reference/from_vector.md).
+[`from_vector()`](https://s7x.josiah.rs/reference/as_vector.md).
 
 ## Usage
 
