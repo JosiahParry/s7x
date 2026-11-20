@@ -55,3 +55,14 @@ pre code span.co { color: #746e81; font-style: italic; }
 [data-bs-theme="dark"] pre code span.va { color: #e5e3ea; }
 [data-bs-theme="dark"] pre code span.op { color: #7c8799; }
 [data-bs-theme="dark"] pre code span.co { color: #737079; font-style: italic; }
+
+/* The README logo is for GitHub. On the site, pkgdown's header logo shows instead. */
+.page-header h1 picture {
+  display: none;
+}
+
+/* Dark logo: push the light logo out of the box and draw the dark one as its background. */
+[data-bs-theme="dark"] img.logo {
+  object-position: -9999px 0;
+  background: url("reference/figures/logo-dark.webp") center / contain no-repeat;
+}

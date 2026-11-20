@@ -2,7 +2,7 @@
 
 <!-- README.md is generated from README.qmd. Please edit that file -->
 
-# s7x - S7 extensions <a href="https://s7x.josiah.rs/"><img src="man/figures/logo.svg" align="right" height="139" alt="s7x website" /></a>
+# s7x - S7 extensions <a href="https://s7x.josiah.rs/"><picture><source media="(prefers-color-scheme: dark)" srcset="man/figures/logo-dark.webp" /><img src="man/figures/logo.svg" align="right" height="139" alt="s7x website" /></picture></a>
 
 `{s7x}` provides utility extensions to the
 [`{S7}`](https://rconsortium.github.io/S7/) type system.
