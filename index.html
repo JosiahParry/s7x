@@ -65,8 +65,9 @@
 <ul>
 <li>an extensible <code>Enum</code> class for speficying enumerations</li>
 <li>scalar properties</li>
+<li>arrays of S7 classes</li>
 <li>range propeties (discrete and continuous)</li>
-<li>property unions and intersections</li>
+<li>property intersections</li>
 </ul>
 <p>See <a href="https://josiah.rs/posts/enums-in-r/" class="external-link">Enums in R: towards type safe R</a> for the motivation behind this package.</p>
 <div class="section level2">
@@ -113,7 +114,9 @@
 <p>For example:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rconsortium.github.io/S7/" class="external-link">S7</a></span><span class="op">)</span></span>
-<span><span class="va">NComponents</span> <span class="op">:=</span> <span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html" class="external-link">new_class</a></span><span class="op">(</span>properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="reference/property_scalar.html">property_scalar</a></span><span class="op">(</span><span class="fu">S7</span><span class="fu">::</span><span class="va"><a href="https://rconsortium.github.io/S7/reference/base_classes.html" class="external-link">class_integer</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">NComponents</span> <span class="op">:=</span> <span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html" class="external-link">new_class</a></span><span class="op">(</span></span>
+<span>  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="reference/property_scalar.html">property_scalar</a></span><span class="op">(</span><span class="fu">S7</span><span class="fu">::</span><span class="va"><a href="https://rconsortium.github.io/S7/reference/base_classes.html" class="external-link">class_integer</a></span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">n_comps</span> <span class="op">&lt;-</span> <span class="fu">NComponents</span><span class="op">(</span><span class="fl">5L</span><span class="op">)</span></span>
 <span><span class="va">n_comps</span></span>
@@ -127,11 +130,201 @@
 <span><span class="co">#&gt; - @n must be a scalar atomic</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="ranges">Ranges<a class="anchor" aria-label="anchor" href="#ranges"></a>
+</h2>
+<p>For example, if you wanted to model a chess board:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Rank</span> <span class="op">:=</span> <span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html" class="external-link">new_class</a></span><span class="op">(</span></span>
+<span>  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>number <span class="op">=</span> <span class="fu"><a href="reference/property_range.html">property_range_discrete</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span>, allow_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">File</span> <span class="op">:=</span> <span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html" class="external-link">new_class</a></span><span class="op">(</span></span>
+<span>  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>number <span class="op">=</span> <span class="fu"><a href="reference/property_range.html">property_range_discrete</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span>, allow_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>We can combine this with an enum and a normal S7 object to define the position of a chess piece.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Piece</span> <span class="op">:=</span> <span class="fu"><a href="reference/new_enum.html">new_enum</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Pawn"</span>, <span class="st">"Bishop"</span>, <span class="st">"Knight"</span>, <span class="st">"Rook"</span>, <span class="st">"Queen"</span>, <span class="st">"King"</span><span class="op">)</span>,</span>
+<span>  allow_na <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  default <span class="op">=</span> <span class="st">"Pawn"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">Square</span> <span class="op">:=</span> <span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html" class="external-link">new_class</a></span><span class="op">(</span></span>
+<span>  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    piece <span class="op">=</span> <span class="va">Piece</span>,</span>
+<span>    rank <span class="op">=</span> <span class="va">Rank</span>,</span>
+<span>    file <span class="op">=</span> <span class="va">File</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">queen_start</span> <span class="op">&lt;-</span> <span class="fu">Square</span><span class="op">(</span></span>
+<span>  <span class="fu">Piece</span><span class="op">(</span><span class="st">"Queen"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">Rank</span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span>,</span>
+<span>  <span class="fu">File</span><span class="op">(</span><span class="fl">4L</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">queen_start</span></span>
+<span><span class="co">#&gt; &lt;Square&gt;</span></span>
+<span><span class="co">#&gt;  @ piece: &lt;Piece&gt;</span></span>
+<span><span class="co">#&gt;  .. @ value   : chr "Queen"</span></span>
+<span><span class="co">#&gt;  .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" "Queen" "King"</span></span>
+<span><span class="co">#&gt;  .. @ allow_na: logi FALSE</span></span>
+<span><span class="co">#&gt;  @ rank : &lt;Rank&gt;</span></span>
+<span><span class="co">#&gt;  .. @ number: int 1</span></span>
+<span><span class="co">#&gt;  @ file : &lt;File&gt;</span></span>
+<span><span class="co">#&gt;  .. @ number: int 4</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="arrays">Arrays<a class="anchor" aria-label="anchor" href="#arrays"></a>
+</h2>
+<p>Often, you may want to contain an array of S7 objects.</p>
+<p>The <code><a href="reference/property_array.html">property_array()</a></code> gives us strongly typed arrays of S7 objects. If we wanted to record the position of all of each player’s pieces at on turn we could create a new type that contains an array of <code>Squares</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">PlayerPieces</span> <span class="op">:=</span> <span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html" class="external-link">new_class</a></span><span class="op">(</span></span>
+<span>  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>pieces <span class="op">=</span> <span class="fu"><a href="reference/property_array.html">property_array</a></span><span class="op">(</span><span class="va">Square</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">white</span> <span class="op">&lt;-</span> <span class="fu">PlayerPieces</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="va">queen_start</span>,</span>
+<span>    <span class="fu">Square</span><span class="op">(</span></span>
+<span>      <span class="fu">Piece</span><span class="op">(</span><span class="st">"King"</span><span class="op">)</span>,</span>
+<span>      <span class="fu">Rank</span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span>,</span>
+<span>      <span class="fu">File</span><span class="op">(</span><span class="fl">5L</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">white</span></span>
+<span><span class="co">#&gt; &lt;PlayerPieces&gt;</span></span>
+<span><span class="co">#&gt;  @ pieces: List of 2</span></span>
+<span><span class="co">#&gt;  .. $ : &lt;Square&gt;</span></span>
+<span><span class="co">#&gt;  ..  ..@ piece: &lt;Piece&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ value   : chr "Queen"</span></span>
+<span><span class="co">#&gt;  .. .. .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" ...</span></span>
+<span><span class="co">#&gt;  .. .. .. @ allow_na: logi FALSE</span></span>
+<span><span class="co">#&gt;  ..  ..@ rank : &lt;Rank&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ number: int 1</span></span>
+<span><span class="co">#&gt;  ..  ..@ file : &lt;File&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ number: int 4</span></span>
+<span><span class="co">#&gt;  .. $ : &lt;Square&gt;</span></span>
+<span><span class="co">#&gt;  ..  ..@ piece: &lt;Piece&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ value   : chr "King"</span></span>
+<span><span class="co">#&gt;  .. .. .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" ...</span></span>
+<span><span class="co">#&gt;  .. .. .. @ allow_na: logi FALSE</span></span>
+<span><span class="co">#&gt;  ..  ..@ rank : &lt;Rank&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ number: int 1</span></span>
+<span><span class="co">#&gt;  ..  ..@ file : &lt;File&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ number: int 5</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="conversion-to-vectors">Conversion to vectors<a class="anchor" aria-label="anchor" href="#conversion-to-vectors"></a>
+</h2>
+<p>The <code>s7x</code> package introduces the generics <code><a href="reference/as_vector.html">as_vector()</a></code> and <code><a href="reference/as_vector.html">from_vector()</a></code> to provide conversion methods from base S3 vectors types such as a list, or character vector, etc.</p>
+<p>The defualt implementation does the following:</p>
+<ul>
+<li>
+<code>S7</code> objects: creates a named list of each property and value</li>
+<li>
+<code>Enum</code>s: converts to a character vector</li>
+<li>
+<code>Range</code>s: converts to a double or integer</li>
+</ul>
+<p>You can create your own bespoke methods as well.</p>
+<p>For example, we can use <code><a href="reference/as_vector.html">as_vector()</a></code> to convert our <code>Square()</code> to a list.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">queen_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_vector.html">as_vector</a></span><span class="op">(</span><span class="va">queen_start</span><span class="op">)</span></span>
+<span><span class="va">queen_list</span></span>
+<span><span class="co">#&gt; $piece</span></span>
+<span><span class="co">#&gt; [1] "Queen"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $rank</span></span>
+<span><span class="co">#&gt; $rank$number</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $file</span></span>
+<span><span class="co">#&gt; $file$number</span></span>
+<span><span class="co">#&gt; [1] 4</span></span></code></pre></div>
+<p>Additionally, if your data comes in the format of a list or another type, we can parse that into the correct <code>S7</code> type using <code>from_vector(object, S7_class)</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">round_tripped</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_vector.html">from_vector</a></span><span class="op">(</span><span class="va">queen_list</span>, <span class="va">Square</span><span class="op">)</span></span>
+<span><span class="va">round_tripped</span></span>
+<span><span class="co">#&gt; &lt;Square&gt;</span></span>
+<span><span class="co">#&gt;  @ piece: &lt;Piece&gt;</span></span>
+<span><span class="co">#&gt;  .. @ value   : chr "Queen"</span></span>
+<span><span class="co">#&gt;  .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" "Queen" "King"</span></span>
+<span><span class="co">#&gt;  .. @ allow_na: logi FALSE</span></span>
+<span><span class="co">#&gt;  @ rank : &lt;Rank&gt;</span></span>
+<span><span class="co">#&gt;  .. @ number: int 1</span></span>
+<span><span class="co">#&gt;  @ file : &lt;File&gt;</span></span>
+<span><span class="co">#&gt;  .. @ number: int 4</span></span>
+<span></span>
+<span><span class="co"># verify no differences</span></span>
+<span><span class="fu">waldo</span><span class="fu">::</span><span class="fu"><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">compare</a></span><span class="op">(</span><span class="va">queen_start</span>, <span class="va">round_tripped</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ✔ No differences</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="json-conversion">Json conversion<a class="anchor" aria-label="anchor" href="#json-conversion"></a>
+</h2>
+<p>Inspired by <code>serde</code> and <code>serde_json</code> in the rust ecosystem, <code>s7x</code> provides generics <code><a href="reference/to_json.html">from_json()</a></code> and <code><a href="reference/to_json.html">to_json()</a></code>. These use <code>yyjsonr</code> under the hood for fast performance.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/to_json.html">to_json</a></span><span class="op">(</span><span class="va">white</span>, pretty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;   "pieces": [</span></span>
+<span><span class="co">#&gt;     {</span></span>
+<span><span class="co">#&gt;       "piece": "Queen",</span></span>
+<span><span class="co">#&gt;       "rank": {</span></span>
+<span><span class="co">#&gt;         "number": 1</span></span>
+<span><span class="co">#&gt;       },</span></span>
+<span><span class="co">#&gt;       "file": {</span></span>
+<span><span class="co">#&gt;         "number": 4</span></span>
+<span><span class="co">#&gt;       }</span></span>
+<span><span class="co">#&gt;     },</span></span>
+<span><span class="co">#&gt;     {</span></span>
+<span><span class="co">#&gt;       "piece": "King",</span></span>
+<span><span class="co">#&gt;       "rank": {</span></span>
+<span><span class="co">#&gt;         "number": 1</span></span>
+<span><span class="co">#&gt;       },</span></span>
+<span><span class="co">#&gt;       "file": {</span></span>
+<span><span class="co">#&gt;         "number": 5</span></span>
+<span><span class="co">#&gt;       }</span></span>
+<span><span class="co">#&gt;     }</span></span>
+<span><span class="co">#&gt;   ]</span></span>
+<span><span class="co">#&gt; }</span></span></code></pre></div>
+<p>Now, we can call <code><a href="reference/to_json.html">from_json()</a></code> to parse this back into the correct type. This is particularly useful when you have a <code><a href="reference/property_array.html">property_array()</a></code> that you want to have as a list of your S7 class:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># round trip the json conversion</span></span>
+<span><span class="fu"><a href="reference/to_json.html">to_json</a></span><span class="op">(</span><span class="va">white</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/to_json.html">from_json</a></span><span class="op">(</span><span class="va">PlayerPieces</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;PlayerPieces&gt;</span></span>
+<span><span class="co">#&gt;  @ pieces: List of 2</span></span>
+<span><span class="co">#&gt;  .. $ : &lt;Square&gt;</span></span>
+<span><span class="co">#&gt;  ..  ..@ piece: &lt;Piece&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ value   : chr "Queen"</span></span>
+<span><span class="co">#&gt;  .. .. .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" ...</span></span>
+<span><span class="co">#&gt;  .. .. .. @ allow_na: logi FALSE</span></span>
+<span><span class="co">#&gt;  ..  ..@ rank : &lt;Rank&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ number: int 1</span></span>
+<span><span class="co">#&gt;  ..  ..@ file : &lt;File&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ number: int 4</span></span>
+<span><span class="co">#&gt;  .. $ : &lt;Square&gt;</span></span>
+<span><span class="co">#&gt;  ..  ..@ piece: &lt;Piece&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ value   : chr "King"</span></span>
+<span><span class="co">#&gt;  .. .. .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" ...</span></span>
+<span><span class="co">#&gt;  .. .. .. @ allow_na: logi FALSE</span></span>
+<span><span class="co">#&gt;  ..  ..@ rank : &lt;Rank&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ number: int 1</span></span>
+<span><span class="co">#&gt;  ..  ..@ file : &lt;File&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ number: int 5</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="package-development">Package Development<a class="anchor" aria-label="anchor" href="#package-development"></a>
 </h2>
 <p>If using an <code>Enum</code> from <code>s7x</code>, call <code><a href="reference/enum_roclet.html">s7x::use_roxygen()</a></code> so that you can use the <code>@enum</code> roclet to automatically generate variant level documentation.</p>
 <p>For example:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' @enum</span></span>
 <span><span class="co">#' @export</span></span>
 <span><span class="va">GridShape</span> <span class="op">:=</span> <span class="fu"><a href="reference/new_enum.html">new_enum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Square"</span>, <span class="st">"Hexagon"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>

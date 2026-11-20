@@ -10,8 +10,9 @@ Notably s7x provides:
 
 - an extensible `Enum` class for speficying enumerations
 - scalar properties
+- arrays of S7 classes
 - range propeties (discrete and continuous)
-- property unions and intersections
+- property intersections
 
 See [Enums in R: towards type safe
 R](https://josiah.rs/posts/enums-in-r/) for the motivation behind this
@@ -93,7 +94,9 @@ For example:
 ``` r
 
 library(S7)
-NComponents := new_class(properties = list(n = property_scalar(S7::class_integer)))
+NComponents := new_class(
+  properties = list(n = property_scalar(S7::class_integer))
+)
 
 n_comps <- NComponents(5L)
 n_comps
@@ -109,6 +112,238 @@ NComponents(c(5L, 1L))
 #> Error in `NComponents()`:
 #> ! <NComponents> object properties are invalid:
 #> - @n must be a scalar atomic
+```
+
+## Ranges
+
+For example, if you wanted to model a chess board:
+
+``` r
+
+Rank := new_class(
+  properties = list(number = property_range_discrete(1, 8, allow_na = FALSE))
+)
+
+File := new_class(
+  properties = list(number = property_range_discrete(1, 8, allow_na = FALSE))
+)
+```
+
+We can combine this with an enum and a normal S7 object to define the
+position of a chess piece.
+
+``` r
+
+Piece := new_enum(
+  c("Pawn", "Bishop", "Knight", "Rook", "Queen", "King"),
+  allow_na = FALSE,
+  default = "Pawn"
+)
+
+Square := new_class(
+  properties = list(
+    piece = Piece,
+    rank = Rank,
+    file = File
+  )
+)
+
+queen_start <- Square(
+  Piece("Queen"),
+  Rank(1L),
+  File(4L)
+)
+
+queen_start
+#> <Square>
+#>  @ piece: <Piece>
+#>  .. @ value   : chr "Queen"
+#>  .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" "Queen" "King"
+#>  .. @ allow_na: logi FALSE
+#>  @ rank : <Rank>
+#>  .. @ number: int 1
+#>  @ file : <File>
+#>  .. @ number: int 4
+```
+
+## Arrays
+
+Often, you may want to contain an array of S7 objects.
+
+The
+[`property_array()`](https://s7x.josiah.rs/reference/property_array.md)
+gives us strongly typed arrays of S7 objects. If we wanted to record the
+position of all of each player’s pieces at on turn we could create a new
+type that contains an array of `Squares`.
+
+``` r
+
+PlayerPieces := new_class(
+  properties = list(pieces = property_array(Square))
+)
+
+white <- PlayerPieces(
+  list(
+    queen_start,
+    Square(
+      Piece("King"),
+      Rank(1L),
+      File(5L)
+    )
+  )
+)
+
+white
+#> <PlayerPieces>
+#>  @ pieces: List of 2
+#>  .. $ : <Square>
+#>  ..  ..@ piece: <Piece>
+#>  .. .. .. @ value   : chr "Queen"
+#>  .. .. .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" ...
+#>  .. .. .. @ allow_na: logi FALSE
+#>  ..  ..@ rank : <Rank>
+#>  .. .. .. @ number: int 1
+#>  ..  ..@ file : <File>
+#>  .. .. .. @ number: int 4
+#>  .. $ : <Square>
+#>  ..  ..@ piece: <Piece>
+#>  .. .. .. @ value   : chr "King"
+#>  .. .. .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" ...
+#>  .. .. .. @ allow_na: logi FALSE
+#>  ..  ..@ rank : <Rank>
+#>  .. .. .. @ number: int 1
+#>  ..  ..@ file : <File>
+#>  .. .. .. @ number: int 5
+```
+
+## Conversion to vectors
+
+The `s7x` package introduces the generics
+[`as_vector()`](https://s7x.josiah.rs/reference/as_vector.md) and
+[`from_vector()`](https://s7x.josiah.rs/reference/as_vector.md) to
+provide conversion methods from base S3 vectors types such as a list, or
+character vector, etc.
+
+The defualt implementation does the following:
+
+- `S7` objects: creates a named list of each property and value
+- `Enum`s: converts to a character vector
+- `Range`s: converts to a double or integer
+
+You can create your own bespoke methods as well.
+
+For example, we can use
+[`as_vector()`](https://s7x.josiah.rs/reference/as_vector.md) to convert
+our `Square()` to a list.
+
+``` r
+
+queen_list <- as_vector(queen_start)
+queen_list
+#> $piece
+#> [1] "Queen"
+#> 
+#> $rank
+#> $rank$number
+#> [1] 1
+#> 
+#> 
+#> $file
+#> $file$number
+#> [1] 4
+```
+
+Additionally, if your data comes in the format of a list or another
+type, we can parse that into the correct `S7` type using
+`from_vector(object, S7_class)`.
+
+``` r
+
+round_tripped <- from_vector(queen_list, Square)
+round_tripped
+#> <Square>
+#>  @ piece: <Piece>
+#>  .. @ value   : chr "Queen"
+#>  .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" "Queen" "King"
+#>  .. @ allow_na: logi FALSE
+#>  @ rank : <Rank>
+#>  .. @ number: int 1
+#>  @ file : <File>
+#>  .. @ number: int 4
+
+# verify no differences
+waldo::compare(queen_start, round_tripped)
+#> ✔ No differences
+```
+
+## Json conversion
+
+Inspired by `serde` and `serde_json` in the rust ecosystem, `s7x`
+provides generics
+[`from_json()`](https://s7x.josiah.rs/reference/to_json.md) and
+[`to_json()`](https://s7x.josiah.rs/reference/to_json.md). These use
+`yyjsonr` under the hood for fast performance.
+
+``` r
+
+to_json(white, pretty = TRUE) |>
+  cat()
+#> {
+#>   "pieces": [
+#>     {
+#>       "piece": "Queen",
+#>       "rank": {
+#>         "number": 1
+#>       },
+#>       "file": {
+#>         "number": 4
+#>       }
+#>     },
+#>     {
+#>       "piece": "King",
+#>       "rank": {
+#>         "number": 1
+#>       },
+#>       "file": {
+#>         "number": 5
+#>       }
+#>     }
+#>   ]
+#> }
+```
+
+Now, we can call
+[`from_json()`](https://s7x.josiah.rs/reference/to_json.md) to parse
+this back into the correct type. This is particularly useful when you
+have a
+[`property_array()`](https://s7x.josiah.rs/reference/property_array.md)
+that you want to have as a list of your S7 class:
+
+``` r
+
+# round trip the json conversion
+to_json(white) |>
+  from_json(PlayerPieces)
+#> <PlayerPieces>
+#>  @ pieces: List of 2
+#>  .. $ : <Square>
+#>  ..  ..@ piece: <Piece>
+#>  .. .. .. @ value   : chr "Queen"
+#>  .. .. .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" ...
+#>  .. .. .. @ allow_na: logi FALSE
+#>  ..  ..@ rank : <Rank>
+#>  .. .. .. @ number: int 1
+#>  ..  ..@ file : <File>
+#>  .. .. .. @ number: int 4
+#>  .. $ : <Square>
+#>  ..  ..@ piece: <Piece>
+#>  .. .. .. @ value   : chr "King"
+#>  .. .. .. @ variants: chr [1:6] "Pawn" "Bishop" "Knight" "Rook" ...
+#>  .. .. .. @ allow_na: logi FALSE
+#>  ..  ..@ rank : <Rank>
+#>  .. .. .. @ number: int 1
+#>  ..  ..@ file : <File>
+#>  .. .. .. @ number: int 5
 ```
 
 ## Package Development
