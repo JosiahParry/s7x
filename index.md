@@ -1,4 +1,4 @@
-# s7x - S7 extensions
+# s7x - S7 extensions [![s7x website](reference/figures/logo.svg)](https://s7x.josiah.rs/)
 
 [s7x](https://s7x.josiah.rs/) provides utility extensions to the
 [`{S7}`](https://rconsortium.github.io/S7/) type system.
