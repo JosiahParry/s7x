@@ -1,35 +1,39 @@
-# Document enums and S7 classes
+# roxygen2 integration
 
-Use `enum_roclet()` to generate the docs of exported
-[`new_enum()`](https://s7x.josiah.rs/reference/new_enum.md) and S7
-classes from their definitions.
+Use the `@enum` roclet to automatically generate s7x documentation.
 
 ## Usage
 
 ``` r
 enum_roclet()
+
+use_roxygen(path = ".")
 ```
+
+## Arguments
+
+- path:
+
+  a scalar character. Path to the package.
 
 ## Value
 
-A roxygen2 roclet.
+`enum_roclet()` returns a roxygen2 roclet. `use_roxygen()` returns
+`path`, invisibly.
 
 ## Details
 
-Enable it in your package's `DESCRIPTION`:
+Run `use_roxygen()` to add `s7x::enum_roclet` to the roclets in your
+`DESCRIPTION`.
 
-    Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
+The roclet generates:
 
-You get each of these that you don't write yourself:
+- Enums: the title, description, `value` param, `variants` and
+  `allow_na` properties, returns and an example.
 
-- An enum on its own page: the title, description, `value` param,
-  `variants` and `allow_na` properties, returns and an example.
+- Enums sharing an `@rdname`: the `value` param and a Variants section.
 
-- Enums that share a page through `@rdname`: the `value` param and a
-  Variants section that lists each enum's values.
-
-- An S7 class on its own page: a `@param` with the type of each
-  property.
+- S7 classes: a `@param` for each property.
 
 ## Examples
 
@@ -38,4 +42,10 @@ enum_roclet()
 #> list()
 #> attr(,"class")
 #> [1] "roclet_enum" "roclet_rd"   "roclet"     
+
+path <- tempfile()
+dir.create(path)
+writeLines("Package: example", file.path(path, "DESCRIPTION"))
+use_roxygen(path)
+#> ✔ Added "s7x::enum_roclet" to Roxygen.
 ```
