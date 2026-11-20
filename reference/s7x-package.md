@@ -1,10 +1,7 @@
 # s7x: Extensions to the 'S7' Object System
 
-Provides utilities that extend the 'S7' object system: enumerated types
-with a fixed set of variants, scalar-constrained properties, range-bound
-numeric properties, and property-level unions and intersections. These
-building blocks make it possible to express precise, type-safe class
-properties in 'S7' with less boilerplate.
+Extends the 'S7' object system to define precise, type-safe classes with
+less boilerplate.
 
 ## See also
 

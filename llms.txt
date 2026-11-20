@@ -145,6 +145,13 @@ Scalar properties bound to an inclusive numeric range.
   [`property_range_discrete()`](https://s7x.josiah.rs/reference/property_range.md)
   : Range property
 
+## Array properties
+
+Lists of values that share one class.
+
+- [`property_array()`](https://s7x.josiah.rs/reference/property_array.md)
+  : Array property
+
 ## Combinators
 
 Combine classes and properties with OR/AND semantics.
@@ -164,6 +171,7 @@ Coerce S7 objects to plain R vectors or JSON.
   an S7 object to a vector
 - [`from_vector()`](https://s7x.josiah.rs/reference/from_vector.md) :
   Build an S7 object from a vector
-- [`to_json()`](https://s7x.josiah.rs/reference/to_json.md) : Coerce an
-  S7 object to a JSON string
+- [`to_json()`](https://s7x.josiah.rs/reference/to_json.md)
+  [`from_json()`](https://s7x.josiah.rs/reference/to_json.md) : Convert
+  S7 objects to and from JSON
 
