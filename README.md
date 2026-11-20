@@ -108,3 +108,17 @@ NComponents(c(5L, 1L))
 #> ! <NComponents> object properties are invalid:
 #> - @n must be a scalar atomic
 ```
+
+## Package Development
+
+If using an `Enum` from `s7x`, call `s7x::use_roxygen()` so that you can
+use the `@enum` roclet to automatically generate variant level
+documentation.
+
+For example:
+
+``` r
+#' @enum
+#' @export
+GridShape := new_enum(c("Square", "Hexagon"))
+```
