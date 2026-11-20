@@ -111,3 +111,17 @@ test_that("from_vector builds an S7 object from the columns of a data frame", {
 
   expect_identical(from_vector(data.frame(x = 1, y = 2), Point), Point(1, 2))
 })
+
+test_that("from_vector round-trips an array property of S7 objects", {
+  Point <- S7::new_class(
+    "Point",
+    properties = list(x = class_float, y = class_float)
+  )
+  Path <- S7::new_class(
+    "Path",
+    properties = list(points = property_array(Point))
+  )
+  path <- Path(list(Point(0, 0), Point(1, 1)))
+
+  expect_identical(from_vector(as_vector(path), Path), path)
+})

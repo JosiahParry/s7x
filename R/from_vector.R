@@ -46,8 +46,11 @@ method(from_vector, S7::class_list) <- function(x, class, ...) {
   nms <- intersect(names(x), names(props))
   args <- lapply(nms, function(nm) {
     value <- x[[nm]]
+    element_class <- attr(props[[nm]], "element_class", exact = TRUE)
     if (rlang::is_null(value)) {
       value
+    } else if (!rlang::is_null(element_class)) {
+      lapply(value, from_vector, class = element_class, ...)
     } else {
       from_vector(value, props[[nm]]$class, ...)
     }

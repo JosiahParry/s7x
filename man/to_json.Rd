@@ -2,20 +2,29 @@
 % Please edit documentation in R/to_json.R
 \name{to_json}
 \alias{to_json}
-\title{Coerce an S7 object to a JSON string}
+\alias{from_json}
+\title{Convert S7 objects to and from JSON}
 \usage{
 to_json(x, ...)
+
+from_json(json, class, ...)
 }
 \arguments{
 \item{x}{Any. Object to serialize.}
 
-\item{...}{Additional arguments passed to \code{yyjsonr::write_json_str()}.}
+\item{...}{Additional arguments passed to methods.}
+
+\item{json}{String. JSON to parse.}
+
+\item{class}{S7 class spec. Class to build.}
 }
 \value{
-A string containing JSON.
+\code{to_json()} returns a string of JSON. \code{from_json()} returns an
+instance of \code{class}, or a list of them for a JSON array.
 }
 \description{
-Serializes \code{x} to JSON by coercing it with \code{\link[=as_vector]{as_vector()}} first.
+\code{to_json()} serializes \code{x} with \code{\link[=as_vector]{as_vector()}}. \code{from_json()} parses \code{json}
+and builds \code{class} with \code{\link[=from_vector]{from_vector()}}.
 }
 \details{
 Set \code{pretty = TRUE} to pretty-print the JSON.
@@ -26,5 +35,7 @@ Point <- new_class(
   "Point",
   properties = list(x = class_float, y = class_float)
 )
-to_json(Point(1, 2))
+json <- to_json(Point(1, 2))
+json
+from_json(json, Point)
 }

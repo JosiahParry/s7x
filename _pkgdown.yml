@@ -40,6 +40,11 @@ reference:
       - property_range
       - property_range_discrete
 
+  - title: Array properties
+    desc: Lists of values that share one class.
+    contents:
+      - property_array
+
   - title: Combinators
     desc: Combine classes and properties with OR/AND semantics.
     contents:
@@ -52,3 +57,4 @@ reference:
       - as_vector
       - from_vector
       - to_json
+      - from_json
