@@ -55,6 +55,5 @@ reference:
     desc: Coerce S7 objects to plain R vectors or JSON.
     contents:
       - as_vector
-      - from_vector
       - to_json
       - from_json

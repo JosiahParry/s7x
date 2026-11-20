@@ -1,7 +1,8 @@
-#' Coerce an S7 object to a vector
+#' Convert S7 objects to and from vectors
 #'
 #' Takes an S7 object and coerces it to the appropriate vector container type.
-#' This is an S7 generic which can be implemented for any custom types.
+#' `from_vector()` builds an instance of `class` from a vector. Both are S7
+#' generics which can be implemented for any custom types.
 #'
 #' @details
 #' `as_vector()` returns:
@@ -12,16 +13,23 @@
 #'   other elements, such as data frames, unchanged.
 #' - Falls back to use [as.list()].
 #'
-#' @param x Any. Object to coerce.
+#' `from_vector()` builds `class` from the properties in `x`. It returns atomic
+#' vectors unchanged and unclasses data frames first.
+#'
+#' @param x Any. Object to convert.
+#' @param class S7 class spec. Class to build.
 #' @param ... Additional arguments passed to methods.
-#' @return An atomic vector or a named list.
+#' @return `as_vector()` returns an atomic vector or a named list.
+#'   `from_vector()` returns an instance of `class`, or `x` unchanged.
 #' @examples
 #' library(S7)
 #' Point <- new_class(
 #'   "Point",
 #'   properties = list(x = class_float, y = class_float)
 #' )
-#' as_vector(Point(1, 2))
+#' v <- as_vector(Point(1, 2))
+#' v
+#' from_vector(v, Point)
 #' @export
 as_vector <- S7::new_generic("as_vector", "x")
 

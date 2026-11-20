@@ -1,23 +1,4 @@
-#' Build an S7 object from a vector
-#'
-#' The inverse of [as_vector()]. Builds an instance of `class` from a named
-#' list of its properties, recursing into properties that are S7 classes.
-#'
-#' @details
-#' `from_vector()` builds `class` from the properties in `x`. It returns atomic
-#' vectors unchanged and unclasses data frames first.
-#'
-#' @param x Any. Vector to build from.
-#' @param class S7 class spec. Class to build.
-#' @param ... Additional arguments passed to methods.
-#' @return An instance of `class`, or `x` unchanged.
-#' @examples
-#' library(S7)
-#' Point <- new_class(
-#'   "Point",
-#'   properties = list(x = class_float, y = class_float)
-#' )
-#' from_vector(list(x = 1, y = 2), Point)
+#' @rdname as_vector
 #' @export
 from_vector <- S7::new_generic("from_vector", "x", function(x, class, ...) {
   S7::S7_dispatch()
