@@ -118,6 +118,25 @@ the missing pieces are filled in:
 GridShape <- s7x::new_enum("GridShape", c("Square", "Hexagon"))
 ```
 
+Enums that share a page through `@rdname` get no generated title. Instead the
+roclet adds the `value` param and a Variants section with one bullet per enum.
+Write the title, description and examples on the shared page:
+
+```r
+#' Shapes
+#'
+#' Shape classes.
+#'
+#' @name shapes
+#' @examples
+#' GridShape("Square")
+NULL
+
+#' @rdname shapes
+#' @export
+GridShape <- s7x::new_enum("GridShape", c("Square", "Hexagon"))
+```
+
 Note that roxygen2 does not recognise S7's `:=` operator, so a class defined
 with `Foo := new_class(...)` gets no `\usage` section. Use `<-` with an
 explicit name for classes a package exports.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/roclet-enum.R
 \name{enum_roclet}
 \alias{enum_roclet}
-\title{Roclet that documents enum and S7 classes}
+\title{Document enums and S7 classes}
 \usage{
 enum_roclet()
 }
@@ -10,15 +10,23 @@ enum_roclet()
 A roxygen2 roclet.
 }
 \description{
-Documents exported \code{\link[=new_enum]{new_enum()}} classes and S7 class properties.
+Use \code{enum_roclet()} to generate the docs of exported \code{\link[=new_enum]{new_enum()}} and S7
+classes from their definitions.
 }
 \details{
-Enable it in the \code{DESCRIPTION} of the package being documented:
+Enable it in your package's \code{DESCRIPTION}:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
 }\if{html}{\out{</div>}}
 
-\code{enum_roclet()} generates an enum's documentation from its variants.
+You get each of these that you don't write yourself:
+\itemize{
+\item An enum on its own page: the title, description, \code{value} param,
+\code{variants} and \code{allow_na} properties, returns and an example.
+\item Enums that share a page through \verb{@rdname}: the \code{value} param and a
+Variants section that lists each enum's values.
+\item An S7 class on its own page: a \verb{@param} with the type of each property.
+}
 }
 \examples{
 \dontshow{if (rlang::is_installed("roxygen2")) withAutoprint(\{ # examplesIf}

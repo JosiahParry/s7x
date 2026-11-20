@@ -11,7 +11,7 @@
 #' Point(1.5)
 #' @export
 property_scalar <- function(class, default = NULL) {
-  S7::new_property(
+  prop <- S7::new_property(
     class,
     validator = function(value) {
       if (!rlang::is_scalar_atomic(value)) {
@@ -20,6 +20,8 @@ property_scalar <- function(class, default = NULL) {
     },
     default = default
   )
+  attr(prop, "scalar") <- TRUE
+  prop
 }
 
 #' Scalar property presets
@@ -58,7 +60,7 @@ new_range_property <- function(class, min, max, allow_na, na_default) {
     cli::cli_abort("{.arg min} must be less than or equal to {.arg max}.")
   }
 
-  S7::new_property(
+  prop <- S7::new_property(
     class,
     validator = function(value) {
       if (!rlang::is_scalar_atomic(value)) {
@@ -72,6 +74,8 @@ new_range_property <- function(class, min, max, allow_na, na_default) {
     },
     default = if (allow_na) na_default else NULL
   )
+  attr(prop, "scalar") <- TRUE
+  prop
 }
 
 #' Range property

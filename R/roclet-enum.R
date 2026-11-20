@@ -1,16 +1,23 @@
-#' Roclet that documents enum and S7 classes
+#' Document enums and S7 classes
 #'
-#' Documents exported [new_enum()] classes and S7 class properties.
+#' Use `enum_roclet()` to generate the docs of exported [new_enum()] and S7
+#' classes from their definitions.
 #'
 #' @return A roxygen2 roclet.
 #' @details
-#' Enable it in the `DESCRIPTION` of the package being documented:
+#' Enable it in your package's `DESCRIPTION`:
 #'
 #' ```
 #' Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
 #' ```
 #'
-#' `enum_roclet()` generates an enum's documentation from its variants.
+#' You get each of these that you don't write yourself:
+#'
+#' - An enum on its own page: the title, description, `value` param,
+#'   `variants` and `allow_na` properties, returns and an example.
+#' - Enums that share a page through `@rdname`: the `value` param and a
+#'   Variants section that lists each enum's values.
+#' - An S7 class on its own page: a `@param` with the type of each property.
 #' @examplesIf rlang::is_installed("roxygen2")
 #' enum_roclet()
 #' @export
@@ -20,8 +27,67 @@ enum_roclet <- function() {
 
 #' @rawNamespace S3method(roxygen2::roclet_process, roclet_enum)
 roclet_process.roclet_enum <- function(x, blocks, env, base_path) {
-  blocks <- lapply(blocks, block_add_enum_tags)
-  blocks <- lapply(blocks, block_add_class_tags)
+  rdnames <- vapply(
+    blocks,
+    function(block) {
+      if (block_is_enum(block) && roxygen2::block_has_tags(block, "rdname")) {
+        roxygen2::block_get_tag_value(block, "rdname")
+      } else {
+        NA_character_
+      }
+    },
+    character(1)
+  )
+
+  own_page <- is.na(rdnames)
+  blocks[own_page] <- lapply(blocks[own_page], block_add_enum_tags)
+
+  for (rdname in unique(rdnames[!own_page])) {
+    idx <- which(rdnames == rdname)
+    bullets <- vapply(
+      blocks[idx],
+      function(block) {
+        cls <- block$object$value
+        paste0("- `", cls@name, "`: ", sub("^One", "one", enum_one_of(cls)))
+      },
+      character(1)
+    )
+    generated <- list(list(
+      tag = "section",
+      raw = paste0("Variants:\n\n", paste(bullets, collapse = "\n"))
+    ))
+
+    on_page <- vapply(
+      blocks,
+      function(block) {
+        identical(roxygen2::block_get_tag_value(block, "rdname"), rdname) ||
+          identical(roxygen2::block_get_tag_value(block, "name"), rdname)
+      },
+      logical(1)
+    )
+    if (!"value" %in% unlist(lapply(blocks[on_page], block_param_names))) {
+      generated <- c(
+        generated,
+        list(list(
+          tag = "param",
+          raw = "value a scalar character. One of the class's variants."
+        ))
+      )
+    }
+
+    first <- idx[[1]]
+    blocks[[first]]$tags <- c(
+      blocks[[first]]$tags,
+      lapply(generated, parse_tag)
+    )
+  }
+
+  own_class_page <- !vapply(
+    blocks,
+    function(block) roxygen2::block_has_tags(block, "rdname"),
+    logical(1)
+  )
+  blocks[own_class_page] <- lapply(blocks[own_class_page], block_add_class_tags)
   NextMethod()
 }
 
@@ -62,14 +128,17 @@ enum_tags <- function(x) {
   list(
     title = list(tag = "title", raw = x@name),
     description = list(tag = "description", raw = one_of),
-    param = list(tag = "param", raw = paste("value String.", one_of)),
+    param = list(
+      tag = "param",
+      raw = paste("value a scalar character.", one_of)
+    ),
     prop_variants = list(
       tag = "prop",
-      raw = "variants Character vector. The values this enum allows."
+      raw = "variants a character vector. The values this enum allows."
     ),
     prop_allow_na = list(
       tag = "prop",
-      raw = "allow_na Bool. Whether \\code{NA_character_} is allowed."
+      raw = "allow_na a scalar logical. Whether the enum allows \\code{NA_character_}."
     ),
     value = list(
       tag = "returns",
@@ -124,11 +193,7 @@ block_add_class_tags <- function(block) {
     return(block)
   }
 
-  documented <- vapply(
-    Filter(function(tag) tag$tag == "param", block$tags),
-    function(tag) names(tag$val)[[1]],
-    character(1)
-  )
+  documented <- block_param_names(block)
   # A computed property has no constructor argument, so documenting it would
   # trade one warning for the opposite one.
   props <- block$object$value@properties
@@ -147,39 +212,57 @@ block_add_class_tags <- function(block) {
   block
 }
 
+# A `@param x,y` tag documents both `x` and `y`.
+block_param_names <- function(block) {
+  unlist(lapply(
+    Filter(function(tag) tag$tag == "param", block$tags),
+    function(tag) trimws(strsplit(tag$val$name, ",")[[1]])
+  ))
+}
+
 # One sentence naming the property's type, which is all the class itself knows.
 prop_description <- function(prop) {
   cls <- prop$class
+  scalar <- isTRUE(attr(prop, "scalar", exact = TRUE))
   if (rlang::is_null(cls)) {
-    return("Any value.")
+    return("any value.")
   }
   if (inherits(cls, "S7_union")) {
-    parts <- vapply(cls$classes, prop_label, character(1))
-    return(sentence(paste(parts, collapse = " or ")))
+    parts <- vapply(cls$classes, prop_label, character(1), scalar = scalar)
+    return(paste0(paste(parts, collapse = " or "), "."))
   }
-  sentence(prop_label(cls))
+  paste0(prop_label(cls, scalar), ".")
 }
 
-sentence <- function(x) {
-  paste0(toupper(substr(x, 1, 1)), substr(x, 2, nchar(x)), ".")
-}
-
-base_labels <- c(
-  character = "String",
-  double = "Number",
-  integer = "Number",
-  numeric = "Number",
-  logical = "Bool",
-  list = "List"
+scalar_labels <- c(
+  character = "a scalar character",
+  double = "a scalar numeric",
+  integer = "a scalar integer",
+  numeric = "a scalar numeric",
+  logical = "a scalar logical",
+  list = "a list"
 )
 
-prop_label <- function(cls) {
+vector_labels <- c(
+  character = "a character vector",
+  double = "a numeric vector",
+  integer = "an integer vector",
+  numeric = "a numeric vector",
+  logical = "a logical vector",
+  list = "a list"
+)
+
+prop_label <- function(cls, scalar = FALSE) {
   if (rlang::is_null(cls)) {
     return("`NULL`")
   }
   if (inherits(cls, "S7_base_class")) {
-    base <- cls$class
-    return(unname(base_labels[base] %|NA|% "Any value"))
+    if (scalar) {
+      labels <- scalar_labels
+    } else {
+      labels <- vector_labels
+    }
+    return(unname(labels[cls$class] %|NA|% "any value"))
   }
   if (is_enum_class(cls)) {
     return(paste0("a `", cls@name, "` enum"))
