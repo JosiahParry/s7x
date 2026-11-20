@@ -94,10 +94,11 @@ GridShape2 <- new_enum("GridShape2", c("Square", "Hexagon"), default = "Square")
 GridShape2()@value # "Square"
 ```
 
-When a package exports enums, enable `s7x::enum_roclet()` in its `DESCRIPTION`:
+When a package exports enums, run `s7x::use_roxygen()` to add
+`s7x::enum_roclet` to the roclets in its `DESCRIPTION`:
 
-```
-Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
+```r
+s7x::use_roxygen()
 ```
 
 Every enum then documents itself from the class, needing no tags beyond

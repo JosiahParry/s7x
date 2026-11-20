@@ -2,34 +2,42 @@
 % Please edit documentation in R/roclet-enum.R
 \name{enum_roclet}
 \alias{enum_roclet}
-\title{Document enums and S7 classes}
+\alias{use_roxygen}
+\title{roxygen2 integration}
 \usage{
 enum_roclet()
+
+use_roxygen(path = ".")
+}
+\arguments{
+\item{path}{a scalar character. Path to the package.}
 }
 \value{
-A roxygen2 roclet.
+\code{enum_roclet()} returns a roxygen2 roclet. \code{use_roxygen()} returns
+\code{path}, invisibly.
 }
 \description{
-Use \code{enum_roclet()} to generate the docs of exported \code{\link[=new_enum]{new_enum()}} and S7
-classes from their definitions.
+Use the \verb{@enum} roclet to automatically generate s7x documentation.
 }
 \details{
-Enable it in your package's \code{DESCRIPTION}:
+Run \code{use_roxygen()} to add \code{s7x::enum_roclet} to the roclets in your
+\code{DESCRIPTION}.
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
-}\if{html}{\out{</div>}}
-
-You get each of these that you don't write yourself:
+The roclet generates:
 \itemize{
-\item An enum on its own page: the title, description, \code{value} param,
-\code{variants} and \code{allow_na} properties, returns and an example.
-\item Enums that share a page through \verb{@rdname}: the \code{value} param and a
-Variants section that lists each enum's values.
-\item An S7 class on its own page: a \verb{@param} with the type of each property.
+\item Enums: the title, description, \code{value} param, \code{variants} and \code{allow_na}
+properties, returns and an example.
+\item Enums sharing an \verb{@rdname}: the \code{value} param and a Variants section.
+\item S7 classes: a \verb{@param} for each property.
 }
 }
 \examples{
-\dontshow{if (rlang::is_installed("roxygen2")) withAutoprint(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("roxygen2", "desc"))) withAutoprint(\{ # examplesIf}
 enum_roclet()
+
+path <- tempfile()
+dir.create(path)
+writeLines("Package: example", file.path(path, "DESCRIPTION"))
+use_roxygen(path)
 \dontshow{\}) # examplesIf}
 }

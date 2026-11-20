@@ -22,6 +22,7 @@ export(property_range_discrete)
 export(property_scalar)
 export(property_union)
 export(to_json)
+export(use_roxygen)
 import(S7)
 importFrom(rlang,
   abort,

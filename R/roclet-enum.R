@@ -1,28 +1,56 @@
-#' Document enums and S7 classes
+#' roxygen2 integration
 #'
-#' Use `enum_roclet()` to generate the docs of exported [new_enum()] and S7
-#' classes from their definitions.
+#' Use the `@enum` roclet to automatically generate s7x documentation.
 #'
-#' @return A roxygen2 roclet.
+#' @param path a scalar character. Path to the package.
+#' @return `enum_roclet()` returns a roxygen2 roclet. `use_roxygen()` returns
+#'   `path`, invisibly.
 #' @details
-#' Enable it in your package's `DESCRIPTION`:
+#' Run `use_roxygen()` to add `s7x::enum_roclet` to the roclets in your
+#' `DESCRIPTION`.
 #'
-#' ```
-#' Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
-#' ```
+#' The roclet generates:
 #'
-#' You get each of these that you don't write yourself:
-#'
-#' - An enum on its own page: the title, description, `value` param,
-#'   `variants` and `allow_na` properties, returns and an example.
-#' - Enums that share a page through `@rdname`: the `value` param and a
-#'   Variants section that lists each enum's values.
-#' - An S7 class on its own page: a `@param` with the type of each property.
-#' @examplesIf rlang::is_installed("roxygen2")
+#' - Enums: the title, description, `value` param, `variants` and `allow_na`
+#'   properties, returns and an example.
+#' - Enums sharing an `@rdname`: the `value` param and a Variants section.
+#' - S7 classes: a `@param` for each property.
+#' @examplesIf rlang::is_installed(c("roxygen2", "desc"))
 #' enum_roclet()
+#'
+#' path <- tempfile()
+#' dir.create(path)
+#' writeLines("Package: example", file.path(path, "DESCRIPTION"))
+#' use_roxygen(path)
 #' @export
 enum_roclet <- function() {
   roxygen2::roclet(c("enum", "rd"))
+}
+
+#' @rdname enum_roclet
+#' @export
+use_roxygen <- function(path = ".") {
+  check_string(path)
+  rlang::check_installed("desc")
+
+  d <- desc::desc(file = path)
+  options <- rlang::eval_bare(
+    rlang::parse_expr(d$get_field("Roxygen", default = "list()")),
+    baseenv()
+  )
+  roclets <- options$roclets %||% c("collate", "namespace", "rd")
+
+  if ("s7x::enum_roclet" %in% roclets) {
+    cli::cli_inform("{.val s7x::enum_roclet} is already in {.field Roxygen}.")
+    return(invisible(path))
+  }
+
+  # `enum_roclet()` writes the Rd files, so keeping "rd" would write them twice.
+  options$roclets <- c(setdiff(roclets, "rd"), "s7x::enum_roclet")
+  d$set(Roxygen = deparse1(options))
+  d$write()
+  cli::cli_inform(c(v = "Added {.val s7x::enum_roclet} to {.field Roxygen}."))
+  invisible(path)
 }
 
 #' @rawNamespace S3method(roxygen2::roclet_process, roclet_enum)
