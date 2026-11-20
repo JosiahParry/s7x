@@ -1,6 +1,6 @@
 Package: s7x
 Title: Extensions to the 'S7' Object System
-Version: 1.0.1
+Version: 1.0.0
 Authors@R:
     person("Josiah", "Parry", , "josiah.parry@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9910-865X"))
@@ -12,7 +12,7 @@ BugReports: https://github.com/JosiahParry/s7x/issues
 Imports:
     cli,
     rlang,
-    S7 (>= 0.2.2.9000),
+    S7 (>= 1.0.0),
     utils,
     yyjsonr
 Suggests:
@@ -20,8 +20,6 @@ Suggests:
     testthat (>= 3.0.0),
     usethis,
     withr
-Remotes:
-    RConsortium/S7
 Config/roxygen2/version: 8.1.0.9000
 Config/testthat/edition: 3
 Encoding: UTF-8
